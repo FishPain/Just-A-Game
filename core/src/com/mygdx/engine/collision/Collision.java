@@ -4,14 +4,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
-
-/**
- * Enum defining the types of shapes supported for collision components.
- */
-enum ShapeType {
-    RECTANGLE,
-    CIRCLE
-}
+import com.mygdx.engine.entity.Entity;
 
 /**
  * Represents a collision component that can handle both rectangular and
@@ -22,7 +15,16 @@ public class Collision {
 
     private Shape2D hitbox; // The hitbox for collision detection, supporting both Rectangle and Circle
                             // shapes.
+    private float rotation; // The rotation angle (in degrees) for the hitbox.
     private boolean collidable; // Flag to indicate if the component is currently collidable.
+
+    /**
+     * Enum defining the types of shapes supported for collision components.
+     */
+    public enum ShapeType {
+        RECTANGLE,
+        CIRCLE
+    }
 
     /**
      * Constructor for the Collision component.
@@ -32,8 +34,9 @@ public class Collision {
      * @param collidable Indicates whether the hitbox should be considered
      *                   collidable.
      */
-    public Collision(Shape2D hitbox, boolean collidable) {
+    public Collision(Shape2D hitbox, float rotation, boolean collidable) {
         this.hitbox = hitbox;
+        this.rotation = rotation;
         this.collidable = collidable;
     }
 
@@ -46,11 +49,12 @@ public class Collision {
      * @param y          The y-coordinate of the shape's position.
      * @param width      The width (or diameter for circles) of the shape.
      * @param height     The height of the shape (ignored for circles).
+     * @param rotation   The rotation angle (in degrees) for the shape
      * @param collidable Whether the hitbox is collidable.
      * @return A new instance of Collision with the specified shape and properties.
      */
     public static Collision createShape(ShapeType shapeType, float x, float y, float width, float height,
-            boolean collidable) {
+            float rotation, boolean collidable) {
         Shape2D hitbox;
         switch (shapeType) {
             case RECTANGLE:
@@ -62,7 +66,7 @@ public class Collision {
             default:
                 throw new IllegalArgumentException("Unsupported shape type: " + shapeType);
         }
-        return new Collision(hitbox, collidable);
+        return new Collision(hitbox, rotation, collidable);
     }
 
     /**
@@ -74,7 +78,7 @@ public class Collision {
      * @param rotation The rotation angle (in degrees) for the hitbox, if
      *                 applicable.
      */
-    public void updatePosition(float x, float y, float rotation) {
+    public void updateHitboxPosition(float x, float y, float rotation) {
         if (hitbox instanceof Rectangle) {
             ((Rectangle) hitbox).setPosition(x - ((Rectangle) hitbox).width / 2, y - ((Rectangle) hitbox).height / 2);
         } else if (hitbox instanceof Circle) {
@@ -120,4 +124,5 @@ public class Collision {
     public void setCollidable(boolean collidable) {
         this.collidable = collidable;
     }
+
 }
