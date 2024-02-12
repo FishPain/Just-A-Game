@@ -30,13 +30,13 @@ public class SimulationManager extends ApplicationAdapter {
 	@Override
 	public void create() {
 		EntityManager = new EntityManager();
-		CollisionManager = new CollisionManager();
-
+		// CollisionManager = new CollisionManager();
 	}
 
 	@Override
 	public void render() {
 		ScreenUtils.clear(0, 0, 1, 1);
+		EntityManager.render();
 	}
 
 	@Override
