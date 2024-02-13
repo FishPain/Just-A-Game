@@ -10,6 +10,14 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("My GDX Game");
+
+		// Get the screen size
+		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		int screenWidth = (int) screenSize.getWidth() / 4 * 3;
+		int screenHeight = (int) screenSize.getHeight() / 4 * 3;
+
+		config.setWindowedMode(screenWidth, screenHeight);
+		config.setResizable(false);
 		new Lwjgl3Application(new SimulationManager(), config);
 	}
 }
