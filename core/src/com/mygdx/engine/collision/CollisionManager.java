@@ -11,25 +11,25 @@ public class CollisionManager extends EntityManager {
         collidableEntities = new ArrayList<>();
     }
 
-    public void checkCollisions() {
-        updateCollidableEntities();
-        for (int i = 0; i < collidableEntities.size(); i++) {
-            for (int j = i + 1; j < collidableEntities.size(); j++) {
-                Entity entityA = collidableEntities.get(i);
-                Entity entityB = collidableEntities.get(j);
-                if (entityA.isColliding(entityB)) {
-                    // Entities are colliding, handle collision...
-                }
-            }
-        }
-    }
+    // public void checkCollisions() {
+    // updateCollidableEntities();
+    // for (int i = 0; i < collidableEntities.size(); i++) {
+    // for (int j = i + 1; j < collidableEntities.size(); j++) {
+    // Entity entityA = collidableEntities.get(i);
+    // Entity entityB = collidableEntities.get(j);
+    // if (entityA.isColliding(entityB)) {
+    // // Entities are colliding, handle collision...
+    // }
+    // }
+    // }
+    // }
 
-    private void updateCollidableEntities() {
-        collidableEntities.clear(); // Clear the list to avoid duplicates
-        for (Entity entity : getEntities()) {
-            if (entity.isCollidable()) {
-                collidableEntities.add(entity);
-            }
-        }
-    }
+    // private void updateCollidableEntities() {
+    // collidableEntities.clear(); // Clear the list to avoid duplicates
+    // for (Entity entity : getEntities()) {
+    // if (entity.isCollidable()) {
+    // collidableEntities.add(entity);
+    // }
+    // }
+    // }
 }
