@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.engine.SimulationManager;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -18,6 +17,6 @@ public class DesktopLauncher {
 
 		config.setWindowedMode(screenWidth, screenHeight);
 		config.setResizable(false);
-		new Lwjgl3Application(new SimulationManager(), config);
+		new Lwjgl3Application(new Game(), config);
 	}
 }
