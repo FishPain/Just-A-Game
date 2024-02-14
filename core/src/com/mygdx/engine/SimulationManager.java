@@ -2,7 +2,6 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.EntityManager;
@@ -37,6 +36,7 @@ public class SimulationManager extends ApplicationAdapter {
 	@Override
 	public void render() {
 		ScreenUtils.clear(0, 0, 1, 1);
+		EntityManager.render();
 	}
 
 	@Override

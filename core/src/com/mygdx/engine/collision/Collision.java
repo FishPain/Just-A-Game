@@ -4,81 +4,73 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
-import com.mygdx.engine.entity.Entity;
 
 /**
- * Represents a collision component that can handle both rectangular and
- * circular hitboxes,
- * enabling collision detection between entities.
+ * The {@code Collision} class represents a collision component capable of
+ * handling
+ * both rectangular and circular hitboxes. It enables collision detection
+ * between
+ * entities by encapsulating a shape (either a {@link Rectangle} or a
+ * {@link Circle})
+ * as its hitbox. This class supports basic collision detection functionalities
+ * such as updating hitbox positions and checking for collisions between
+ * entities.
  */
 public class Collision {
 
-    private Shape2D hitbox; // The hitbox for collision detection, supporting both Rectangle and Circle
-                            // shapes.
-    private float rotation; // The rotation angle (in degrees) for the hitbox.
-    private boolean collidable; // Flag to indicate if the component is currently collidable.
+    /**
+     * The hitbox for collision detection, supporting both {@link Rectangle} and
+     * {@link Circle} shapes.
+     */
+    private Shape2D hitbox;
+
+    /** Flag to indicate whether the component is currently collidable. */
+    private boolean collidable;
 
     /**
-     * Enum defining the types of shapes supported for collision components.
+     * Defines the types of shapes supported for collision components.
      */
     public enum ShapeType {
-        RECTANGLE,
-        CIRCLE
+        RECTANGLE, // Represents a rectangular shape for the hitbox.
+        CIRCLE // Represents a circular shape for the hitbox.
     }
 
     /**
-     * Constructor for the Collision component.
-     * 
-     * @param hitbox     The hitbox shape (Rectangle or Circle) used for collision
-     *                   detection.
-     * @param collidable Indicates whether the hitbox should be considered
-     *                   collidable.
-     */
-    public Collision(Shape2D hitbox, float rotation, boolean collidable) {
-        this.hitbox = hitbox;
-        this.rotation = rotation;
-        this.collidable = collidable;
-    }
-
-    /**
-     * Static factory method to create a Collision component with a specified shape,
-     * position, and size.
-     * 
-     * @param shapeType  The type of shape for the hitbox (RECTANGLE or CIRCLE).
+     * Constructs a new {@code Collision} component with the specified parameters.
+     *
+     * @param shapeType  The type of shape for the hitbox, either {@code RECTANGLE}
+     *                   or {@code CIRCLE}.
      * @param x          The x-coordinate of the shape's position.
      * @param y          The y-coordinate of the shape's position.
-     * @param width      The width (or diameter for circles) of the shape.
+     * @param width      The width of the shape (or diameter for circles).
      * @param height     The height of the shape (ignored for circles).
-     * @param rotation   The rotation angle (in degrees) for the shape
-     * @param collidable Whether the hitbox is collidable.
-     * @return A new instance of Collision with the specified shape and properties.
+     * @param collidable A boolean indicating whether the hitbox should be
+     *                   considered collidable.
+     * @throws IllegalArgumentException if an unsupported shape type is provided.
      */
-    public static Collision createShape(ShapeType shapeType, float x, float y, float width, float height,
-            float rotation, boolean collidable) {
-        Shape2D hitbox;
+    public Collision(ShapeType shapeType, float x, float y, float width, float height, boolean collidable) {
+        this.collidable = collidable;
+
         switch (shapeType) {
             case RECTANGLE:
-                hitbox = new Rectangle(x - width / 2, y - height / 2, width, height);
+                this.hitbox = new Rectangle(x - width / 2, y - height / 2, width, height);
                 break;
             case CIRCLE:
-                hitbox = new Circle(x, y, width / 2);
+                this.hitbox = new Circle(x, y, width / 2);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported shape type: " + shapeType);
         }
-        return new Collision(hitbox, rotation, collidable);
     }
 
     /**
-     * Updates the position of the hitbox based on the specified coordinates and
-     * rotation.
-     * 
-     * @param x        The new x-coordinate for the hitbox.
-     * @param y        The new y-coordinate for the hitbox.
-     * @param rotation The rotation angle (in degrees) for the hitbox, if
-     *                 applicable.
+     * Updates the position and rotation of the hitbox based on specified
+     * coordinates and rotation angle.
+     *
+     * @param x The new x-coordinate for the hitbox.
+     * @param y The new y-coordinate for the hitbox.
      */
-    public void updateHitboxPosition(float x, float y, float rotation) {
+    public void updateHitboxPosition(float x, float y) {
         if (hitbox instanceof Rectangle) {
             ((Rectangle) hitbox).setPosition(x - ((Rectangle) hitbox).width / 2, y - ((Rectangle) hitbox).height / 2);
         } else if (hitbox instanceof Circle) {
@@ -88,10 +80,11 @@ public class Collision {
 
     /**
      * Checks if this collision component is colliding with another specified
-     * component.
-     * 
-     * @param other The other Collision component to check for collision.
-     * @return true if there is a collision; false otherwise.
+     * collision component.
+     *
+     * @param other The other {@code Collision} component to check for collision
+     *              against.
+     * @return {@code true} if there is a collision; {@code false} otherwise.
      */
     public boolean isColliding(Collision other) {
         if (!collidable || !other.isCollidable()) {
@@ -113,16 +106,32 @@ public class Collision {
 
     // Getters and Setters
 
+    /**
+     * Returns the hitbox associated with this collision component.
+     *
+     * @return The {@code Shape2D} hitbox for this component.
+     */
     public Shape2D getHitbox() {
         return hitbox;
     }
 
+    /**
+     * Returns whether this collision component is currently collidable.
+     *
+     * @return {@code true} if this component is collidable; {@code false}
+     *         otherwise.
+     */
     public boolean isCollidable() {
         return collidable;
     }
 
+    /**
+     * Sets whether this collision component should be considered collidable.
+     *
+     * @param collidable {@code true} to make the component collidable;
+     *                   {@code false} otherwise.
+     */
     public void setCollidable(boolean collidable) {
         this.collidable = collidable;
     }
-
 }
