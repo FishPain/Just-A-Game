@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 public class GameConfig {
     public static final int SCREEN_WIDTH;
     public static final int SCREEN_HEIGHT;
-    public static final boolean RESIZABLE;
+    public static final boolean RESIZABLE = false;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
 
@@ -23,11 +23,10 @@ public class GameConfig {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             SCREEN_WIDTH = screenSize.width;
             SCREEN_HEIGHT = screenSize.height;
-            RESIZABLE = false;
         } else {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
-            RESIZABLE = true;
         }
     }
+
 }
