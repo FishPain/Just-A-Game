@@ -1,40 +1,64 @@
 package com.mygdx.engine.scene;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Gdx;
 
-public class SceneManager extends Scene {
+import java.util.ArrayList;
+import java.util.HashMap;
 
-    private Game game;
-    private SpriteBatch batch;
+public class SceneManager {
 
-    public SceneManager(Game game) {
-        this.game = game;
-        this.batch = new SpriteBatch();
+    private Scene currentScene;
+
+    private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
+
+    public SceneManager() {
     }
 
-    public void setScene(Scene screen) {
-        // Dispose the current screen if needed
-        if (game.getScreen() != null) {
-            game.getScreen().dispose();
+    public void addScene(String name, Scene scene) {
+        scenes.put(name, scene);
+    }
+
+    public void removeScene(String name) {
+        scenes.remove(name);
+    }
+
+    public Scene getScene(String name) {
+        return scenes.get(name);
+    }
+
+    public ArrayList<Scene> getAllScenes() {
+        return new ArrayList<Scene>(scenes.values());
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setScene(String SceneName) {
+        // Get the new screen
+        Scene screen = scenes.get(SceneName);
+        if (screen == null) {
+            throw new IllegalArgumentException("No screen with name " + SceneName + " is added to the screen manager");
         }
 
         // Set the new screen
-        game.setScreen(screen);
-        screen.setBatch(batch);
-        screen.show();
+        setScreen(screen);
     }
 
-    public void render(float delta) {
-        // Render the current screen
-        if (game.getScreen() instanceof Scene) {
-            ((Scene) game.getScreen()).render(delta);
+    /**
+     * Sets the current screen. {@link Screen#hide()} is called on any old screen,
+     * and {@link Screen#show()} is called on the new
+     * screen, if any.
+     * 
+     * @param screen may be {@code null}
+     */
+    public void setScreen(Scene screen) {
+        if (this.currentScene != null)
+            this.currentScene.hide();
+        this.currentScene = screen;
+        if (this.currentScene != null) {
+            this.currentScene.show();
         }
     }
 
-    public void dispose() {
-        // Dispose resources when the screen manager is no longer needed
-        batch.dispose();
-    }
 }

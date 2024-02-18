@@ -24,7 +24,7 @@ public class EntityManager {
         return entities;
     }
 
-    public void render(SpriteBatch batch) {
+    public void render() {
         for (Entity entity : entities) {
             entity.draw(batch);
             entity.move(entities);

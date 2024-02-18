@@ -10,7 +10,8 @@ import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.scene.SceneManager;
-
+import com.mygdx.game.scenes.GameOver;
+import com.mygdx.game.scenes.GameScene;
 // scenes
 import com.mygdx.game.scenes.MainMenu;
 
@@ -18,6 +19,10 @@ import com.mygdx.game.scenes.MainMenu;
 import com.mygdx.game.entity.Snake;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.entity.Platform;
+import com.mygdx.game.scenes.GameScene;
+import com.mygdx.game.scenes.GameOver;
+import com.mygdx.game.scenes.MainMenu;
+import com.mygdx.game.scenes.Settings;
 
 public class Game extends SimulationManager {
 
@@ -32,41 +37,23 @@ public class Game extends SimulationManager {
     public void create() {
         AIManager = new AIManager();
         InputManager = new IOManager();
-        SceneManager = new SceneManager(null);
+        SceneManager = new SceneManager();
         PlayerControlManager = new PlayerControlManager();
         CollisionManager = new CollisionManager();
-
-        SceneManager.addScene("MainMenu", new MainMenu());
-
         EntityManager = new EntityManager();
 
-        EntityManager.addEntity(
-                new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                        "snakeHead.jpg", 200, GameEntityType.SNAKE_HEAD));
+        // <game entry point> main menu screen
+        SceneManager.addScene("MainMenu", new MainMenu());
+        SceneManager.setScene("MainMenu");
 
-        EntityManager.addEntity(new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                "snakeBody.jpg", 200, GameEntityType.SNAKE_BODY));
+        // settings scene
+        SceneManager.addScene("Settings", new Settings());
 
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                        50, "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
-        EntityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+        // the main game scene
+        SceneManager.addScene("MainGame", new GameScene(EntityManager));
+
+        // end scene
+        SceneManager.addScene("EndGame", new GameOver());
     }
 
     @Override
@@ -74,7 +61,7 @@ public class Game extends SimulationManager {
         ScreenUtils.clear(0, 0, 1, 1);
         SpriteBatch batch = new SpriteBatch();
         batch.begin();
-        EntityManager.render(batch);
+        SceneManager.getCurrentScene().render(0);
         batch.end();
     }
 

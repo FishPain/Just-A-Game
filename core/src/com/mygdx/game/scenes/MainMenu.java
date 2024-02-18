@@ -2,18 +2,16 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+
 import com.mygdx.engine.scene.Scene;
-import com.mygdx.engine.scene.SceneManager;
 
 public class MainMenu extends Scene {
 
     private Texture background;
     private Texture playButton;
 
-    public MainMenu(SceneManager sceneManager) {
-        super(sceneManager);
+    public MainMenu() {
     }
 
     @Override
@@ -36,6 +34,11 @@ public class MainMenu extends Scene {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
+    }
+
+    @Override
+    public void hide() {
+        // Add logic to hide the scene
     }
 
     @Override
