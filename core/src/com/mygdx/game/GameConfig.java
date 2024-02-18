@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.mygdx.engine.entity.EntityType;
+
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -27,6 +29,10 @@ public class GameConfig {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
         }
+    }
+
+    public static enum GameEntityType implements EntityType {
+        SNAKE_HEAD, SNAKE_BODY, PLATFORM
     }
 
 }

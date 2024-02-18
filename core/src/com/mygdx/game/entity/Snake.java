@@ -3,9 +3,13 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.collision.CollisionManager;
 import com.badlogic.gdx.math.Rectangle;
+
+import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityType;
+import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.engine.collision.CollisionManager;
+
 import java.util.ArrayList;
 
 public class Snake extends Entity {
@@ -65,7 +69,7 @@ public class Snake extends Entity {
         // This could involve checking for a collision directly beneath the entity,
         // indicating it's supported
         for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == EntityType.PLATFORM) {
+            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
                 Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
                 slightlyBelow.y -= 1; // Check just below the entity
                 if (slightlyBelow.overlaps(other.getRectangle())) {

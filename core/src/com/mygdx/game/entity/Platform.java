@@ -1,10 +1,12 @@
 package com.mygdx.game.entity;
 
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.game.GameConfig.GameEntityType;
+
 import java.util.ArrayList;
 
 public class Platform extends Entity {
-    public Platform(float x, float y, float width, float height, String texturePath, EntityType entityType) {
+    public Platform(float x, float y, float width, float height, String texturePath, GameEntityType entityType) {
         super(x, y, width, height, texturePath, 0, false, entityType);
     }
 

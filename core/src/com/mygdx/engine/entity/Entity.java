@@ -15,12 +15,6 @@ public abstract class Entity {
     protected boolean isMovable;
     protected static final float GRAVITY = 200f;
 
-    public enum EntityType {
-        SNAKE_HEAD,
-        SNAKE_BODY,
-        PLATFORM
-    }
-
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {
         this.x = x;

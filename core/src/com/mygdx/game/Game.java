@@ -6,12 +6,17 @@ import com.mygdx.engine.SimulationManager;
 import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.controls.PlayerControlManager;
-import com.mygdx.engine.entity.Entity.EntityType;
 import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.scene.SceneManager;
 
+// scenes
+import com.mygdx.game.scenes.MainMenu;
+
+// entities
 import com.mygdx.game.entity.Snake;
+import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.entity.Platform;
 
 public class Game extends SimulationManager {
@@ -27,32 +32,41 @@ public class Game extends SimulationManager {
     public void create() {
         AIManager = new AIManager();
         InputManager = new IOManager();
-        SceneManager = new SceneManager();
+        SceneManager = new SceneManager(null);
         PlayerControlManager = new PlayerControlManager();
         CollisionManager = new CollisionManager();
 
+        SceneManager.addScene("MainMenu", new MainMenu());
+
         EntityManager = new EntityManager();
 
-        EntityManager.addEntity(new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                "snakeHead.jpg", 200, EntityType.SNAKE_HEAD));
+        EntityManager.addEntity(
+                new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
+                        "snakeHead.jpg", 200, GameEntityType.SNAKE_HEAD));
 
         EntityManager.addEntity(new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                "snakeBody.jpg", 200, EntityType.SNAKE_BODY));
+                "snakeBody.jpg", 200, GameEntityType.SNAKE_BODY));
 
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                50, "stoneTex.jpg", EntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
+                        50, "stoneTex.jpg", GameEntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
+                        "stoneTex.jpg", GameEntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
+                        "stoneTex.jpg", GameEntityType.PLATFORM));
         EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
-        EntityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", EntityType.PLATFORM));
+                "stoneTex.jpg", GameEntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
+                        "stoneTex.jpg", GameEntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
+                        "stoneTex.jpg", GameEntityType.PLATFORM));
+        EntityManager.addEntity(
+                new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
+                        "stoneTex.jpg", GameEntityType.PLATFORM));
     }
 
     @Override
