@@ -1,5 +1,3 @@
-// Scene.java
-
 package com.mygdx.engine.scene;
 
 import com.badlogic.gdx.Gdx;
