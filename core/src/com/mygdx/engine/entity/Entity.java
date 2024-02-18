@@ -3,23 +3,18 @@ package com.mygdx.engine.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.engine.collision.iCollide;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
-public abstract class Entity {
+public abstract class Entity implements iCollide {
     protected Texture texture;
     protected Rectangle rectangle;
     protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
     protected static final float GRAVITY = 200f;
-
-    public enum EntityType {
-        SNAKE_HEAD,
-        SNAKE_BODY,
-        PLATFORM
-    }
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {

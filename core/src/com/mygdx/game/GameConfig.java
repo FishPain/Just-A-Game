@@ -1,5 +1,8 @@
 package com.mygdx.game;
 
+import com.mygdx.engine.entity.EntityType;
+import com.mygdx.engine.scene.SceneType;
+
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -11,6 +14,7 @@ public class GameConfig {
     public static final boolean RESIZABLE = false;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
+    public static final float GRAVITY = 200f;
 
     // Static initializer block to set screen size based on the operating system
     static {
@@ -21,12 +25,20 @@ public class GameConfig {
         // example
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            SCREEN_WIDTH = screenSize.width;
-            SCREEN_HEIGHT = screenSize.height;
+            SCREEN_WIDTH = screenSize.width / 2;
+            SCREEN_HEIGHT = screenSize.height / 2;
         } else {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
         }
+    }
+
+    public static enum GameEntityType implements EntityType {
+        SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
+    }
+
+    public static enum GameSceneType implements SceneType {
+        MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
     }
 
 }

@@ -5,10 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class EntityManager {
     private ArrayList<Entity> entities;
-    private SpriteBatch batch;
 
     public EntityManager() {
-        batch = new SpriteBatch();
         entities = new ArrayList<Entity>();
     }
 
@@ -24,19 +22,22 @@ public class EntityManager {
         return entities;
     }
 
-    public void render(SpriteBatch batch) {
+    // get all entities by type
+    public ArrayList<Entity> getEntities(EntityType entityType) {
+        ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
         for (Entity entity : entities) {
-            entity.draw(batch);
-            entity.move(entities);
+            if (entity.getEntityType() == entityType) {
+                entitiesByType.add(entity);
+            }
         }
+        return entitiesByType;
     }
 
-    public void dispose() {
+    public void dispose(SpriteBatch batch) {
         for (Entity entity : entities) {
             entity.dispose();
         }
         batch.end();
         batch.dispose();
     }
-
 }

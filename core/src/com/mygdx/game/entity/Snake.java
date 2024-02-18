@@ -3,9 +3,13 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.collision.CollisionManager;
 import com.badlogic.gdx.math.Rectangle;
+
+import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityType;
+import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.engine.collision.CollisionManager;
+
 import java.util.ArrayList;
 
 public class Snake extends Entity {
@@ -42,6 +46,17 @@ public class Snake extends Entity {
         updatePosition(); // Update the entity's rectangle for collision checks
     }
 
+    public boolean isReachEnd(ArrayList<Entity> entity) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
+        Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
+        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
+        if (horizontalCollision) {
+            return true;
+        }
+        return false;
+    }
+
     private Vector2 calculateHorizontalMovement(float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -65,7 +80,7 @@ public class Snake extends Entity {
         // This could involve checking for a collision directly beneath the entity,
         // indicating it's supported
         for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == EntityType.PLATFORM) {
+            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
                 Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
                 slightlyBelow.y -= 1; // Check just below the entity
                 if (slightlyBelow.overlaps(other.getRectangle())) {
