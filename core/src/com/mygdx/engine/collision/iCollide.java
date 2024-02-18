@@ -1,6 +1,8 @@
 package com.mygdx.engine.collision;
 
-public interface iCollide {
+import java.util.ArrayList;
+import com.mygdx.engine.entity.Entity;
 
-    
+public interface iCollide {
+    boolean isReachEnd(ArrayList<Entity> allEntities);
 }

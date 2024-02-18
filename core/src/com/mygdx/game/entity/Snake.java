@@ -3,10 +3,20 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+<<<<<<< HEAD
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.badlogic.gdx.math.Rectangle;
+=======
+import com.badlogic.gdx.math.Rectangle;
+
+import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityType;
+import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.engine.collision.CollisionManager;
+
+>>>>>>> 4cb3795079ba21f2f3ac0b0783fb1bd6e06f4e78
 import java.util.ArrayList;
 
 public class Snake extends Entity {
@@ -43,6 +53,20 @@ public class Snake extends Entity {
         updatePosition(); // Update the entity's rectangle for collision checks
     }
 
+<<<<<<< HEAD
+=======
+    public boolean isReachEnd(ArrayList<Entity> entity) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
+        Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
+        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
+        if (horizontalCollision) {
+            return true;
+        }
+        return false;
+    }
+
+>>>>>>> 4cb3795079ba21f2f3ac0b0783fb1bd6e06f4e78
     private Vector2 calculateHorizontalMovement(float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -66,7 +90,11 @@ public class Snake extends Entity {
         // This could involve checking for a collision directly beneath the entity,
         // indicating it's supported
         for (Entity other : allEntities) {
+<<<<<<< HEAD
             if (other != entity && other.getEntityType() == EntityType.PLATFORM) {
+=======
+            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
+>>>>>>> 4cb3795079ba21f2f3ac0b0783fb1bd6e06f4e78
                 Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
                 slightlyBelow.y -= 1; // Check just below the entity
                 if (slightlyBelow.overlaps(other.getRectangle())) {
@@ -77,9 +105,12 @@ public class Snake extends Entity {
         return false;
     }
 
+<<<<<<< HEAD
     // Modify the rendering of snake as a whole into a single entity
     public static void addSnakeToEntityManager(EntityManager entityManager, float x, float y, String texturePath, EntityType entityType) {
         entityManager.addEntity(new Snake(x, y, 50, 50, texturePath, 200, entityType));
     }
 
+=======
+>>>>>>> 4cb3795079ba21f2f3ac0b0783fb1bd6e06f4e78
 }
