@@ -46,6 +46,17 @@ public class Snake extends Entity {
         updatePosition(); // Update the entity's rectangle for collision checks
     }
 
+    public boolean isReachEnd(ArrayList<Entity> entity) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
+        Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
+        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
+        if (horizontalCollision) {
+            return true;
+        }
+        return false;
+    }
+
     private Vector2 calculateHorizontalMovement(float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {

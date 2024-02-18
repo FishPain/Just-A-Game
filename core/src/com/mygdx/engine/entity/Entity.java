@@ -3,11 +3,12 @@ package com.mygdx.engine.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.engine.collision.iCollide;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
-public abstract class Entity {
+public abstract class Entity implements iCollide {
     protected Texture texture;
     protected Rectangle rectangle;
     protected float x, y, width, height, speed;

@@ -4,16 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 
-import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.engine.scene.Scene;
+
+import com.mygdx.game.GameConfig.GameSceneType;
 
 public class MainMenu extends Scene {
 
     private Texture background;
     private Texture playButton;
-    private SceneManager sceneManager; // Assuming you have a reference to SceneManager
+    private SceneManager sceneManager;
 
-    public MainMenu() {
+    public MainMenu(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 
     @Override
@@ -31,8 +34,8 @@ public class MainMenu extends Scene {
                         worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 &&
                         worldY >= Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + playButton.getHeight() / 2) {
-                    
-                            sceneManager.setScene("MainGame");
+
+                    sceneManager.setScene(GameSceneType.GAME_SCENE);
                 }
 
                 return super.touchUp(screenX, screenY, pointer, button);
@@ -47,19 +50,19 @@ public class MainMenu extends Scene {
 
     @Override
     public void render(float delta) {
-        batch.begin();
+
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(playButton, Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2);
-
-        // Add similar drawing logic for other buttons (Settings, Exit)
-
-        batch.end();
     }
 
     @Override
     public void dispose() {
         background.dispose();
         playButton.dispose();
+    }
+
+    public Texture getPlayButton() {
+        return playButton;
     }
 }

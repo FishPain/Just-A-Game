@@ -1,29 +1,31 @@
 package com.mygdx.engine.scene;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SceneManager {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.scenes.MainMenu;
+
+public class SceneManager extends InputAdapter {
 
     private Scene currentScene;
-
-    private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
+    private HashMap<SceneType, Scene> scenes = new HashMap<SceneType, Scene>();
 
     public SceneManager() {
     }
 
-    public void addScene(String name, Scene scene) {
-        scenes.put(name, scene);
+    public void addScene(SceneType SceneType, Scene scene) {
+        scenes.put(SceneType, scene);
     }
 
-    public void removeScene(String name) {
-        scenes.remove(name);
+    public void removeScene(SceneType SceneType) {
+        scenes.remove(SceneType);
     }
 
-    public Scene getScene(String name) {
-        return scenes.get(name);
+    public Scene getScene(SceneType SceneType) {
+        return scenes.get(SceneType);
     }
 
     public ArrayList<Scene> getAllScenes() {
@@ -34,11 +36,11 @@ public class SceneManager {
         return currentScene;
     }
 
-    public void setScene(String SceneName) {
+    public void setScene(SceneType SceneType) {
         // Get the new screen
-        Scene screen = scenes.get(SceneName);
+        Scene screen = scenes.get(SceneType);
         if (screen == null) {
-            throw new IllegalArgumentException("No screen with name " + SceneName + " is added to the screen manager");
+            throw new IllegalArgumentException("No screen with name " + SceneType + " is added to the screen manager");
         }
 
         // Set the new screen
@@ -60,5 +62,4 @@ public class SceneManager {
             this.currentScene.show();
         }
     }
-
 }
