@@ -8,8 +8,7 @@ import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.Entity.EntityType;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.io.input.InputManager;
-import com.mygdx.engine.io.output.OutputManager;
+import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.scene.SceneManager;
 
 import com.mygdx.game.entity.Snake;
@@ -20,16 +19,14 @@ public class Game extends SimulationManager {
     EntityManager EntityManager;
     CollisionManager CollisionManager;
     AIManager AIManager;
-    InputManager InputManager;
-    OutputManager OutputManager;
+    IOManager InputManager;
     SceneManager SceneManager;
     PlayerControlManager PlayerControlManager;
 
     @Override
     public void create() {
         AIManager = new AIManager();
-        InputManager = new InputManager();
-        OutputManager = new OutputManager();
+        InputManager = new IOManager();
         SceneManager = new SceneManager();
         PlayerControlManager = new PlayerControlManager();
         CollisionManager = new CollisionManager();
