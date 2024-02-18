@@ -50,7 +50,8 @@ public class Game extends SimulationManager {
         SceneManager.addScene("Settings", new Settings());
 
         // the main game scene
-        SceneManager.addScene("MainGame", new GameScene(EntityManager));
+        SceneManager.addScene("GameScene", new GameScene(EntityManager));
+        SceneManager.setScene("GameScene");
 
         // end scene
         SceneManager.addScene("EndGame", new GameOver());

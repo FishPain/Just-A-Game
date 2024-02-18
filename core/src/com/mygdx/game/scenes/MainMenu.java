@@ -5,11 +5,13 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.mygdx.engine.scene.Scene;
+import com.mygdx.engine.scene.SceneManager;
 
 public class MainMenu extends Scene {
 
     private Texture background;
     private Texture playButton;
+    private SceneManager sceneManager; // Assuming you have a reference to SceneManager
 
     public MainMenu() {
     }
@@ -29,6 +31,8 @@ public class MainMenu extends Scene {
                         worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 &&
                         worldY >= Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + playButton.getHeight() / 2) {
+                    
+                            sceneManager.setScene("MainGame");
                 }
 
                 return super.touchUp(screenX, screenY, pointer, button);
