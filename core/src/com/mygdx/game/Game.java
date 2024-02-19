@@ -10,7 +10,8 @@ import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.scene.SceneManager;
-import com.mygdx.game.scenes.GameOver;
+import com.mygdx.game.scenes.GameOverWin;
+import com.mygdx.game.scenes.GameOverLose;
 import com.mygdx.game.scenes.GameScene;
 // scenes
 import com.mygdx.game.scenes.MainMenu;
@@ -54,8 +55,8 @@ public class Game extends SimulationManager {
         SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager));
 
         // end scene
-        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOver(SceneManager));
-        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOver(SceneManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager));
     }
 
     @Override

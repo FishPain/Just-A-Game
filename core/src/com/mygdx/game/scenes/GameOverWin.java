@@ -3,11 +3,11 @@ package com.mygdx.game.scenes;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 
-public class GameOver extends Scene {
+public class GameOverWin extends Scene {
     // this class will load all the required entityies using entity manager
     SceneManager sceneManager;
 
-    public GameOver(SceneManager sceneManager) {
+    public GameOverWin(SceneManager sceneManager) {
         super();
         this.sceneManager = sceneManager;
     }
