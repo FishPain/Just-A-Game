@@ -1,18 +1,23 @@
 package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
 
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
-import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
+import com.mygdx.engine.controls.ControlManager;
+
+import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.GameConfig.Keystroke;
 
 import java.util.ArrayList;
 
 public class Snake extends Entity {
+
+    KeyStrokeManager keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
 
     public Snake(float x, float y, float width, float height, String texturePath, float speed, EntityType entityType) {
         super(x, y, width, height, texturePath, speed, true, entityType);
@@ -59,11 +64,11 @@ public class Snake extends Entity {
 
     private Vector2 calculateHorizontalMovement(float deltaTime) {
         Vector2 movementDelta = new Vector2();
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            movementDelta.x -= speed * deltaTime;
+        if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, -speed, deltaTime);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            movementDelta.x += speed * deltaTime;
+        if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, speed, deltaTime);
         }
         return movementDelta;
     }

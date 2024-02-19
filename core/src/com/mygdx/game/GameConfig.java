@@ -2,14 +2,9 @@ package com.mygdx.game;
 
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
-import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.io.KeyStrokeType;
-import com.badlogic.gdx.Input.Keys;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.RenderingHints.Key;
-import java.util.HashMap;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
@@ -27,20 +22,25 @@ public class GameConfig {
         MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
     }
 
-    public static enum GameKeyStrokeType implements KeyStrokeType {
-        UP, DOWN, LEFT, RIGHT, JUMP, SHOOT
-    }
+    public static enum Keystroke {
+        UP("UP"),
+        DOWN("DOWN"),
+        LEFT("LEFT"),
+        RIGHT("RIGHT"),
+        JUMP("JUMP"),
+        SHOOT("SHOOT"),
+        FILE_PATH("Settings.json");
 
-    public static HashMap<GameKeyStrokeType, Integer> keyStrokeMap = new HashMap<GameKeyStrokeType, Integer>() {
-        {
-            put(GameKeyStrokeType.UP, KeyStrokeManager.W);
-            put(GameKeyStrokeType.DOWN, KeyStrokeManager.S);
-            put(GameKeyStrokeType.LEFT, KeyStrokeManager.A);
-            put(GameKeyStrokeType.RIGHT, KeyStrokeManager.D);
-            put(GameKeyStrokeType.JUMP, KeyStrokeManager.SPACE);
-            put(GameKeyStrokeType.SHOOT, KeyStrokeManager.SHIFT_LEFT);
+        private String keyStrokeName;
+
+        private Keystroke(String keyStrokeName) {
+            this.keyStrokeName = keyStrokeName;
         }
-    };
+
+        public String getKeystrokeName() {
+            return keyStrokeName;
+        }
+    }
 
     public static enum Assets {
         SNAKE_HEAD("snakeHead.jpg"),

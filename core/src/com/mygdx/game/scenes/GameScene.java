@@ -28,9 +28,6 @@ public class GameScene extends Scene {
                 new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                         Assets.SNAKE_HEAD.getFileName(), 200, GameEntityType.SNAKE_HEAD));
 
-        entityManager.addEntity(new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                Assets.SNAKE_BODY.getFileName(), 200, GameEntityType.SNAKE_BODY));
-
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
                         50, Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
