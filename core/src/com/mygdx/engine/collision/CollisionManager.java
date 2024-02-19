@@ -2,7 +2,6 @@ package com.mygdx.engine.collision;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.game.GameConfig.GameEntityType;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -19,16 +18,13 @@ public class CollisionManager {
         return false; // No collision detected
     }
 
-    public boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
+    public static boolean willCollide(Vector2 entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
+        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
         for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
-                Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-                slightlyBelow.y -= 1; // Check just below the entity
-                if (slightlyBelow.overlaps(other.getRectangle())) {
-                    return true;
-                }
+            if (newRect.overlaps(other.getRectangle())) {
+                return true; // Collision detected
             }
         }
-        return false;
+        return false; // No collision detected
     }
 }

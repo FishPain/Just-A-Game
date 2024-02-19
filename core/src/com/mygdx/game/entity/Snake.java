@@ -4,40 +4,44 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.collision.CollisionManager;
-
-import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.movements.Movement;
 import com.mygdx.game.collision.Collision;
-
 import java.util.ArrayList;
 
 public class Snake extends Entity {
+    private ArrayList<Vector2> bodyPositions;
+    private Texture headTexture, bodyTexture;
+    private KeyStrokeManager keyStrokeManager;
+    private final float segmentSpacing = 50; // Fixed distance between segments
+    private static final float GRAVITY = -100f; // Assuming a gravity constant
+    private static final int BODY_SEGMENT_COUNT = 1; // Number of body segments
 
-    KeyStrokeManager keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
-    private Texture bodyTexture;
-    private ArrayList<Vector2> bodySegments;
-
-    public Snake(float x, float y, float width, float height, String headTexturePath, String bodyTexturePath,
-            float speed, EntityType entityType) {
+    public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
+            String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
         super(x, y, width, height, headTexturePath, speed, true, entityType);
+        this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.bodySegments = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            bodySegments.add(new Vector2(x + (width * i), y)); // Add body segments behind the head
+        this.keyStrokeManager = keyStrokeManager;
+        this.bodyPositions = new ArrayList<Vector2>();
+        initializeBodyPositions(x, y);
+    }
+
+    private void initializeBodyPositions(float x, float y) {
+        for (int i = 1; i <= BODY_SEGMENT_COUNT; i++) {
+            bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
         }
+        System.err.println("Body positions: " + bodyPositions.toString());
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        // super.draw(batch);
-        for (Vector2 segment : bodySegments) {
-            batch.draw(getBodyTexture(), segment.x, segment.y, width, height);
+        batch.draw(headTexture, x, y, width, height);
+        for (Vector2 pos : bodyPositions) {
+            batch.draw(bodyTexture, pos.x, pos.y, width, height);
         }
     }
 
@@ -46,53 +50,59 @@ public class Snake extends Entity {
         float deltaTime = Gdx.graphics.getDeltaTime();
         Vector2 horizontalMovementDelta = Movement.calculateHorizontalMovement(keyStrokeManager, this.x, this.speed,
                 deltaTime);
-        Vector2 verticalMovementDelta = Movement.calculateVerticalMovement(0, -GRAVITY, deltaTime);
+        Vector2 verticalMovementDelta = new Vector2(0, GRAVITY * deltaTime);
 
-        // Update head position
-        Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
-        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, allEntities);
+        // Initially check for head's horizontal and vertical collisions
+        boolean horizontalCollision = CollisionManager.willCollide(this,
+                new Vector2(this.x + horizontalMovementDelta.x, this.y), allEntities);
 
+        boolean verticalCollision = CollisionManager.willCollide(this,
+                new Vector2(this.x, verticalMovementDelta.y + this.y), allEntities);
+
+        // If no collision for the head, check for each body segment
         if (!horizontalCollision) {
-            this.x = newHorizontalPosition.x;
-        }
-        boolean onPlatform = Collision.isOnPlatform(this, allEntities);
-        if (!onPlatform) {
-            Vector2 newVerticalPosition = new Vector2(this.x, this.y + verticalMovementDelta.y);
-            boolean verticalCollision = CollisionManager.willCollide(this, newVerticalPosition, allEntities);
-            if (!verticalCollision) {
-                this.y = newVerticalPosition.y;
+            for (Vector2 bodyPos : bodyPositions) {
+                Vector2 newPos = new Vector2(bodyPos.x + horizontalMovementDelta.x, bodyPos.y);
+                if (CollisionManager.willCollide(newPos, newPos, allEntities)) {
+                    horizontalCollision = true;
+                    break; // Break out of the loop if any body segment collides
+                }
             }
         }
-        // Calculate new head position
-        Vector2 newHeadPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
 
-        // Check for collision with body segments and head
-        boolean collisionDetected = false;
-        for (Vector2 segment : bodySegments) {
-            if (CollisionManager.willCollide(this, segment, allEntities)) {
-                collisionDetected = true;
+        // Apply horizontal movement if no collision detected
+        if (!horizontalCollision) {
+            this.x += horizontalMovementDelta.x;
+            // Update body positions horizontally
+            for (int i = 0; i < bodyPositions.size(); i++) {
+                Vector2 bodyPos = bodyPositions.get(i);
+                bodyPositions.set(i, new Vector2(bodyPos.x + horizontalMovementDelta.x, bodyPos.y));
+            }
+        }
+
+        // Check if the snake's head or any body part is on a platform
+        boolean isOnPlatform = Collision.isOnPlatform(this, allEntities);
+        for (int i = 0; !isOnPlatform && i < bodyPositions.size(); i++) {
+            Vector2 bodyPos = bodyPositions.get(i);
+            if (Collision.isOnPlatform(bodyPos, allEntities)) {
+                isOnPlatform = true;
                 break;
             }
         }
-        if (!collisionDetected && CollisionManager.willCollide(this, newHeadPosition, allEntities)) {
-            collisionDetected = true;
-        }
 
-        // Update head position if no collision detected
-        if (!collisionDetected) {
-            this.x = newHeadPosition.x;
-        }
-
-        // Update body segments positions if no collision with head
-        if (!CollisionManager.willCollide(this, newHeadPosition, allEntities)) {
-            for (int i = bodySegments.size() - 1; i > 0; i--) {
-                Vector2 currentSegment = bodySegments.get(i);
-                Vector2 previousSegment = bodySegments.get(i - 1);
-                currentSegment.set(previousSegment);
+        // Apply vertical movement if no collision detected and not on a platform
+        if (!verticalCollision && !isOnPlatform) {
+            this.y += verticalMovementDelta.y;
+            // Update body positions vertically
+            for (int i = 0; i < bodyPositions.size(); i++) {
+                Vector2 bodyPos = bodyPositions.get(i);
+                bodyPositions.set(i, new Vector2(bodyPos.x, bodyPos.y + verticalMovementDelta.y));
             }
-            // Set the first body segment to the previous head position
-            bodySegments.get(0).set(this.x, this.y);
+        } else if (isOnPlatform) {
+            // Logic to handle when the snake is on a platform, e.g., stop falling
+            // Optionally adjust the snake's vertical position if needed
         }
+
         updatePosition(); // Update the entity's rectangle for collision checks
     }
 
@@ -108,21 +118,9 @@ public class Snake extends Entity {
         return false;
     }
 
-    public ArrayList<Vector2> getBodySegments() {
-        ArrayList<Vector2> segments = new ArrayList<>();
-        segments.add(new Vector2(x + 50, y)); // Assuming coordinates are (0, 0) for both segments
-        segments.add(new Vector2(x + 100, y));
-        return segments;
-    }
-
-    public Texture getBodyTexture() {
-        return this.bodyTexture = new Texture(Gdx.files.internal("snakeBody.jpg"));
-    }
-
     @Override
     public void dispose() {
-        super.dispose();
+        headTexture.dispose();
         bodyTexture.dispose();
-
     }
 }
