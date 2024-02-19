@@ -1,5 +1,7 @@
 package com.mygdx.engine.io;
 
+import java.util.HashMap;
+
 public class IOManager {
     private String inputType;
     private String inputSource;

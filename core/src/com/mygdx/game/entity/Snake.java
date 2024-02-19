@@ -2,8 +2,6 @@ package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.engine.entity.Entity;
@@ -11,13 +9,15 @@ import com.mygdx.engine.collision.CollisionManager;
 import com.badlogic.gdx.math.Rectangle;
 
 import com.mygdx.engine.entity.EntityType;
+import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.controls.ControlManager;
+
 import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.GameConfig.Keystroke;
 
 import java.util.ArrayList;
 
 public class Snake extends Entity {
-    private Texture bodyTexture;
-    private ArrayList<Vector2> bodySegments;
 
     public Snake(float x, float y, float width, float height, String headTexturePath, String bodyTexturePath,
             float speed, EntityType entityType) {
@@ -104,11 +104,11 @@ public class Snake extends Entity {
 
     private Vector2 calculateHorizontalMovement(float deltaTime) {
         Vector2 movementDelta = new Vector2();
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            movementDelta.x -= speed * deltaTime;
+        if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, -speed, deltaTime);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            movementDelta.x += speed * deltaTime;
+        if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, speed, deltaTime);
         }
         return movementDelta;
     }
@@ -116,7 +116,8 @@ public class Snake extends Entity {
     private Vector2 calculateVerticalMovement(float deltaTime) {
         // This assumes gravity is constantly applied, you might adjust if you have
         // jumping logic
-        return new Vector2(0, -GRAVITY * deltaTime);
+        Vector2 movementDelta = new Vector2(0, -GRAVITY * deltaTime);
+        return ControlManager.calculateMovement(movementDelta, 0, -GRAVITY, deltaTime);
     }
 
     private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
