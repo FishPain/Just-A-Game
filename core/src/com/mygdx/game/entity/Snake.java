@@ -144,7 +144,6 @@ public class Snake extends Entity {
     }
 
     public Texture getBodyTexture() {
-        System.out.println("HIELO");
         return this.bodyTexture = new Texture(Gdx.files.internal("snakeBody.jpg"));
     }
 
