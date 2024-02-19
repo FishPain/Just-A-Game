@@ -65,6 +65,7 @@ public class Game extends SimulationManager {
         batch.begin();
         EntityManager.render(batch);
         batch.end();
+        PlayerControlManager.handleInput();
     }
 
     @Override
