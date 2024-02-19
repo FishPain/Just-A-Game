@@ -1,6 +1,5 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +15,7 @@ public abstract class Entity implements iCollide {
     protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
-    protected static final float GRAVITY = 200f;
+    protected static final float GRAVITY = 75f;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {

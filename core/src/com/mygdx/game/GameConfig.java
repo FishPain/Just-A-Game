@@ -14,13 +14,58 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = 200f;
 
-    // Static initializer block to set screen size based on the operating system
+    public static enum GameEntityType implements EntityType {
+        SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
+    }
+
+    public static enum GameSceneType implements SceneType {
+        MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
+    }
+
+    public static enum Keystroke {
+        UP("UP"),
+        DOWN("DOWN"),
+        LEFT("LEFT"),
+        RIGHT("RIGHT"),
+        JUMP("JUMP"),
+        SHOOT("SHOOT"),
+        FILE_PATH("Settings.json");
+
+        private String keyStrokeName;
+
+        private Keystroke(String keyStrokeName) {
+            this.keyStrokeName = keyStrokeName;
+        }
+
+        public String getKeystrokeName() {
+            return keyStrokeName;
+        }
+    }
+
+    public static enum Assets {
+        SNAKE_HEAD("snakeHead.jpg"),
+        SNAKE_BODY("snakeBody.jpg"),
+        PLATFORM("stoneTex.jpg"),
+        TARGET("badlogic.jpg"),
+        MAIN_MENU_BG("mainMenuBg.jpg"),
+        PLAY_BTN("playBtn.jpg"),
+        RESTART_BTN("restartBtn.jpg"),
+        SETTINGS_BTN("settingsBtn.jpg");
+
+        private String fileName;
+
+        private Assets(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public String getFileName() {
+            return fileName;
+        }
+    }
+
     static {
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Operating System Name: " + osName);
-
-        // Assuming you want to use GraphicsEnvironment for non-Windows systems as an
-        // example
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             SCREEN_WIDTH = screenSize.width / 2;
