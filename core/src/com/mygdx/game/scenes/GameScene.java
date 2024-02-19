@@ -5,6 +5,7 @@ import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig;
+import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.Platform;
@@ -23,37 +24,35 @@ public class GameScene extends Scene {
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
 
+
         entityManager.addPlayer(
                 new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                 "snakeHead.jpg","snakeBody.jpg", 200, GameEntityType.SNAKE_HEAD));
-        
-        // entityManager.renderPlayers(batch,GameConfig.SCREEN_WIDTH / 2 +50, GameConfig.SCREEN_HEIGHT / 2);
 
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                        50, "stoneTex.jpg", GameEntityType.PLATFORM));
+                        50, Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+                        Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+                        Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                "stoneTex.jpg", GameEntityType.PLATFORM));
+                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+                        Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+                        Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                        "stoneTex.jpg", GameEntityType.PLATFORM));
+                        Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
                         50,
-                        "badlogic.jpg", GameEntityType.TARGET));
-
+                        Assets.TARGET.getFileName(), GameEntityType.TARGET));
     }
 
     @Override
