@@ -75,33 +75,4 @@ public class GameConfig {
             SCREEN_HEIGHT = 600;
         }
     }
-
-    public static enum GameEntityType implements EntityType {
-        SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
-    }
-
-    public static enum GameSceneType implements SceneType {
-        MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
-    }
-
-    public static enum Assets {
-        SNAKE_HEAD("snakeHead.jpg"),
-        SNAKE_BODY("snakeBody.jpg"),
-        PLATFORM("stoneTex.jpg"),
-        TARGET("badlogic.jpg"),
-        MAIN_MENU_BG("mainMenuBg.jpg"),
-        PLAY_BTN("playBtn.jpg"),
-        RESTART_BTN("restartBtn.jpg"),
-        SETTINGS_BTN("settingsBtn.jpg");
-
-        private String fileName;
-
-        private Assets(String fileName) {
-            this.fileName = fileName;
-        }
-
-        public String getFileName() {
-            return fileName;
-        }
-    }
 }
