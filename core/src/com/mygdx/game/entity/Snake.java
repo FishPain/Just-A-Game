@@ -18,7 +18,7 @@ public class Snake extends Entity {
     private KeyStrokeManager keyStrokeManager;
     private final float segmentSpacing = 50; // Fixed distance between segments
     private static final float GRAVITY = -100f; // Assuming a gravity constant
-    private static final int BODY_SEGMENT_COUNT = 1; // Number of body segments
+    private static final int BODY_SEGMENT_COUNT = 2; // Number of body segments
 
     public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
