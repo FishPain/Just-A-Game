@@ -15,7 +15,7 @@ public abstract class Entity implements iCollide {
     protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
-    protected static final float GRAVITY = 200f;
+    protected static final float GRAVITY = 75f;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {

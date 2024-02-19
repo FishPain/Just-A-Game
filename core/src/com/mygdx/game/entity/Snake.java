@@ -8,10 +8,11 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
-import com.mygdx.engine.controls.ControlManager;
 
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.Keystroke;
+import com.mygdx.game.movements.Movement;
+import com.mygdx.engine.controls.ControlManager;
 
 import java.util.ArrayList;
 
@@ -26,8 +27,9 @@ public class Snake extends Entity {
     @Override
     public void move(ArrayList<Entity> allEntities) {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
-        Vector2 verticalMovementDelta = calculateVerticalMovement(deltaTime);
+        Vector2 horizontalMovementDelta = Movement.calculateHorizontalMovement(keyStrokeManager, this.x, this.speed,
+                deltaTime);
+        Vector2 verticalMovementDelta = Movement.calculateVerticalMovement(0, -GRAVITY, deltaTime);
 
         // Check for horizontal movement possibility
         Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
@@ -53,7 +55,8 @@ public class Snake extends Entity {
 
     public boolean isReachEnd(ArrayList<Entity> entity) {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
+        Vector2 horizontalMovementDelta = Movement.calculateHorizontalMovement(keyStrokeManager, this.x, this.speed,
+                deltaTime);
         Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
         boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
         if (horizontalCollision) {
@@ -81,10 +84,6 @@ public class Snake extends Entity {
     }
 
     private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
-        // Extend your CollisionManager or add logic here to check if the entity is
-        // standing on a platform
-        // This could involve checking for a collision directly beneath the entity,
-        // indicating it's supported
         for (Entity other : allEntities) {
             if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
                 Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
