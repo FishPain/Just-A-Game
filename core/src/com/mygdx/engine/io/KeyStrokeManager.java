@@ -10,6 +10,9 @@ import org.json.JSONObject;
 public class KeyStrokeManager {
     private HashMap<String, Integer> keyStrokeMap;
 
+    public KeyStrokeManager() {
+    }
+
     // Constructor to load default keystroke values
     public KeyStrokeManager(String filePath) {
         this.keyStrokeMap = new HashMap<>();
@@ -19,20 +22,30 @@ public class KeyStrokeManager {
     }
 
     // Method to get the key code for a specific KeyStrokeType
-    public Integer getKeyCode(String keyStrokeType) {
-        return keyStrokeMap.get(keyStrokeType);
+    public Integer getKeyCode(String keyStrokeName) {
+        return keyStrokeMap.get(keyStrokeName);
     }
 
     public HashMap<String, Integer> getKeyStrokeMap() {
         return keyStrokeMap;
     }
 
-    public void setKeyCode(String keyStrokeType, int keyCode) {
-        keyStrokeMap.put(keyStrokeType, keyCode);
+    public void setKeyCode(String keyStrokeName) {
+        int keyCode = getKeyCode(keyStrokeName);
+        keyStrokeMap.put(keyStrokeName, keyCode);
     }
 
-    public boolean isKeyPressed(String keyStrokeType) {
-        return Gdx.input.isKeyPressed(keyStrokeMap.get(keyStrokeType));
+    public boolean isKeyPressed(String keyStrokeName) {
+        return Gdx.input.isKeyPressed(keyStrokeMap.get(keyStrokeName));
+    }
+
+    public String getKeyPressed() {
+        for (String key : keyStrokeMap.keySet()) {
+            if (Gdx.input.isKeyPressed(keyStrokeMap.get(key))) {
+                return key;
+            }
+        }
+        return null;
     }
 
     public void saveKeyStrokes(String filePath) {

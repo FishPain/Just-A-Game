@@ -1,6 +1,7 @@
 package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.entity.Entity;
@@ -18,15 +19,17 @@ public class GameScene extends Scene {
 
     private EntityManager entityManager;
     private SceneManager sceneManager;
+    KeyStrokeManager keyStrokeManager;
 
-    public GameScene(SceneManager sceneManager, EntityManager entityManager) {
+    public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
         super();
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
 
-        entityManager.addEntity(
-                new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                        Assets.SNAKE_HEAD.getFileName(), 200, GameEntityType.SNAKE_HEAD));
+        entityManager.addPlayer(
+                new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
+                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
+                        GameEntityType.SNAKE_HEAD, keyStrokeManager));
 
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
@@ -49,7 +52,7 @@ public class GameScene extends Scene {
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
                         Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
         entityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
+                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
                         50,
                         Assets.TARGET.getFileName(), GameEntityType.TARGET));
     }
