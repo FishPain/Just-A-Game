@@ -76,7 +76,8 @@ public class Snake extends Entity {
     private Vector2 calculateVerticalMovement(float deltaTime) {
         // This assumes gravity is constantly applied, you might adjust if you have
         // jumping logic
-        return new Vector2(0, -GRAVITY * deltaTime);
+        Vector2 movementDelta = new Vector2(0, -GRAVITY * deltaTime);
+        return ControlManager.calculateMovement(movementDelta, 0, -GRAVITY, deltaTime);
     }
 
     private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {

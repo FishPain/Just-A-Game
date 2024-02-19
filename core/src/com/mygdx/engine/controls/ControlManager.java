@@ -8,8 +8,4 @@ public class ControlManager {
         movementDelta.x += speed * deltaTime;
         return movementDelta;
     }
-
-    public Vector2 calculateVerticalMovement(float x, float gravity, float deltaTime) {
-        return new Vector2(0, -gravity * deltaTime);
-    }
 }
