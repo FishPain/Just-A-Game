@@ -2,15 +2,24 @@ package com.mygdx.engine.entity;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.entity.Snake;
 
 public class EntityManager {
     private ArrayList<Entity> entities;
-
     public EntityManager() {
         entities = new ArrayList<Entity>();
+        new ArrayList<>();
+    }
+
+
+    public void addPlayer(Snake player){
+        System.out.println("Entity entity: " + (player));
+
+        entities.add(player);
     }
 
     public void addEntity(Entity entity) {
+        System.out.println("Entity entity: " + (entity));
         entities.add(entity);
     }
 

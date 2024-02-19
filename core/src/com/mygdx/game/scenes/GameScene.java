@@ -23,12 +23,11 @@ public class GameScene extends Scene {
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
 
-        entityManager.addEntity(
-                new Snake(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                        "snakeHead.jpg", 200, GameEntityType.SNAKE_HEAD));
-
-        entityManager.addEntity(new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                "snakeBody.jpg", 200, GameEntityType.SNAKE_BODY));
+        entityManager.addPlayer(
+                new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
+                "snakeHead.jpg","snakeBody.jpg", 200, GameEntityType.SNAKE_HEAD));
+        
+        // entityManager.renderPlayers(batch,GameConfig.SCREEN_WIDTH / 2 +50, GameConfig.SCREEN_HEIGHT / 2);
 
         entityManager.addEntity(
                 new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
@@ -51,7 +50,7 @@ public class GameScene extends Scene {
                 new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
                         "stoneTex.jpg", GameEntityType.PLATFORM));
         entityManager.addEntity(
-                new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
+                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
                         50,
                         "badlogic.jpg", GameEntityType.TARGET));
 
