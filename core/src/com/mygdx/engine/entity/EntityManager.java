@@ -6,13 +6,13 @@ import com.mygdx.game.entity.Snake;
 
 public class EntityManager {
     private ArrayList<Entity> entities;
+
     public EntityManager() {
         entities = new ArrayList<Entity>();
         new ArrayList<>();
     }
 
-
-    public void addPlayer(Snake player){
+    public void addPlayer(Snake player) {
         System.out.println("Entity entity: " + (player));
 
         entities.add(player);
