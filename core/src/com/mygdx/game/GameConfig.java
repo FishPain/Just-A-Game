@@ -14,29 +14,32 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = 200f;
 
-    // Static initializer block to set screen size based on the operating system
-    static {
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name: " + osName);
-
-        // Assuming you want to use GraphicsEnvironment for non-Windows systems as an
-        // example
-        if (osName.contains("windows")) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            SCREEN_WIDTH = screenSize.width / 2;
-            SCREEN_HEIGHT = screenSize.height / 2;
-        } else {
-            SCREEN_WIDTH = 800;
-            SCREEN_HEIGHT = 600;
-        }
-    }
-
     public static enum GameEntityType implements EntityType {
         SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
     }
 
     public static enum GameSceneType implements SceneType {
         MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
+    }
+
+    public static enum Keystroke {
+        UP("UP"),
+        DOWN("DOWN"),
+        LEFT("LEFT"),
+        RIGHT("RIGHT"),
+        JUMP("JUMP"),
+        SHOOT("SHOOT"),
+        FILE_PATH("Settings.json");
+
+        private String keyStrokeName;
+
+        private Keystroke(String keyStrokeName) {
+            this.keyStrokeName = keyStrokeName;
+        }
+
+        public String getKeystrokeName() {
+            return keyStrokeName;
+        }
     }
 
     public static enum Assets {
@@ -59,4 +62,18 @@ public class GameConfig {
             return fileName;
         }
     }
+
+    static {
+        String osName = System.getProperty("os.name").toLowerCase();
+        System.out.println("Operating System Name: " + osName);
+        if (osName.contains("windows")) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            SCREEN_WIDTH = screenSize.width / 2;
+            SCREEN_HEIGHT = screenSize.height / 2;
+        } else {
+            SCREEN_WIDTH = 800;
+            SCREEN_HEIGHT = 600;
+        }
+    }
+
 }
