@@ -19,12 +19,20 @@ public class MainMenu extends Scene {
     public MainMenu(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
+  
+    public Texture getPlayButton() {
+        return playButton;
+    }
+  
+    public Texture getSettingButton() {
+        return settingButton;
+    }
 
     @Override
     public void show() {
-        background = new Texture("assets/main_menu_background.jpg");
-        playButton = new Texture("assets/play_button.jpg");
-        settingButton = new Texture("assets/settings_button.jpg");
+        background = new Texture("main_menu_background.jpg");
+        playButton = new Texture("play_button.jpg");
+        settingButton = new Texture("settings_button.jpg");
 
         final float buttonSpacing = 20;
 
@@ -48,7 +56,6 @@ public class MainMenu extends Scene {
 
                  // Add logic to handle settings button click
                 }
-
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
@@ -61,7 +68,6 @@ public class MainMenu extends Scene {
 
     @Override
     public void render(float delta) {
-
         float buttonSpacing = 20;
 
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -76,13 +82,5 @@ public class MainMenu extends Scene {
         background.dispose();
         playButton.dispose();
         settingButton.dispose();
-    }
-
-    public Texture getPlayButton() {
-        return playButton;
-    }
-    
-    public Texture getSettingButton() {
-        return settingButton;
     }
 }
