@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
-
+import com.mygdx.engine.Utils;
+import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
 
 public class MainMenu extends Scene {
@@ -19,20 +20,20 @@ public class MainMenu extends Scene {
     public MainMenu(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
-  
+
     public Texture getPlayButton() {
         return playButton;
     }
-  
+
     public Texture getSettingButton() {
         return settingButton;
     }
 
     @Override
     public void show() {
-        background = new Texture("main_menu_background.jpg");
-        playButton = new Texture("play_button.jpg");
-        settingButton = new Texture("settings_button.jpg");
+        background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
+        playButton = new Texture(Utils.getInternalFilePath(Assets.PLAY_BTN.getFileName()));
+        settingButton = new Texture(Utils.getInternalFilePath(Assets.SETTINGS_BTN.getFileName()));
 
         final float buttonSpacing = 20;
 
@@ -48,13 +49,12 @@ public class MainMenu extends Scene {
                         worldY <= Gdx.graphics.getHeight() / 2 + playButton.getHeight() / 2) {
 
                     sceneManager.setScene(GameSceneType.GAME_SCENE);
-                }
-                else if (worldX >= Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2 &&
-                worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 + settingButton.getWidth() &&
-                worldY >= Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2 &&
-                worldY <= Gdx.graphics.getHeight() / 2 + settingButton.getHeight() / 2) {
+                } else if (worldX >= Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2 &&
+                        worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 + settingButton.getWidth() &&
+                        worldY >= Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2 &&
+                        worldY <= Gdx.graphics.getHeight() / 2 + settingButton.getHeight() / 2) {
 
-                 // Add logic to handle settings button click
+                    // Add logic to handle settings button click
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
@@ -73,7 +73,7 @@ public class MainMenu extends Scene {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(playButton, Gdx.graphics.getWidth() / 2 - playButton.getWidth() - buttonSpacing / 2,
                 Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2);
-        batch.draw(settingButton,Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2,
+        batch.draw(settingButton, Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2,
                 Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2);
     }
 

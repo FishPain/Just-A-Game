@@ -3,8 +3,10 @@ package com.mygdx.engine.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.engine.collision.iCollide;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import com.mygdx.engine.collision.iCollide;
+import com.mygdx.engine.Utils;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public abstract class Entity implements iCollide {
         this.isMovable = isMovable;
         this.entityType = entityType;
 
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
@@ -120,6 +122,6 @@ public abstract class Entity implements iCollide {
     }
 
     public void setTexture(String texturePath) {
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
     }
 }

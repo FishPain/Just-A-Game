@@ -4,8 +4,6 @@ import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 
 public class GameConfig {
@@ -41,4 +39,24 @@ public class GameConfig {
         MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
     }
 
+    public static enum Assets {
+        SNAKE_HEAD("snakeHead.jpg"),
+        SNAKE_BODY("snakeBody.jpg"),
+        PLATFORM("stoneTex.jpg"),
+        TARGET("badlogic.jpg"),
+        MAIN_MENU_BG("mainMenuBg.jpg"),
+        PLAY_BTN("playBtn.jpg"),
+        RESTART_BTN("restartBtn.jpg"),
+        SETTINGS_BTN("settingsBtn.jpg");
+
+        private String fileName;
+
+        private Assets(String fileName) {
+            this.fileName = fileName;
+        }
+
+        public String getFileName() {
+            return fileName;
+        }
+    }
 }
