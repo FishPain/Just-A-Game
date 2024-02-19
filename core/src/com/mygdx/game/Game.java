@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.engine.SimulationManager;
 import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.collision.CollisionManager;
-import com.mygdx.engine.controls.PlayerControlManager;
+import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.scene.SceneManager;
@@ -17,9 +17,6 @@ import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.MainMenu;
 
 // entities
-import com.mygdx.game.entity.Snake;
-import com.mygdx.game.GameConfig.GameEntityType;
-import com.mygdx.game.entity.Platform;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.scenes.Settings;
 
@@ -30,14 +27,14 @@ public class Game extends SimulationManager {
     AIManager AIManager;
     IOManager InputManager;
     SceneManager SceneManager;
-    PlayerControlManager PlayerControlManager;
+    ControlManager PlayerControlManager;
     SpriteBatch batch;
 
     @Override
     public void create() {
         AIManager = new AIManager();
         InputManager = new IOManager();
-        PlayerControlManager = new PlayerControlManager();
+        PlayerControlManager = new ControlManager();
         CollisionManager = new CollisionManager();
         EntityManager = new EntityManager();
 

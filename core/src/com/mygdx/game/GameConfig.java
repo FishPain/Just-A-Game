@@ -2,9 +2,14 @@ package com.mygdx.game;
 
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
+import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.io.KeyStrokeType;
+import com.badlogic.gdx.Input.Keys;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.RenderingHints.Key;
+import java.util.HashMap;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
@@ -14,23 +19,6 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = 200f;
 
-    // Static initializer block to set screen size based on the operating system
-    static {
-        String osName = System.getProperty("os.name").toLowerCase();
-        System.out.println("Operating System Name: " + osName);
-
-        // Assuming you want to use GraphicsEnvironment for non-Windows systems as an
-        // example
-        if (osName.contains("windows")) {
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            SCREEN_WIDTH = screenSize.width / 2;
-            SCREEN_HEIGHT = screenSize.height / 2;
-        } else {
-            SCREEN_WIDTH = 800;
-            SCREEN_HEIGHT = 600;
-        }
-    }
-
     public static enum GameEntityType implements EntityType {
         SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
     }
@@ -38,6 +26,21 @@ public class GameConfig {
     public static enum GameSceneType implements SceneType {
         MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
     }
+
+    public static enum GameKeyStrokeType implements KeyStrokeType {
+        UP, DOWN, LEFT, RIGHT, JUMP, SHOOT
+    }
+
+    public static HashMap<GameKeyStrokeType, Integer> keyStrokeMap = new HashMap<GameKeyStrokeType, Integer>() {
+        {
+            put(GameKeyStrokeType.UP, KeyStrokeManager.W);
+            put(GameKeyStrokeType.DOWN, KeyStrokeManager.S);
+            put(GameKeyStrokeType.LEFT, KeyStrokeManager.A);
+            put(GameKeyStrokeType.RIGHT, KeyStrokeManager.D);
+            put(GameKeyStrokeType.JUMP, KeyStrokeManager.SPACE);
+            put(GameKeyStrokeType.SHOOT, KeyStrokeManager.SHIFT_LEFT);
+        }
+    };
 
     public static enum Assets {
         SNAKE_HEAD("snakeHead.jpg"),
@@ -59,4 +62,18 @@ public class GameConfig {
             return fileName;
         }
     }
+
+    static {
+        String osName = System.getProperty("os.name").toLowerCase();
+        System.out.println("Operating System Name: " + osName);
+        if (osName.contains("windows")) {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            SCREEN_WIDTH = screenSize.width / 2;
+            SCREEN_HEIGHT = screenSize.height / 2;
+        } else {
+            SCREEN_WIDTH = 800;
+            SCREEN_HEIGHT = 600;
+        }
+    }
+
 }

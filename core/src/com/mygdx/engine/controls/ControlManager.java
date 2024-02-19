@@ -1,5 +1,5 @@
 package com.mygdx.engine.controls;
 
-public class PlayerControlManager {
+public class ControlManager {
     
 }
