@@ -45,9 +45,9 @@ public class GameConfig {
         PLATFORM("stoneTex.jpg"),
         TARGET("badlogic.jpg"),
         MAIN_MENU_BG("mainMenuBg.jpg"),
-        PLAY_BTN("playBtn.jpg"),
-        RESTART_BTN("restartBtn.jpg"),
-        SETTINGS_BTN("settingsBtn.jpg");
+        PLAY_BTN("playBtn.png"),
+        RESTART_BTN("restartBtn.png"),
+        SETTINGS_BTN("settingsBtn.png");
 
         private String fileName;
 
