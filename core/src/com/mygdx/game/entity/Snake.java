@@ -12,10 +12,12 @@ import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.movements.Movement;
+import com.mygdx.engine.controls.ControlManager;
 
 import java.util.ArrayList;
 
 public class Snake extends Entity {
+
     KeyStrokeManager keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
 
     public Snake(float x, float y, float width, float height, String texturePath, float speed, EntityType entityType) {
@@ -61,6 +63,24 @@ public class Snake extends Entity {
             return true;
         }
         return false;
+    }
+
+    private Vector2 calculateHorizontalMovement(float deltaTime) {
+        Vector2 movementDelta = new Vector2();
+        if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, -speed, deltaTime);
+        }
+        if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
+            movementDelta = ControlManager.calculateMovement(movementDelta, x, speed, deltaTime);
+        }
+        return movementDelta;
+    }
+
+    private Vector2 calculateVerticalMovement(float deltaTime) {
+        // This assumes gravity is constantly applied, you might adjust if you have
+        // jumping logic
+        Vector2 movementDelta = new Vector2(0, -GRAVITY * deltaTime);
+        return ControlManager.calculateMovement(movementDelta, 0, -GRAVITY, deltaTime);
     }
 
     private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
