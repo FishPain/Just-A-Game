@@ -15,7 +15,8 @@ public class DesktopLauncher {
         config.setForegroundFPS(GameConfig.FPS);
         config.setTitle(GameConfig.TITLE);
 
-        // Note: For macOS, ensure to start the application with -XstartOnFirstThread JVM argument
+        // Note: For macOS, ensure to start the application with -XstartOnFirstThread
+        // JVM argument
         new Lwjgl3Application(new Game(), config);
     }
 }
