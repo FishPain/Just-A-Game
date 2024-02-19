@@ -1,23 +1,18 @@
 package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.collision.CollisionManager;
-import com.badlogic.gdx.math.Rectangle;
-
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
 
-import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.movements.Movement;
-import com.mygdx.engine.controls.ControlManager;
+import com.mygdx.game.collision.Collision;
 
 import java.util.ArrayList;
 
@@ -33,13 +28,13 @@ public class Snake extends Entity {
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
         this.bodySegments = new ArrayList<>();
         for (int i = 1; i <= 3; i++) {
-            bodySegments.add(new Vector2(x - (width * i), y)); // Add body segments behind the head
+            bodySegments.add(new Vector2(x + (width * i), y)); // Add body segments behind the head
         }
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        super.draw(batch);
+        // super.draw(batch);
         for (Vector2 segment : bodySegments) {
             batch.draw(getBodyTexture(), segment.x, segment.y, width, height);
         }
@@ -59,7 +54,7 @@ public class Snake extends Entity {
         if (!horizontalCollision) {
             this.x = newHorizontalPosition.x;
         }
-        boolean onPlatform = isOnPlatform(this, allEntities);
+        boolean onPlatform = Collision.isOnPlatform(this, allEntities);
         if (!onPlatform) {
             Vector2 newVerticalPosition = new Vector2(this.x, this.y + verticalMovementDelta.y);
             boolean verticalCollision = CollisionManager.willCollide(this, newVerticalPosition, allEntities);
@@ -108,37 +103,6 @@ public class Snake extends Entity {
         boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
         if (horizontalCollision) {
             return true;
-        }
-        return false;
-    }
-
-    private Vector2 calculateHorizontalMovement(float deltaTime) {
-        Vector2 movementDelta = new Vector2();
-        if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
-            movementDelta = ControlManager.calculateMovement(movementDelta, x, -speed, deltaTime);
-        }
-        if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
-            movementDelta = ControlManager.calculateMovement(movementDelta, x, speed, deltaTime);
-        }
-        return movementDelta;
-    }
-
-    private Vector2 calculateVerticalMovement(float deltaTime) {
-        // This assumes gravity is constantly applied, you might adjust if you have
-        // jumping logic
-        Vector2 movementDelta = new Vector2(0, -GRAVITY * deltaTime);
-        return ControlManager.calculateMovement(movementDelta, 0, -GRAVITY, deltaTime);
-    }
-
-    private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
-        for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
-                Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-                slightlyBelow.y -= 1; // Check just below the entity
-                if (slightlyBelow.overlaps(other.getRectangle())) {
-                    return true;
-                }
-            }
         }
         return false;
     }

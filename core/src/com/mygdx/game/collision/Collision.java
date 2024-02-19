@@ -7,7 +7,7 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig.GameEntityType;
 
 public class Collision {
-        private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
+        public static boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
         // Extend your CollisionManager or add logic here to check if the entity is
         // standing on a platform
         // This could involve checking for a collision directly beneath the entity,

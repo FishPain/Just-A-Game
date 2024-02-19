@@ -18,7 +18,6 @@ import com.mygdx.game.scenes.MainMenu;
 
 // entities
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.scenes.Settings;
 
 public class Game extends SimulationManager {
