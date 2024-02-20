@@ -11,7 +11,6 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 

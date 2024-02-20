@@ -60,10 +60,6 @@ public class Snake extends Entity {
         bodyTexture.dispose();
     }
 
-    public ArrayList<Vector2> getBodyPositions() {
-        return bodyPositions;
-    }
-
     private void initializeBodyPositions(float x, float y) {
         for (int i = 1; i <= BODY_SEGMENT_COUNT; i++) {
             bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));

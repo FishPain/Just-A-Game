@@ -25,6 +25,17 @@ public class Movement extends Collision {
         // Use the CollisionManager for collision checks
         boolean horizontalCollision = checkHorizontalCollision(entity, horizontalMovementDelta,
                 allEntities);
+
+        if (!horizontalCollision) {
+            for (Vector2 body : bodyPositions) {
+                if (checkHorizontalCollision(body, horizontalMovementDelta,
+                        allEntities)) {
+                    horizontalCollision = true;
+                    break;
+                }
+            }
+        }
+
         // Apply horizontal movement if no collision detected
         if (!horizontalCollision) {
             entity.x += horizontalMovementDelta.x;
@@ -39,7 +50,16 @@ public class Movement extends Collision {
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities,
             ArrayList<Vector2> bodyPositions, float deltaTime) {
         Vector2 verticalMovementDelta = new Vector2(0, GameConfig.GRAVITY * deltaTime);
+        // only fall if neither the entity nor its body segments are on a platform
         boolean isOnPlatform = isOnPlatform(entity, allEntities);
+        if (!isOnPlatform) {
+            for (Vector2 body : bodyPositions) {
+                if (isOnPlatform(body, allEntities)) {
+                    isOnPlatform = true;
+                    break;
+                }
+            }
+        }
         boolean verticalCollision = willCollide(entity,
                 new Vector2(entity.x, entity.y + verticalMovementDelta.y), allEntities);
 

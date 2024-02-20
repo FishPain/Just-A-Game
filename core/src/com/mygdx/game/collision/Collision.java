@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig.GameEntityType;
-import com.mygdx.game.entity.Snake;
 import com.mygdx.game.movements.Movement;
 
 public class Collision extends CollisionManager {
@@ -54,15 +53,13 @@ public class Collision extends CollisionManager {
         if (willCollide(entity, new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY()), allEntities)) {
             return true;
         }
+        return false;
+    }
 
-        // If entity has body segments, check each segment
-        if (entity instanceof Snake) { // Assuming Snake is your entity class
-            for (Vector2 bodyPos : ((Snake) entity).getBodyPositions()) {
-                Vector2 newPos = new Vector2(bodyPos.x + horizontalMovementDelta.x, bodyPos.y);
-                if (willCollide(newPos, newPos, allEntities)) {
-                    return true;
-                }
-            }
+    public static boolean checkHorizontalCollision(Vector2 entity, Vector2 horizontalMovementDelta,
+            ArrayList<Entity> allEntities) {
+        if (willCollide(entity, new Vector2(entity.x + horizontalMovementDelta.x, entity.y), allEntities)) {
+            return true;
         }
         return false;
     }

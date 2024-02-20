@@ -60,6 +60,7 @@ public class GameConfig {
                 add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT / 4));
                 i++;
             }
+            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 50));
 
         }
     };
