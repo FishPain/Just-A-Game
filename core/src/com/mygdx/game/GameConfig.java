@@ -17,6 +17,7 @@ public class GameConfig {
     public static final int ASSET_SIZE = 50;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
+    public static final float GRAVITY = -100f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
