@@ -3,15 +3,12 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.game.movements.Movement;
-import com.mygdx.game.collision.Collision;
 import com.mygdx.game.collision.Collision;
 import java.util.ArrayList;
 
