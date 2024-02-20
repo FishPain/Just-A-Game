@@ -23,7 +23,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
-    public static float MUSIC_VOLUME = 1f;
+    public static float MUSIC_VOLUME = 0.2f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -72,7 +72,6 @@ public class GameConfig {
                 i++;
             }
             add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 50));
-
         }
     };
 
@@ -123,6 +122,8 @@ public class GameConfig {
         };
     }
 
+    public static boolean isMusicEnabled = true;
+
     public static enum Keystroke {
         UP("UP"),
         DOWN("DOWN"),
@@ -153,7 +154,10 @@ public class GameConfig {
         RESTART_BTN("restartBtn.png"),
         SETTINGS_BTN("settingsBtn.png"),
         GAME_OVER_WIN("Game_over.png"),
-        GAME_OVER_LOSE("Game_over_lose.png");
+        GAME_OVER_LOSE("Game_over_lose.png"),
+        BACK_BTN("backBtn.png"),
+        SOUND_ON_BTN("soundOnBtn.png"),
+        SOUND_OFF_BTN("soundOffBtn.png");
 
         private String fileName;
 

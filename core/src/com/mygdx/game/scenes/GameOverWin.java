@@ -28,6 +28,9 @@ public class GameOverWin extends Scene {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_WIN.getFileName()));
         // throw new UnsupportedOperationException("Unimplemented method 'show'");
         sound.play(GameConfig.MUSIC_VOLUME);
+        if (!GameConfig.isMusicEnabled) {
+            sound.stop();
+        }        
     }
 
     @Override
