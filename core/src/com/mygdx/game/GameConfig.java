@@ -7,6 +7,7 @@ import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.SceneManager;
 
+import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -47,21 +48,21 @@ public class GameConfig {
             // Bottom edge
             int i = 0;
             while (i * ASSET_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * ASSET_SIZE, 0));
+                add(new Point(i * ASSET_SIZE, 1));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
             while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * ASSET_SIZE));
+                add(new Point(0, i * ASSET_SIZE + 1));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
             while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE));
+                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE + 1));
                 i++;
             }
 
@@ -71,7 +72,14 @@ public class GameConfig {
                 add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT / 4));
                 i++;
             }
-            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 50));
+            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 51));
+
+            // use a random number generator to generate the rest of the platforms
+            Random rand = new Random();
+            for (i = 0; i < 10; i++) {
+                add(new Point(rand.nextInt(SCREEN_WIDTH - ASSET_SIZE), rand.nextInt(SCREEN_HEIGHT
+                        - ASSET_SIZE)));
+            }
         }
     };
 

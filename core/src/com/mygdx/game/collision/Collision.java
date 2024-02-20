@@ -11,35 +11,34 @@ import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.movements.Movement;
 
 public class Collision extends CollisionManager {
-    public static boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
-        // Extend your CollisionManager or add logic here to check if the entity is
-        // standing on a platform
-        // This could involve checking for a collision directly beneath the entity,
-        // indicating it's supported
-        for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == GameEntityType.PLATFORM) {
-                Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-                slightlyBelow.y -= 1; // Check just below the entity
-                if (slightlyBelow.overlaps(other.getRectangle())) {
-                    return true;
-                }
+
+    public static boolean isOnPlatform(Entity entity, ArrayList<Entity> platforms, ArrayList<Vector2> bodyPositions) {
+        // Check entity's position
+        if (isEntityOnPlatform(entity, platforms))
+            return true;
+
+        // Check body positions
+        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnPlatform(bodyPosition, platforms));
+    }
+
+    private static boolean isEntityOnPlatform(Entity entity, ArrayList<Entity> platforms) {
+        Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
+        slightlyBelow.y -= 1; // Check just below the entity
+        for (Entity platform : platforms) {
+            if (platform.getEntityType() == GameEntityType.PLATFORM
+                    && slightlyBelow.overlaps(platform.getRectangle())) {
+                return true;
             }
         }
         return false;
     }
 
-    public static boolean isOnPlatform(Vector2 entity, ArrayList<Entity> allEntities) {
-        // Extend your CollisionManager or add logic here to check if the entity is
-        // standing on a platform
-        // This could involve checking for a collision directly beneath the entity,
-        // indicating it's supported
-        for (Entity other : allEntities) {
-            if (other.getEntityType() == GameEntityType.PLATFORM) {
-                Rectangle slightlyBelow = new Rectangle(entity.x, entity.y, 1, 1);
-                slightlyBelow.y -= 1; // Check just below the entity
-                if (slightlyBelow.overlaps(other.getRectangle())) {
-                    return true;
-                }
+    private static boolean isBodyPositionOnPlatform(Vector2 bodyPosition, ArrayList<Entity> platforms) {
+        Rectangle bodyRect = new Rectangle(bodyPosition.x, bodyPosition.y, 1, 1);
+        bodyRect.y -= 1;
+        for (Entity platform : platforms) {
+            if (platform.getEntityType() == GameEntityType.PLATFORM && bodyRect.overlaps(platform.getRectangle())) {
+                return true;
             }
         }
         return false;
@@ -48,18 +47,15 @@ public class Collision extends CollisionManager {
     // A helper method to check horizontal collisions for both head and body
     // segments
     public static boolean checkHorizontalCollision(Entity entity, Vector2 horizontalMovementDelta,
-            ArrayList<Entity> allEntities) {
+            ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions) {
         // Check collision for the entity's head
         if (willCollide(entity, new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY()), allEntities)) {
             return true;
         }
-        return false;
-    }
-
-    public static boolean checkHorizontalCollision(Vector2 entity, Vector2 horizontalMovementDelta,
-            ArrayList<Entity> allEntities) {
-        if (willCollide(entity, new Vector2(entity.x + horizontalMovementDelta.x, entity.y), allEntities)) {
-            return true;
+        for (Vector2 body : bodyPositions) {
+            if (willCollide(body, new Vector2(body.x + horizontalMovementDelta.x, body.y), allEntities)) {
+                return true;
+            }
         }
         return false;
     }
