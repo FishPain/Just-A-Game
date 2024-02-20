@@ -12,6 +12,7 @@ import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.Platform;
+import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
 import java.util.ArrayList;
@@ -28,35 +29,12 @@ public class GameScene extends Scene {
                 this.sceneManager = sceneManager;
                 this.entityManager = entityManager;
 
+                entityManager.addEntities(PlatformManager.createPlatforms(GameConfig.PLATFORM_POSITIONS));
+
                 entityManager.addPlayer(
                                 new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                                                 200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                                                 GameEntityType.SNAKE_HEAD, keyStrokeManager));
-
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50, Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50,
-                                                Assets.TARGET.getFileName(), GameEntityType.TARGET));
         }
 
         @Override
@@ -85,7 +63,8 @@ public class GameScene extends Scene {
                         // sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
                         // }
 
-                        else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { //Temporary placeholder to test GAME OVER LOSE scene
+                        else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { // Temporary placeholder to test GAME OVER
+                                                                              // LOSE scene
                                 System.err.println("YOU LOST!");
                                 sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
                         }

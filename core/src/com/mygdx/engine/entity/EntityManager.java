@@ -23,6 +23,10 @@ public class EntityManager {
         entities.add(entity);
     }
 
+    public void addEntities(ArrayList<? extends Entity> entities) {
+        this.entities.addAll(entities);
+    }
+
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }
