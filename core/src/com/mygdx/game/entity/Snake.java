@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.collision.CollisionManager;
 
 import com.mygdx.game.movements.Movement;
 import com.mygdx.game.collision.Collision;
@@ -32,6 +31,10 @@ public class Snake extends Entity {
         initializeBodyPositions(x, y);
     }
 
+    public ArrayList<Vector2> getBodyPositions() {
+        return bodyPositions;
+    }
+
     private void initializeBodyPositions(float x, float y) {
         for (int i = 1; i <= BODY_SEGMENT_COUNT; i++) {
             bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
@@ -53,23 +56,12 @@ public class Snake extends Entity {
                 deltaTime);
         Vector2 verticalMovementDelta = new Vector2(0, GRAVITY * deltaTime);
 
-        // Initially check for head's horizontal and vertical collisions
-        boolean horizontalCollision = CollisionManager.willCollide(this,
-                new Vector2(this.x + horizontalMovementDelta.x, this.y), allEntities);
-
-        boolean verticalCollision = CollisionManager.willCollide(this,
-                new Vector2(this.x, verticalMovementDelta.y + this.y), allEntities);
-
-        // If no collision for the head, check for each body segment
-        if (!horizontalCollision) {
-            for (Vector2 bodyPos : bodyPositions) {
-                Vector2 newPos = new Vector2(bodyPos.x + horizontalMovementDelta.x, bodyPos.y);
-                if (CollisionManager.willCollide(newPos, newPos, allEntities)) {
-                    horizontalCollision = true;
-                    break; // Break out of the loop if any body segment collides
-                }
-            }
-        }
+        // Use the CollisionManager for collision checks
+        boolean horizontalCollision = Collision.checkHorizontalCollision(this, horizontalMovementDelta,
+                allEntities);
+        boolean verticalCollision = Collision.willCollide(this,
+                new Vector2(this.x, this.y + verticalMovementDelta.y), allEntities);
+        boolean isOnPlatform = Collision.isOnPlatform(this, allEntities);
 
         // Apply horizontal movement if no collision detected
         if (!horizontalCollision) {
@@ -81,16 +73,6 @@ public class Snake extends Entity {
             }
         }
 
-        // Check if the snake's head or any body part is on a platform
-        boolean isOnPlatform = Collision.isOnPlatform(this, allEntities);
-        for (int i = 0; !isOnPlatform && i < bodyPositions.size(); i++) {
-            Vector2 bodyPos = bodyPositions.get(i);
-            if (Collision.isOnPlatform(bodyPos, allEntities)) {
-                isOnPlatform = true;
-                break;
-            }
-        }
-
         // Apply vertical movement if no collision detected and not on a platform
         if (!verticalCollision && !isOnPlatform) {
             this.y += verticalMovementDelta.y;
@@ -99,9 +81,6 @@ public class Snake extends Entity {
                 Vector2 bodyPos = bodyPositions.get(i);
                 bodyPositions.set(i, new Vector2(bodyPos.x, bodyPos.y + verticalMovementDelta.y));
             }
-        } else if (isOnPlatform) {
-            // Logic to handle when the snake is on a platform, e.g., stop falling
-            // Optionally adjust the snake's vertical position if needed
         }
 
         updatePosition(); // Update the entity's rectangle for collision checks
@@ -112,7 +91,7 @@ public class Snake extends Entity {
         Vector2 horizontalMovementDelta = Movement.calculateHorizontalMovement(keyStrokeManager, this.x, this.speed,
                 deltaTime);
         Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
-        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, entity);
+        boolean horizontalCollision = Collision.willCollide(this, newHorizontalPosition, entity);
         if (horizontalCollision) {
             return true;
         }
