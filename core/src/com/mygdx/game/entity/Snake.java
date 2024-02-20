@@ -3,12 +3,15 @@ package com.mygdx.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.game.movements.Movement;
+import com.mygdx.game.collision.Collision;
 import com.mygdx.game.collision.Collision;
 import java.util.ArrayList;
 
@@ -18,7 +21,7 @@ public class Snake extends Entity {
     private KeyStrokeManager keyStrokeManager;
     private final float segmentSpacing = 50; // Fixed distance between segments
     private static final float GRAVITY = -100f; // Assuming a gravity constant
-    private static final int BODY_SEGMENT_COUNT = 1; // Number of body segments
+    private static final int BODY_SEGMENT_COUNT = 2; // Number of body segments
 
     public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
