@@ -2,7 +2,6 @@ package com.mygdx.game.movements;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
