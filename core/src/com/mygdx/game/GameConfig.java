@@ -12,7 +12,7 @@ public class GameConfig {
     public static final boolean RESIZABLE = false;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
-    public static final float GRAVITY = 200f;
+    public static final float GRAVITY = -100f;
 
     public static enum GameEntityType implements EntityType {
         SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
@@ -50,8 +50,8 @@ public class GameConfig {
         MAIN_MENU_BG("mainMenuBg.jpg"),
         PLAY_BTN("playBtn.png"),
         RESTART_BTN("restartBtn.png"),
-        SETTINGS_BTN("settingsBtn.png"), 
-        GAME_OVER_WIN("Game_over.png"), 
+        SETTINGS_BTN("settingsBtn.png"),
+        GAME_OVER_WIN("Game_over.png"),
         GAME_OVER_LOSE("Game_over_lose.png");
 
         private String fileName;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public abstract class Entity implements iCollide {
     protected Texture texture;
     protected Rectangle rectangle;
-    protected float x, y, width, height, speed;
+    public float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
     protected static final float GRAVITY = -75f;
@@ -62,7 +62,7 @@ public abstract class Entity implements iCollide {
     }
 
     public void setX(float x) {
-        this.rectangle.x = x;
+        rectangle.x = x;
     }
 
     public float getY() {
@@ -70,7 +70,7 @@ public abstract class Entity implements iCollide {
     }
 
     public void setY(float y) {
-        this.rectangle.y = y;
+        rectangle.y = y;
     }
 
     public float getWidth() {
