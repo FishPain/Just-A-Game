@@ -5,15 +5,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.mygdx.engine.collision.iCollide;
 import com.mygdx.engine.Utils;
 
 import java.util.ArrayList;
 
-public abstract class Entity implements iCollide {
+public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
-    protected float x, y, width, height, speed;
+    public float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
     protected static final float GRAVITY = -75f;
@@ -33,6 +32,8 @@ public abstract class Entity implements iCollide {
     }
 
     public abstract void move(ArrayList<Entity> allEntities);
+
+    public abstract boolean isReachEnd(ArrayList<Entity> allEntities);
 
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)
@@ -62,7 +63,7 @@ public abstract class Entity implements iCollide {
     }
 
     public void setX(float x) {
-        this.rectangle.x = x;
+        rectangle.x = x;
     }
 
     public float getY() {
@@ -70,7 +71,7 @@ public abstract class Entity implements iCollide {
     }
 
     public void setY(float y) {
-        this.rectangle.y = y;
+        rectangle.y = y;
     }
 
     public float getWidth() {
