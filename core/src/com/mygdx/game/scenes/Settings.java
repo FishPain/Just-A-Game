@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
+import com.mygdx.game.GameConfig;
+import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
@@ -61,7 +63,7 @@ public class Settings extends Scene {
             }
         });
 
-        sound.play(1.0f);
+        sound.play(GameConfig.MUSIC_VOLUME);
     }
 
     @Override

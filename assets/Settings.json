@@ -5,5 +5,8 @@
     "LEFT": "A",
     "RIGHT": "D",
     "JUMP": "SPACE"
+  },
+  "SoundEffects": {
+    "Volume": 0.5
   }
 }

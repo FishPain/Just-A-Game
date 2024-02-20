@@ -27,7 +27,7 @@ public class GameOverWin extends Scene {
         System.out.println("YOU WIN!");
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_WIN.getFileName()));
         // throw new UnsupportedOperationException("Unimplemented method 'show'");
-        sound.play(1.0f);
+        sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
         }        

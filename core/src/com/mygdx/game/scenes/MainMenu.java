@@ -64,7 +64,7 @@ public class MainMenu extends Scene {
             }
         });
 
-        sound.play(1.0f);
+        sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
         }
