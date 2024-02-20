@@ -27,7 +27,7 @@ public class GameOverLose extends Scene {
     @Override
     public void show() {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_LOSE.getFileName()));
-        restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));  // Assuming you have a restart button texture
+        restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
         sound.play(GameConfig.MUSIC_VOLUME);
 
         if (!GameConfig.isMusicEnabled) {
