@@ -12,6 +12,7 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
@@ -36,6 +37,9 @@ public class GameScene extends Scene {
                                 new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                                                 200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                                                 GameEntityType.SNAKE_HEAD, keyStrokeManager));
+                entityManager.addEntity(
+                                new Platform(600, 200, 50, 50,
+                                                Assets.TARGET.getFileName(), GameEntityType.TARGET));
         }
 
         @Override

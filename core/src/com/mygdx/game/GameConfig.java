@@ -23,7 +23,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
-    public static float MUSIC_VOLUME = 1f;
+    public static float MUSIC_VOLUME = 0.2f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -72,7 +72,6 @@ public class GameConfig {
                 i++;
             }
             add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 50));
-
         }
     };
 
