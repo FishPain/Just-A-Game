@@ -21,5 +21,4 @@ public class GameOver extends Scene {
     public void hide() {
         // throw new UnsupportedOperationException("Unimplemented method 'hide'");
     }
-
 }

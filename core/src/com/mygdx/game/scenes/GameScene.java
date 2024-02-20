@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.badlogic.gdx.Gdx;
@@ -12,62 +13,42 @@ import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.Platform;
+import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
         // this class will load all the required entityies using entity manager
-
         private EntityManager entityManager;
         private SceneManager sceneManager;
+        private SoundEffects sound;
         KeyStrokeManager keyStrokeManager;
 
         public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
                 super();
                 this.sceneManager = sceneManager;
                 this.entityManager = entityManager;
+                this.sound = GameSceneType.GAME_SCENE.getSound();
+
+                entityManager.addEntities(PlatformManager.createPlatforms(GameConfig.PLATFORM_POSITIONS));
 
                 entityManager.addPlayer(
                                 new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                                                 200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                                                 GameEntityType.SNAKE_HEAD, keyStrokeManager));
-
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50, Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50,
-                                                Assets.TARGET.getFileName(), GameEntityType.TARGET));
         }
 
         @Override
         public void show() {
                 // throw new UnsupportedOperationException("Unimplemented method 'show'");
+                sound.play(1.0f);
         }
 
         @Override
         public void hide() {
                 // throw new UnsupportedOperationException("Unimplemented method 'hide'");
-
+                sound.stop();
         }
 
         @Override
@@ -85,7 +66,8 @@ public class GameScene extends Scene {
                         // sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
                         // }
 
-                        else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { //Temporary placeholder to test GAME OVER LOSE scene
+                        else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { // Temporary placeholder to test GAME OVER
+                                                                              // LOSE scene
                                 System.err.println("YOU LOST!");
                                 sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
                         }
