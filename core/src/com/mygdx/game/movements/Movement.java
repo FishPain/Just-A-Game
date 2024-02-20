@@ -17,7 +17,7 @@ public class Movement extends Collision {
             float gravity) {
         this.keyStrokeManager = keyStrokeManager;
     }
-    
+
     // FOR HORIZONTAL MOVEMENT
     public static Vector2 calculateMovement(Vector2 movementDelta, float x, float speed, float deltaTime) {
         movementDelta.x += speed * deltaTime;
@@ -36,17 +36,7 @@ public class Movement extends Collision {
                 deltaTime);
         // Use the CollisionManager for collision checks
         boolean horizontalCollision = checkHorizontalCollision(entity, horizontalMovementDelta,
-                allEntities);
-
-        if (!horizontalCollision) {
-            for (Vector2 body : bodyPositions) {
-                if (checkHorizontalCollision(body, horizontalMovementDelta,
-                        allEntities)) {
-                    horizontalCollision = true;
-                    break;
-                }
-            }
-        }
+                allEntities, bodyPositions);
 
         // Apply horizontal movement if no collision detected
         if (!horizontalCollision) {
@@ -61,7 +51,8 @@ public class Movement extends Collision {
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities,
             ArrayList<Vector2> bodyPositions, float deltaTime) {
-        //Vector2 verticalMovementDelta = new Vector2(0, GameConfig.GRAVITY * deltaTime);
+        // Vector2 verticalMovementDelta = new Vector2(0, GameConfig.GRAVITY *
+        // deltaTime);
         Vector2 verticalMovementDelta = calculateVerticalMovement(0, GameConfig.GRAVITY, deltaTime);
         // only fall if neither the entity nor its body segments are on a platform
         boolean isOnPlatform = isOnPlatform(entity, allEntities);
@@ -73,7 +64,7 @@ public class Movement extends Collision {
                 }
             }
         }
-      
+
         boolean verticalCollision = willCollide(entity,
                 new Vector2(entity.x, entity.y + verticalMovementDelta.y), allEntities);
 
@@ -93,27 +84,40 @@ public class Movement extends Collision {
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
-            movementDelta = calculateMovement(movementDelta, x, -speed, deltaTime);
+            movementDelta = calculateMovement(movementDelta, -speed * deltaTime, 0);
         }
-        
+
         if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
-            movementDelta = calculateMovement(movementDelta, x, speed, deltaTime);
+            movementDelta = calculateMovement(movementDelta, speed * deltaTime, 0);
         }
         return movementDelta;
     }
-    
-    public Vector2 calculateVerticalMovement(float y, float gravity, float deltaTime) {
+
+    public Vector2 calculateVerticalMovement(float y, float speed,
+            float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName())) {
-            movementDelta = calculateMovement(movementDelta, -gravity, deltaTime);
-            System.out.println("VERTICAL UP");
+            movementDelta = ControlManager.calculateMovement(movementDelta, 0, speed * deltaTime);
         }
-        
         if (keyStrokeManager.isKeyPressed(Keystroke.DOWN.getKeystrokeName())) {
-            movementDelta = calculateMovement(movementDelta, gravity, deltaTime);
-            System.out.println("VERTICAL DOWN");
+            movementDelta = ControlManager.calculateMovement(movementDelta, 0, -speed * deltaTime);
         }
-        
         return movementDelta;
     }
+
+    // public Vector2 calculateVerticalMovement(float y, float gravity, float
+    // deltaTime) {
+    // Vector2 movementDelta = new Vector2();
+    // if (keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName())) {
+    // movementDelta = calculateMovement(movementDelta, -gravity, deltaTime);
+    // System.out.println("VERTICAL UP");
+    // }
+
+    // if (keyStrokeManager.isKeyPressed(Keystroke.DOWN.getKeystrokeName())) {
+    // movementDelta = calculateMovement(movementDelta, gravity, deltaTime);
+    // System.out.println("VERTICAL DOWN");
+    // }
+
+    // return movementDelta;
+    // }
 }

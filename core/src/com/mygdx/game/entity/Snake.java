@@ -9,6 +9,7 @@ import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 
 import com.mygdx.game.movements.Movement;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.collision.Collision;
 
 import java.util.ArrayList;
@@ -18,15 +19,14 @@ public class Snake extends Entity {
     private Texture headTexture, bodyTexture;
     private Movement movement;
     private final float segmentSpacing = 50; // Fixed distance between segments
-    private static final float GRAVITY = -100f; // Assuming a gravity constant
-    private static final int BODY_SEGMENT_COUNT = 2; // Number of body segments
+    private static final int BODY_SEGMENT_COUNT = 0; // Number of body segments
 
     public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
         super(x, y, width, height, headTexturePath, speed, true, entityType);
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GRAVITY);
+        this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
         this.bodyPositions = new ArrayList<Vector2>();
         initializeBodyPositions(x, y);
     }

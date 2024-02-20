@@ -58,13 +58,16 @@ public class MainMenu extends Scene {
                         worldY >= Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + settingButton.getHeight() / 2) {
 
-                    // Add logic to handle settings button click
+                    sceneManager.setScene(GameSceneType.SETTINGS);
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
 
         sound.play(GameConfig.MUSIC_VOLUME);
+        if (!GameConfig.isMusicEnabled) {
+            sound.stop();
+        }
     }
 
     @Override
