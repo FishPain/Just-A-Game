@@ -6,7 +6,6 @@ import com.mygdx.engine.Utils;
 import java.util.HashMap;
 import org.json.JSONObject;
 
-// Assuming KeyStrokeType is an enum you've defined
 public class KeyStrokeManager {
     private HashMap<String, Integer> keyStrokeMap;
 
