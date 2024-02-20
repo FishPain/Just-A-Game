@@ -4,12 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.SceneType;
 
-/**
- * This is the simulation lifecycle management class.
- * {@link https://libgdx.com/wiki/app/the-life-cycle}
- * 
- * @author Tony
- */
 public class SimulationManager extends ApplicationAdapter {
 	private SoundEffects gameTheme;
 	private SceneType currentScene;

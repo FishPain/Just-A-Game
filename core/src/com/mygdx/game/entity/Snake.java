@@ -1,79 +1,68 @@
 package com.mygdx.game.entity;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.collision.CollisionManager;
-import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.engine.entity.EntityType;
+import com.mygdx.engine.io.KeyStrokeManager;
+
+import com.mygdx.game.movements.Movement;
+import com.mygdx.game.collision.Collision;
+
 import java.util.ArrayList;
 
 public class Snake extends Entity {
+    private ArrayList<Vector2> bodyPositions;
+    private Texture headTexture, bodyTexture;
+    private Movement movement;
+    private final float segmentSpacing = 50; // Fixed distance between segments
+    private static final float GRAVITY = -100f; // Assuming a gravity constant
+    private static final int BODY_SEGMENT_COUNT = 2; // Number of body segments
 
-    public Snake(float x, float y, float width, float height, String texturePath, float speed, EntityType entityType) {
-        super(x, y, width, height, texturePath, speed, true, entityType);
+    public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
+            String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
+        super(x, y, width, height, headTexturePath, speed, true, entityType);
+        this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
+        this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
+        this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GRAVITY);
+        this.bodyPositions = new ArrayList<Vector2>();
+        initializeBodyPositions(x, y);
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        batch.draw(headTexture, x, y, width, height);
+        for (Vector2 pos : bodyPositions) {
+            batch.draw(bodyTexture, pos.x, pos.y, width, height);
+        }
     }
 
     @Override
     public void move(ArrayList<Entity> allEntities) {
         float deltaTime = Gdx.graphics.getDeltaTime();
-        Vector2 horizontalMovementDelta = calculateHorizontalMovement(deltaTime);
-        Vector2 verticalMovementDelta = calculateVerticalMovement(deltaTime);
 
-        // Check for horizontal movement possibility
-        Vector2 newHorizontalPosition = new Vector2(this.x + horizontalMovementDelta.x, this.y);
-        boolean horizontalCollision = CollisionManager.willCollide(this, newHorizontalPosition, allEntities);
+        movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
+        movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
 
-        // Apply horizontal movement if no collision detected
-        if (!horizontalCollision) {
-            this.x = newHorizontalPosition.x;
-        }
-
-        // Apply vertical movement (gravity) if not on a platform
-        boolean onPlatform = isOnPlatform(this, allEntities);
-        if (!onPlatform) {
-            Vector2 newVerticalPosition = new Vector2(this.x, this.y + verticalMovementDelta.y);
-            boolean verticalCollision = CollisionManager.willCollide(this, newVerticalPosition, allEntities);
-            if (!verticalCollision) {
-                this.y = newVerticalPosition.y;
-            }
-        }
-
-        updatePosition(); // Update the entity's rectangle for collision checks
+        updatePosition();
     }
 
-    private Vector2 calculateHorizontalMovement(float deltaTime) {
-        Vector2 movementDelta = new Vector2();
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            movementDelta.x -= speed * deltaTime;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            movementDelta.x += speed * deltaTime;
-        }
-        return movementDelta;
+    @Override
+    public boolean isReachEnd(ArrayList<Entity> allEntities) {
+        return Collision.isReachEnd(this, allEntities, movement);
     }
 
-    private Vector2 calculateVerticalMovement(float deltaTime) {
-        // This assumes gravity is constantly applied, you might adjust if you have
-        // jumping logic
-        return new Vector2(0, -GRAVITY * deltaTime);
+    @Override
+    public void dispose() {
+        headTexture.dispose();
+        bodyTexture.dispose();
     }
 
-    private boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
-        // Extend your CollisionManager or add logic here to check if the entity is
-        // standing on a platform
-        // This could involve checking for a collision directly beneath the entity,
-        // indicating it's supported
-        for (Entity other : allEntities) {
-            if (other != entity && other.getEntityType() == EntityType.PLATFORM) {
-                Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-                slightlyBelow.y -= 1; // Check just below the entity
-                if (slightlyBelow.overlaps(other.getRectangle())) {
-                    return true;
-                }
-            }
+    private void initializeBodyPositions(float x, float y) {
+        for (int i = 1; i <= BODY_SEGMENT_COUNT; i++) {
+            bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
         }
-        return false;
     }
-
 }
