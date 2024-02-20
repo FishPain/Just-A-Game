@@ -43,6 +43,9 @@ public class GameScene extends Scene {
         public void show() {
                 // throw new UnsupportedOperationException("Unimplemented method 'show'");
                 sound.play(1.0f);
+                if (!GameConfig.isMusicEnabled) {
+                        sound.stop();
+                }
         }
 
         @Override

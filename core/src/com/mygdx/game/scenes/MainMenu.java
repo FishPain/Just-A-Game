@@ -8,6 +8,7 @@ import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.SoundEffects;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
 
@@ -57,13 +58,16 @@ public class MainMenu extends Scene {
                         worldY >= Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + settingButton.getHeight() / 2) {
 
-                    // Add logic to handle settings button click
+                    sceneManager.setScene(GameSceneType.SETTINGS);
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
 
         sound.play(1.0f);
+        if (!GameConfig.isMusicEnabled) {
+            sound.stop();
+        }
     }
 
     @Override

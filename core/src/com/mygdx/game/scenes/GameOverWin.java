@@ -6,6 +6,7 @@ import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
 
@@ -27,6 +28,9 @@ public class GameOverWin extends Scene {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_WIN.getFileName()));
         // throw new UnsupportedOperationException("Unimplemented method 'show'");
         sound.play(1.0f);
+        if (!GameConfig.isMusicEnabled) {
+            sound.stop();
+        }        
     }
 
     @Override
