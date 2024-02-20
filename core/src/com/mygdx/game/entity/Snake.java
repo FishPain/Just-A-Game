@@ -49,18 +49,9 @@ public class Snake extends Entity {
         updatePosition();
     }
 
-    public boolean isReachEnd(ArrayList<Entity> entity) {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        Vector2 horizontalMovementDelta = movement.calculateHorizontalMovement(this.x, this.speed,
-                deltaTime);
-        Vector2 newHorizontalPosition = new Vector2(this.x +
-                horizontalMovementDelta.x, this.y);
-        boolean horizontalCollision = Collision.willCollide(this,
-                newHorizontalPosition, entity);
-        if (horizontalCollision) {
-            return true;
-        }
-        return false;
+    @Override
+    public boolean isReachEnd(ArrayList<Entity> allEntities) {
+        return Collision.isReachEnd(this, allEntities, movement);
     }
 
     @Override

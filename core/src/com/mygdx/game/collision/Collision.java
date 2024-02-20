@@ -2,12 +2,14 @@ package com.mygdx.game.collision;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.entity.Snake;
+import com.mygdx.game.movements.Movement;
 
 public class Collision extends CollisionManager {
     public static boolean isOnPlatform(Entity entity, ArrayList<Entity> allEntities) {
@@ -63,6 +65,15 @@ public class Collision extends CollisionManager {
             }
         }
         return false;
+    }
+
+    public static boolean isReachEnd(Entity entity, ArrayList<Entity> allEntities, Movement movement) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        Vector2 horizontalMovementDelta = movement.calculateHorizontalMovement(entity.getX(), entity.getSpeed(),
+                deltaTime);
+        Vector2 newHorizontalPosition = new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY());
+
+        return willCollide(entity, newHorizontalPosition, allEntities);
     }
 
 }

@@ -5,12 +5,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import com.mygdx.engine.collision.iCollide;
 import com.mygdx.engine.Utils;
 
 import java.util.ArrayList;
 
-public abstract class Entity implements iCollide {
+public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
     public float x, y, width, height, speed;
@@ -33,6 +32,8 @@ public abstract class Entity implements iCollide {
     }
 
     public abstract void move(ArrayList<Entity> allEntities);
+
+    public abstract boolean isReachEnd(ArrayList<Entity> allEntities);
 
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)

@@ -18,8 +18,8 @@ public class Platform extends Entity {
 
     @Override
     public boolean isReachEnd(ArrayList<Entity> allEntities) {
-        // Platforms typically don't reach the end, so this may be left empty
+        // Platforms typically don't move, so this may be left empty or implement logic
+        // for moving platforms
         return false;
     }
-
 }

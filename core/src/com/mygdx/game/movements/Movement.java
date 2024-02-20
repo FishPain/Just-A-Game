@@ -13,19 +13,10 @@ import com.mygdx.game.collision.Collision;
 
 public class Movement extends Collision {
     private KeyStrokeManager keyStrokeManager;
-    private float x, speed;
-    private boolean isJumping;
-    private float jumpSpeed;
-    private float gravity;
 
     public Movement(KeyStrokeManager keyStrokeManager, float x, float speed, boolean isJumping, float jumpSpeed,
             float gravity) {
         this.keyStrokeManager = keyStrokeManager;
-        this.x = x;
-        this.speed = speed;
-        this.isJumping = isJumping;
-        this.jumpSpeed = jumpSpeed;
-        this.gravity = gravity;
     }
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
