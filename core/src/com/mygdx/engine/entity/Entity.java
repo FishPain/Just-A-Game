@@ -1,25 +1,22 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import com.mygdx.engine.collision.iCollide;
+import com.mygdx.engine.Utils;
 
 import java.util.ArrayList;
 
-public abstract class Entity {
+public abstract class Entity implements iCollide {
     protected Texture texture;
     protected Rectangle rectangle;
     protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
-    protected static final float GRAVITY = 200f;
-
-    public enum EntityType {
-        SNAKE_HEAD,
-        SNAKE_BODY,
-        PLATFORM
-    }
+    protected static final float GRAVITY = -75f;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {
@@ -31,7 +28,7 @@ public abstract class Entity {
         this.isMovable = isMovable;
         this.entityType = entityType;
 
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
@@ -43,8 +40,16 @@ public abstract class Entity {
         batch.draw(texture, x, y, width, height);
     }
 
-    protected void updatePosition() {
+    public void updatePosition() {
         rectangle.setPosition(x, y);
+    }
+
+    public void setPosition(float x, float y) {
+        rectangle.setPosition(new Vector2(x, y));
+    }
+
+    public Vector2 getPosition() {
+        return rectangle.getPosition(new Vector2());
     }
 
     public void dispose() {
@@ -125,6 +130,6 @@ public abstract class Entity {
     }
 
     public void setTexture(String texturePath) {
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
     }
 }
