@@ -18,8 +18,7 @@ public class Snake extends Entity {
     private ArrayList<Vector2> bodyPositions;
     private Texture headTexture, bodyTexture;
     private Movement movement;
-    private final float segmentSpacing = 50; // Fixed distance between segments
-    private static final int BODY_SEGMENT_COUNT = 0; // Number of body segments
+    private final float segmentSpacing = GameConfig.ASSET_SIZE;
 
     public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager) {
@@ -61,7 +60,7 @@ public class Snake extends Entity {
     }
 
     private void initializeBodyPositions(float x, float y) {
-        for (int i = 1; i <= BODY_SEGMENT_COUNT; i++) {
+        for (int i = 1; i <= GameConfig.SNAKE_BODY_LENGTH; i++) {
             bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
         }
     }

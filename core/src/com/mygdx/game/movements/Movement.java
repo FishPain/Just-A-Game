@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.collision.Collision;
 

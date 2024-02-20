@@ -1,19 +1,14 @@
 package com.mygdx.game;
 
-import com.mygdx.engine.Utils;
-import com.mygdx.engine.Utils.Settings;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.engine.scene.SceneManager;
 
 import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-
-import org.json.JSONObject;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
@@ -25,6 +20,8 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
+    public static int SNAKE_BODY_LENGTH = 0;
+
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();

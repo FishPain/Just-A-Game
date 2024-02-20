@@ -10,9 +10,7 @@ import com.mygdx.engine.Utils;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
-import com.mygdx.game.GameConfig.GameSceneType;
 
 public class Settings extends Scene {
 
