@@ -51,7 +51,8 @@ public class GameConfig {
         PLAY_BTN("playBtn.png"),
         RESTART_BTN("restartBtn.png"),
         SETTINGS_BTN("settingsBtn.png"), 
-        GAME_OVER_WIN("Game_over.png");
+        GAME_OVER_WIN("Game_over.png"), 
+        GAME_OVER_LOSE("Game_over_lose.png");
 
         private String fileName;
 
