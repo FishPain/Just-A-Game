@@ -30,6 +30,55 @@ public class Snake extends Entity {
         this.bodyPositions = new ArrayList<Vector2>();
         initializeBodyPositions(x, y);
     }
+    
+    public void moveLeft() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float movementDeltaX = -speed * deltaTime;
+        moveHorizontally(movementDeltaX);
+    }
+
+    public void moveRight() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float movementDeltaX = speed * deltaTime;
+        moveHorizontally(movementDeltaX);
+    }
+    
+    public void moveUp() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float movementDeltaY = speed * deltaTime;
+        moveVertically(movementDeltaY);
+    }
+
+    public void moveDown() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        float movementDeltaY = -speed * deltaTime;
+        moveVertically(movementDeltaY);
+    }
+    
+    private void moveHorizontally(float deltaX) {
+    	System.out.println("Move Horizontally works!");
+        Vector2 newHorizontalPosition = new Vector2(this.x + deltaX, this.y);
+        System.out.println("newHorizontalPosition = " + newHorizontalPosition);
+        // Check collision
+        // Apply movement if no collision
+        this.x = newHorizontalPosition.x;
+        System.out.println("Snake Coords = " + this.x + "," + this.y);
+        // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN 
+        updatePosition();
+    }
+    
+    private void moveVertically(float deltaY) {
+    	System.out.println("Move Vertically works!");
+        Vector2 newVerticalPosition = new Vector2(this.x, this.y + deltaY);
+        System.out.println("newVerticalPosition = " + newVerticalPosition);
+        // Check collision
+        // Apply movement if no collision
+        this.y = newVerticalPosition.y;
+        System.out.println("Snake Coords = " + this.x + "," + this.y);
+        // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN 
+        updatePosition();
+    }
+
 
     @Override
     public void draw(SpriteBatch batch) {

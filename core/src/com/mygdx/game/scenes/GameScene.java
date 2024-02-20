@@ -19,6 +19,8 @@ import java.util.ArrayList;
 public class GameScene extends Scene {
         // this class will load all the required entityies using entity manager
 
+		Snake snake;
+	
         private EntityManager entityManager;
         private SceneManager sceneManager;
         KeyStrokeManager keyStrokeManager;
@@ -30,10 +32,27 @@ public class GameScene extends Scene {
 
                 entityManager.addEntities(PlatformManager.createPlatforms(GameConfig.PLATFORM_POSITIONS));
 
+                snake = new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
+                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
+                        GameEntityType.SNAKE_HEAD, keyStrokeManager);
+                
+                setSnake(snake);
+                entityManager.addPlayer(snake);
+                
+                /*
                 entityManager.addPlayer(
                                 new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
                                                 200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                                                 GameEntityType.SNAKE_HEAD, keyStrokeManager));
+                */
+        }
+        
+        public Snake getSnake() {
+            return snake;
+        }
+        
+        public void setSnake(Snake snake) {
+            this.snake = snake;
         }
 
         @Override

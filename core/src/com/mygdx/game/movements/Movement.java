@@ -3,7 +3,7 @@ package com.mygdx.game.movements;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.engine.controls.ControlManager;
+import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.game.GameConfig;
@@ -16,6 +16,16 @@ public class Movement extends Collision {
     public Movement(KeyStrokeManager keyStrokeManager, float x, float speed, boolean isJumping, float jumpSpeed,
             float gravity) {
         this.keyStrokeManager = keyStrokeManager;
+    }
+    
+    public static Vector2 calculateMovement(Vector2 movementDelta, float x, float speed, float deltaTime) {
+        movementDelta.x += speed * deltaTime;
+        return movementDelta;
+    }
+
+    public static Vector2 calculateMovement(Vector2 movementDelta, float gravity, float deltaTime) {
+        movementDelta.y += gravity * deltaTime;
+        return movementDelta;
     }
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
@@ -78,10 +88,10 @@ public class Movement extends Collision {
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
-            movementDelta = ControlManager.calculateMovement(movementDelta, x, -speed, deltaTime);
+            movementDelta = calculateMovement(movementDelta, x, -speed, deltaTime);
         }
         if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
-            movementDelta = ControlManager.calculateMovement(movementDelta, x, speed, deltaTime);
+            movementDelta = calculateMovement(movementDelta, x, speed, deltaTime);
         }
         return movementDelta;
     }

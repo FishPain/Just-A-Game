@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.engine.SimulationManager;
 import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.collision.CollisionManager;
-import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.IOManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.engine.controls.PlayerControlManager;
 import com.mygdx.game.scenes.GameOverWin;
 import com.mygdx.game.scenes.GameOverLose;
 import com.mygdx.game.scenes.GameScene;
@@ -29,7 +29,7 @@ public class Game extends SimulationManager {
     AIManager AIManager;
     IOManager InputManager;
     SceneManager SceneManager;
-    ControlManager PlayerControlManager;
+    PlayerControlManager PlayerControlManager;
     KeyStrokeManager keyStrokeManager;
     SpriteBatch batch;
 
@@ -37,7 +37,7 @@ public class Game extends SimulationManager {
     public void create() {
         AIManager = new AIManager();
         InputManager = new IOManager();
-        PlayerControlManager = new ControlManager();
+        PlayerControlManager = new PlayerControlManager();
         CollisionManager = new CollisionManager();
         EntityManager = new EntityManager();
 
@@ -67,9 +67,10 @@ public class Game extends SimulationManager {
         ScreenUtils.clear(0, 0, 1, 1);
         batch.begin();
         SceneManager.getCurrentScene().setBatch(batch);
+        PlayerControlManager.handleInput();
         SceneManager.getCurrentScene().render(0); // Assuming render method now accepts a SpriteBatch
         batch.end();
-        PlayerControlManager.handleInput();
+       
     }
 
     @Override
