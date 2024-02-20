@@ -15,6 +15,10 @@ public class SoundEffects {
         sound.play(volume);
     }
 
+    public void stop() {
+        sound.stop();
+    }
+
     public void dispose() {
         sound.dispose();
     }

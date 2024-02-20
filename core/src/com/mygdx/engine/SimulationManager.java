@@ -3,6 +3,7 @@ package com.mygdx.engine;
 import com.badlogic.gdx.ApplicationAdapter;
 
 public class SimulationManager extends ApplicationAdapter {
+
 	@Override
 	public void create() {
 	}

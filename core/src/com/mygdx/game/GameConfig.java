@@ -1,12 +1,18 @@
 package com.mygdx.game;
 
+import com.mygdx.engine.Utils;
+import com.mygdx.engine.Utils.Settings;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
+import com.mygdx.engine.io.SoundEffects;
+import com.mygdx.engine.scene.SceneManager;
 
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+
+import org.json.JSONObject;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
@@ -17,6 +23,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
+    public static float MUSIC_VOLUME = 1f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -29,6 +36,10 @@ public class GameConfig {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
         }
+        // Object soundSettings =
+        // Settings.loadSettings(Keystroke.FILE_PATH.getKeystrokeName(),
+        // "SoundEffects");
+        // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
 
     public static final ArrayList<Point> PLATFORM_POSITIONS = new ArrayList<Point>() {
@@ -70,7 +81,46 @@ public class GameConfig {
     }
 
     public static enum GameSceneType implements SceneType {
-        MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
+        MAIN_MENU {
+            private final SoundEffects sound = new SoundEffects("sounds/mainMenuSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_SCENE {
+            private final SoundEffects sound = new SoundEffects("sounds/gameSceneSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_OVER_WIN {
+            private final SoundEffects sound = new SoundEffects("sounds/gameOverWinSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_OVER_LOSE {
+            private final SoundEffects sound = new SoundEffects("sounds/gameOverLoseSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        SETTINGS {
+            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        };
     }
 
     public static enum Keystroke {

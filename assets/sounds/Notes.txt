@@ -1,0 +1,5 @@
+gameOverLoseSound - Game Over (8-Bit Music)
+gameOverWinSound - 8 Bit Win! - HeatleyBros  Chiptune [Royalty-Free Music]
+gameSceneSound - Kirby's Return to Dream Land Title Theme 8 Bit Remix
+mainMenuSound - 8bit Game Menu @ フリーBGM DOVA-SYNDROME OFFICIAL YouTube CHANNEL
+settingsSound - ShellShock Live Victory track 8-Bit
