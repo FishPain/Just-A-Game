@@ -6,6 +6,7 @@ import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
 
@@ -24,7 +25,7 @@ public class GameOverLose extends Scene {
     @Override
     public void show() {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_LOSE.getFileName()));
-        sound.play(1.0f);
+        sound.play(GameConfig.MUSIC_VOLUME);
         // throw new UnsupportedOperationException("Unimplemented method 'show'");
     }
 

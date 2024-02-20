@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.engine.io.SoundEffects;
 
@@ -18,7 +19,7 @@ public class Settings extends Scene {
 
     @Override
     public void show() {
-        sound.play(1.0f);
+        sound.play(GameConfig.MUSIC_VOLUME);
         // throw new UnsupportedOperationException("Unimplemented method 'show'");
     }
 

@@ -12,7 +12,6 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
@@ -42,7 +41,7 @@ public class GameScene extends Scene {
         @Override
         public void show() {
                 // throw new UnsupportedOperationException("Unimplemented method 'show'");
-                sound.play(1.0f);
+                sound.play(GameConfig.MUSIC_VOLUME);
         }
 
         @Override

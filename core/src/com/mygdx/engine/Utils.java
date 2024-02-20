@@ -1,6 +1,7 @@
 package com.mygdx.engine;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.HashMap;
@@ -8,9 +9,8 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 public class Utils {
-
     public static class Settings {
-        public Object loadSettings(String filePath, String key) {
+        public static Object loadSettings(String filePath, String key) {
             String jsonContent;
 
             // if local file is available, load it, else load the default file
@@ -27,11 +27,11 @@ public class Utils {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error reading or writing the settings file.");
+                return null;
             }
-            return null;
         }
 
-        public void saveSettings(String filePath, String key, HashMap<String, String> settings) {
+        public static void saveSettings(String filePath, String key, HashMap<String, String> settings) {
             JSONObject json = new JSONObject();
             json.put(key, settings);
             try {
