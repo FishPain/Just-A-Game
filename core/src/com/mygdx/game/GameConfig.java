@@ -21,7 +21,7 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
-
+    public static final int TIME_LIMIT = 10;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();

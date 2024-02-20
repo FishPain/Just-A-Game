@@ -52,7 +52,7 @@ public class Settings extends Scene {
 
                     // Play or stop music based on the toggle
                     if (GameConfig.isMusicEnabled) {
-                        sound.play(1.0f);
+                        sound.play(GameConfig.MUSIC_VOLUME);
                     } else {
                         sound.stop();
                     }
@@ -82,7 +82,8 @@ public class Settings extends Scene {
         // Draw toggle button
         batch.draw(
                 new Texture(Utils.getInternalFilePath(
-                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName() : Assets.SOUND_OFF_BTN.getFileName())),
+                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName()
+                                : Assets.SOUND_OFF_BTN.getFileName())),
                 200, 300, 200, 50);
     }
 

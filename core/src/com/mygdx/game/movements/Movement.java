@@ -21,6 +21,7 @@ public class Movement extends Collision {
             ArrayList<Vector2> bodyPositions, float deltaTime) {
         Vector2 horizontalMovementDelta = calculateHorizontalMovement(entity.x, entity.speed,
                 deltaTime);
+                
         // Use the CollisionManager for collision checks
         boolean horizontalCollision = checkHorizontalCollision(entity, horizontalMovementDelta,
                 allEntities, bodyPositions);
