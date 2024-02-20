@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
+import com.mygdx.engine.io.SoundEffects;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -70,7 +71,46 @@ public class GameConfig {
     }
 
     public static enum GameSceneType implements SceneType {
-        MAIN_MENU, GAME_SCENE, GAME_OVER_WIN, GAME_OVER_LOSE, SETTINGS
+        MAIN_MENU {
+            private final SoundEffects sound = new SoundEffects("sounds/mainMenuSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_SCENE {
+            private final SoundEffects sound = new SoundEffects("sounds/gameSceneSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_OVER_WIN {
+            private final SoundEffects sound = new SoundEffects("sounds/gameOverWinSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        GAME_OVER_LOSE {
+            private final SoundEffects sound = new SoundEffects("sounds/gameOverLoseSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        },
+        SETTINGS {
+            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
+        };
     }
 
     public static enum Keystroke {

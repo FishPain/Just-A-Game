@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,7 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
@@ -18,15 +20,16 @@ import java.util.ArrayList;
 
 public class GameScene extends Scene {
         // this class will load all the required entityies using entity manager
-
         private EntityManager entityManager;
         private SceneManager sceneManager;
+        private SoundEffects sound;
         KeyStrokeManager keyStrokeManager;
 
         public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
                 super();
                 this.sceneManager = sceneManager;
                 this.entityManager = entityManager;
+                this.sound = GameSceneType.GAME_SCENE.getSound();
 
                 entityManager.addEntities(PlatformManager.createPlatforms(GameConfig.PLATFORM_POSITIONS));
 
@@ -39,12 +42,13 @@ public class GameScene extends Scene {
         @Override
         public void show() {
                 // throw new UnsupportedOperationException("Unimplemented method 'show'");
+                sound.play(1.0f);
         }
 
         @Override
         public void hide() {
                 // throw new UnsupportedOperationException("Unimplemented method 'hide'");
-
+                sound.stop();
         }
 
         @Override

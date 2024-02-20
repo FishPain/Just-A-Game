@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
 
@@ -16,9 +17,11 @@ public class MainMenu extends Scene {
     private Texture playButton;
     private Texture settingButton;
     private SceneManager sceneManager;
+    private SoundEffects sound;
 
     public MainMenu(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        this.sound = GameSceneType.MAIN_MENU.getSound();
     }
 
     public Texture getPlayButton() {
@@ -59,10 +62,13 @@ public class MainMenu extends Scene {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
+
+        sound.play(1.0f);
     }
 
     @Override
     public void hide() {
+        sound.stop();
         // Add logic to hide the scene
     }
 
