@@ -9,6 +9,7 @@ import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.IOManager;
+import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.scenes.GameOverWin;
 import com.mygdx.game.scenes.GameOverLose;
@@ -29,6 +30,7 @@ public class Game extends SimulationManager {
     IOManager InputManager;
     SceneManager SceneManager;
     ControlManager PlayerControlManager;
+    KeyStrokeManager keyStrokeManager;
     SpriteBatch batch;
 
     @Override
@@ -42,6 +44,9 @@ public class Game extends SimulationManager {
         SceneManager = new SceneManager();
         batch = new SpriteBatch();
 
+        // Load the default key strokes from the file
+        keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
+
         // <game entry point> main menu screen
         SceneManager.addScene(GameSceneType.MAIN_MENU, new MainMenu(SceneManager));
         SceneManager.setScene(GameSceneType.MAIN_MENU);
@@ -50,7 +55,7 @@ public class Game extends SimulationManager {
         SceneManager.addScene(GameSceneType.SETTINGS, new Settings(SceneManager));
 
         // the main game scene
-        SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager));
+        SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager, keyStrokeManager));
 
         // end scene
         SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager));

@@ -17,4 +17,14 @@ public class CollisionManager {
         }
         return false; // No collision detected
     }
+
+    public static boolean willCollide(Vector2 entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
+        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
+        for (Entity other : allEntities) {
+            if (newRect.overlaps(other.getRectangle())) {
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
+    }
 }

@@ -3,10 +3,7 @@ package com.mygdx.engine.scene;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.scenes.MainMenu;
 
 public class SceneManager extends InputAdapter {
 
