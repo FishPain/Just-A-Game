@@ -50,7 +50,8 @@ public class GameConfig {
         MAIN_MENU_BG("mainMenuBg.jpg"),
         PLAY_BTN("playBtn.png"),
         RESTART_BTN("restartBtn.png"),
-        SETTINGS_BTN("settingsBtn.png");
+        SETTINGS_BTN("settingsBtn.png"), 
+        GAME_OVER_WIN("Game_over.png");
 
         private String fileName;
 
