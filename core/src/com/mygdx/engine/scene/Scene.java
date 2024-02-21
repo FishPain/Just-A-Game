@@ -17,4 +17,5 @@ public abstract class Scene extends ScreenAdapter {
     public abstract void show();
 
     public abstract void hide();
+
 }

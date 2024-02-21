@@ -22,6 +22,8 @@ public class GameConfig {
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
     public static final int TIME_LIMIT = 10;
+    public static final int NUM_OF_OBSTACLES = 20;
+    public static final int NUM_OF_TARGETS = 2;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -40,42 +42,41 @@ public class GameConfig {
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
 
-    public static final ArrayList<Point> PLATFORM_POSITIONS = new ArrayList<Point>() {
+    public static final Point SNAKE_START_POSITION = new Point(SCREEN_WIDTH / 2, 50);
+
+    public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
             int i = 0;
             while (i * ASSET_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * ASSET_SIZE, 1));
+                add(new Point(i * ASSET_SIZE, 0));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
             while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * ASSET_SIZE + 1));
+                add(new Point(0, i * ASSET_SIZE));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
             while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE + 1));
+                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE));
+                i++;
+            }
+
+            // Top edge
+            i = 1;
+            while (i * ASSET_SIZE < SCREEN_WIDTH - 1) {
+                add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT - ASSET_SIZE));
                 i++;
             }
 
             // middle platforms
-            i = 5;
-            while (i * ASSET_SIZE < (SCREEN_WIDTH - ASSET_SIZE * 6)) {
+            for (i = 7; i < 13; i++) {
                 add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT / 4));
-                i++;
-            }
-            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 51));
-
-            // use a random number generator to generate the rest of the platforms
-            Random rand = new Random();
-            for (i = 0; i < 10; i++) {
-                add(new Point(rand.nextInt(SCREEN_WIDTH - ASSET_SIZE), rand.nextInt(SCREEN_HEIGHT
-                        - ASSET_SIZE)));
             }
         }
     };

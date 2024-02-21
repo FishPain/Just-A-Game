@@ -15,15 +15,11 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.collision.Collision;
 import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 import com.mygdx.engine.io.Timer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.TimeUtils;
-
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
@@ -32,6 +28,7 @@ public class GameScene extends Scene {
     private SceneManager sceneManager;
     private SoundEffects sound;
     private KeyStrokeManager keyStrokeManager;
+    private PlatformManager platformManager;
     private Timer timer;
 
     // Timer timer;
@@ -41,26 +38,32 @@ public class GameScene extends Scene {
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
+        this.platformManager = new PlatformManager();
         this.sound = GameSceneType.GAME_SCENE.getSound();
         this.timer = new Timer(new SpriteBatch(), GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
-
-        entityManager.addEntities(PlatformManager.createPlatforms(GameConfig.PLATFORM_POSITIONS));
-
-        entityManager.addPlayer(
-                new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
-                        GameEntityType.SNAKE_HEAD, keyStrokeManager));
-        entityManager.addEntity(
-                new Platform(600, 200, 50, 50,
-                        Assets.TARGET.getFileName(), GameEntityType.TARGET));
     }
 
     @Override
     public void show() {
-        timer.startTimer();
+        // spawn the player
+        entityManager.addPlayer(
+                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, 30, 30,
+                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
+                        GameEntityType.SNAKE_HEAD, keyStrokeManager, entityManager));
 
-        // throw new UnsupportedOperationException("Unimplemented method 'show'");
+        // spawn the platform borders
+        entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
+
+        // randomly spawn the platforms obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
+                entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
+
+        // randomly spawn the target obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
+                entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
+
+        timer.startTimer();
         sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
@@ -70,33 +73,24 @@ public class GameScene extends Scene {
     @Override
     public void hide() {
         timer.resetTimer();
-        // throw new UnsupportedOperationException("Unimplemented method 'hide'");
         sound.stop();
     }
 
     @Override
     public void render(float delta) {
         ArrayList<Entity> entities = entityManager.getEntities();
-        timer.updateAndRender();
 
+        timer.updateAndRender();
         for (Entity entity : entities) {
             entity.draw(batch);
             entity.move(entities);
-            if (entity.isReachEnd(entityManager.getEntities(GameEntityType.TARGET))) {
-                System.err.println("Reached the end");
+
+            if (entity.isGameEnd()) {
                 sceneManager.setScene(GameSceneType.GAME_OVER_WIN);
             } else if (timer.getRemainingTime() <= 0) {
                 sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
             }
-
-            else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { // Temporary placeholder to test GAME OVER
-                                                                  // LOSE scene
-                System.err.println("YOU LOST!");
-                sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
-            }
-
         }
-
+        entityManager.removeEntities();
     }
-
 }

@@ -15,6 +15,7 @@ public abstract class Entity {
     public float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
+    protected boolean toRemove;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {
@@ -25,6 +26,7 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
+        this.toRemove = false;
 
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
@@ -32,8 +34,9 @@ public abstract class Entity {
 
     public abstract void move(ArrayList<Entity> allEntities);
 
-    public abstract boolean isReachEnd(ArrayList<Entity> allEntities);
+    public abstract boolean isGameEnd();
 
+    
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)
             return;
@@ -52,9 +55,16 @@ public abstract class Entity {
         return rectangle.getPosition(new Vector2());
     }
 
+    public boolean isToRemove() {
+        return toRemove;
+    }
+
+    public void setToRemove(boolean toRemove) {
+        this.toRemove = toRemove;
+    }
+
     public void dispose() {
-        if (texture != null)
-            texture.dispose();
+        texture.dispose();
     }
 
     public float getX() {

@@ -1,6 +1,7 @@
 package com.mygdx.game.collision;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
@@ -8,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig.GameEntityType;
-import com.mygdx.game.movements.Movement;
 
 public class Collision extends CollisionManager {
 
@@ -48,7 +48,6 @@ public class Collision extends CollisionManager {
     // segments
     public static boolean checkHorizontalCollision(Entity entity, Vector2 horizontalMovementDelta,
             ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions) {
-        // Check collision for the entity's head
         if (willCollide(entity, new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY()), allEntities)) {
             return true;
         }
@@ -60,17 +59,30 @@ public class Collision extends CollisionManager {
         return false;
     }
 
-    public static boolean isReachEnd(Entity entity, ArrayList<Entity> allEntities, Movement movement) {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        Vector2 horizontalMovementDelta = movement.calculateHorizontalMovement(entity.getX(), entity.getSpeed(),
-                deltaTime);
-        Vector2 newHorizontalPosition = new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY());
+    public static boolean willCollide(Entity entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
+        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, entity.getWidth(), entity.getHeight());
+        for (Entity other : allEntities) {
+            if (other != entity && newRect.overlaps(other.getRectangle())) {
+                if (other.getEntityType() == GameEntityType.TARGET) {
+                    other.setToRemove(true);
+                }
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
+    }
 
-        Vector2 verticalMovementDelta = movement.calculateVerticalMovement(entity.getY(), entity.getSpeed(), deltaTime);
-        Vector2 newVerticalPosition = new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y);
-
-        return willCollide(entity, newHorizontalPosition, allEntities)
-                || willCollide(entity, newVerticalPosition, allEntities);
+    public static boolean willCollide(Vector2 entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
+        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
+        for (Entity other : allEntities) {
+            if (newRect.overlaps(other.getRectangle())) {
+                if (other.getEntityType() == GameEntityType.TARGET) {
+                    other.setToRemove(true);
+                }
+                return true; // Collision detected
+            }
+        }
+        return false; // No collision detected
     }
 
 }

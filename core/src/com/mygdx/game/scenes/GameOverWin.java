@@ -1,9 +1,11 @@
 package com.mygdx.game.scenes;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
@@ -17,10 +19,12 @@ public class GameOverWin extends Scene {
     private Texture restartButton;
     private Texture background;
     private SoundEffects sound;
+    private EntityManager entityManager;
 
-    public GameOverWin(SceneManager sceneManager) {
+    public GameOverWin(SceneManager sceneManager, EntityManager entityManager) {
         super();
         this.sceneManager = sceneManager;
+        this.entityManager = entityManager;
         this.sound = GameSceneType.GAME_OVER_WIN.getSound();
     }
 
@@ -33,7 +37,7 @@ public class GameOverWin extends Scene {
         sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
-        } 
+        }
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -51,14 +55,15 @@ public class GameOverWin extends Scene {
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
-        });       
+        });
     }
 
     @Override
     public void hide() {
         sound.stop();
-        // throw new UnsupportedOperationException("Unimplemented method 'hide'");
+        entityManager.dispose(batch);
     }
+
     @Override
     public void render(float delta) {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
