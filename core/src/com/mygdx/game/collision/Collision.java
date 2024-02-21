@@ -66,7 +66,11 @@ public class Collision extends CollisionManager {
                 deltaTime);
         Vector2 newHorizontalPosition = new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY());
 
-        return willCollide(entity, newHorizontalPosition, allEntities);
+        Vector2 verticalMovementDelta = movement.calculateVerticalMovement(entity.getY(), entity.getSpeed(), deltaTime);
+        Vector2 newVerticalPosition = new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y);
+
+        return willCollide(entity, newHorizontalPosition, allEntities)
+                || willCollide(entity, newVerticalPosition, allEntities);
     }
 
 }
