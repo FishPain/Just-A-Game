@@ -22,6 +22,11 @@ public class EntityManager {
         entities.add(entity);
     }
 
+    public void addAIBot(Entity AIBot) {
+        System.out.println("Entity entity: " + (AIBot));
+        entities.add(AIBot);
+    }
+
     public void addEntities(ArrayList<? extends Entity> entities) {
         this.entities.addAll(entities);
     }

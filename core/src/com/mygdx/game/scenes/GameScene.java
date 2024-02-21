@@ -11,6 +11,7 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.ai.AIBot;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
 
@@ -57,6 +58,10 @@ public class GameScene extends Scene {
         // randomly spawn the target obstacles
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
                 entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
+
+        entityManager.addAIBot(new AIBot(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 2 + 100, 50, 50,
+        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
+        GameEntityType.SNAKE_HEAD));
 
         timer.startTimer();
         sound.play(GameConfig.MUSIC_VOLUME);
