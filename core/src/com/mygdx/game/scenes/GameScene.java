@@ -49,13 +49,13 @@ public class GameScene extends Scene {
         // spawn the platform borders
         entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
 
-        // randomly spawn the platforms obstacles
-        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
-                entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-
         // randomly spawn the target obstacles
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
                 entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
+
+        // randomly spawn the platforms obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
+                entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
 
         timer.startTimer();
         sound.play(GameConfig.MUSIC_VOLUME);
