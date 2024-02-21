@@ -1,25 +1,21 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import com.mygdx.engine.Utils;
 
 import java.util.ArrayList;
 
 public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
-    protected float x, y, width, height, speed;
+    public float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
-    protected static final float GRAVITY = 200f;
-
-    public enum EntityType {
-        SNAKE_HEAD,
-        SNAKE_BODY,
-        PLATFORM
-    }
+    protected boolean toRemove;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {
@@ -30,26 +26,45 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
+        this.toRemove = false;
 
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
     public abstract void move(ArrayList<Entity> allEntities);
 
+    public abstract boolean isGameEnd();
+
+    
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)
             return;
         batch.draw(texture, x, y, width, height);
     }
 
-    protected void updatePosition() {
+    public void updatePosition() {
         rectangle.setPosition(x, y);
     }
 
+    public void setPosition(float x, float y) {
+        rectangle.setPosition(new Vector2(x, y));
+    }
+
+    public Vector2 getPosition() {
+        return rectangle.getPosition(new Vector2());
+    }
+
+    public boolean isToRemove() {
+        return toRemove;
+    }
+
+    public void setToRemove(boolean toRemove) {
+        this.toRemove = toRemove;
+    }
+
     public void dispose() {
-        if (texture != null)
-            texture.dispose();
+        texture.dispose();
     }
 
     public float getX() {
@@ -57,7 +72,7 @@ public abstract class Entity {
     }
 
     public void setX(float x) {
-        this.rectangle.x = x;
+        rectangle.x = x;
     }
 
     public float getY() {
@@ -65,7 +80,7 @@ public abstract class Entity {
     }
 
     public void setY(float y) {
-        this.rectangle.y = y;
+        rectangle.y = y;
     }
 
     public float getWidth() {
@@ -125,6 +140,6 @@ public abstract class Entity {
     }
 
     public void setTexture(String texturePath) {
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
     }
 }

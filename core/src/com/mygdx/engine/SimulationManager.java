@@ -2,13 +2,8 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
-/**
- * This is the simulation lifecycle management class.
- * {@link https://libgdx.com/wiki/app/the-life-cycle}
- * 
- * @author Tony
- */
 public class SimulationManager extends ApplicationAdapter {
+
 	@Override
 	public void create() {
 	}

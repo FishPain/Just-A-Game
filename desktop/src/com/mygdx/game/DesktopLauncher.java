@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
+
 public class DesktopLauncher {
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -15,7 +16,8 @@ public class DesktopLauncher {
         config.setForegroundFPS(GameConfig.FPS);
         config.setTitle(GameConfig.TITLE);
 
-        // Note: For macOS, ensure to start the application with -XstartOnFirstThread JVM argument
+        // Note: For macOS, ensure to start the application with -XstartOnFirstThread
+        // JVM argument
         new Lwjgl3Application(new Game(), config);
     }
 }
