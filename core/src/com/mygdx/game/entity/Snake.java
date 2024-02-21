@@ -12,7 +12,6 @@ import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.game.movements.Movement;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
-import com.mygdx.game.collision.Collision;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class Snake extends Entity {
     private Texture headTexture, bodyTexture;
     private Movement movement;
     private EntityManager entityManager;
-    private final float segmentSpacing = GameConfig.ASSET_SIZE;
+    private final float segmentSpacing = GameConfig.PLATFORM_SIZE;
 
     public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,

@@ -1,9 +1,6 @@
 package com.mygdx.game.collision;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;

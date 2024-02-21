@@ -5,25 +5,19 @@ import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.collision.Collision;
-import com.mygdx.game.entity.Platform;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
-import com.mygdx.engine.io.Timer;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
-    // this class will load all the required entityies using entity manager
     private EntityManager entityManager;
     private SceneManager sceneManager;
     private SoundEffects sound;
