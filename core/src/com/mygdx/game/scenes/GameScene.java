@@ -42,7 +42,8 @@ public class GameScene extends Scene {
     public void show() {
         // spawn the player
         entityManager.addPlayer(
-                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, 30, 30,
+                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, GameConfig.SNAKE_SIZE,
+                        GameConfig.SNAKE_SIZE,
                         200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                         GameEntityType.SNAKE_HEAD, keyStrokeManager, entityManager));
 

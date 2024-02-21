@@ -18,4 +18,6 @@ public abstract class Scene extends ScreenAdapter {
 
     public abstract void hide();
 
+    public abstract void render(float delta);
+
 }
