@@ -1,11 +1,17 @@
 package com.mygdx.game.collision;
 
 import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
+import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.ai.AIBot;
+import com.mygdx.game.ai.AIMovement;
 
 public class Collision extends CollisionManager {
 
@@ -80,6 +86,15 @@ public class Collision extends CollisionManager {
             }
         }
         return false; // No collision detected
+    }
+
+    public static boolean isReachEndAI(AIBot entity, ArrayList<Entity> allEntities, AIMovement movement) {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        Vector2 movementDelta = new Vector2();
+        movementDelta = ControlManager.calculateMovement(movementDelta, GameConfig.ENTITY_SPEED * deltaTime, 0);
+
+        return willCollide(entity, movementDelta, allEntities);
+        
     }
 
 }

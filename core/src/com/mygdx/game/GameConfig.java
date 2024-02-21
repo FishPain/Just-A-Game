@@ -24,6 +24,8 @@ public class GameConfig {
     public static final int NUM_OF_TARGETS = 2;
     public static final int PLATFORM_SIZE = 50;
     public static final int SNAKE_SIZE = 25;
+    public static final float ENTITY_SPEED = 20f;
+    public static final int ASSET_SIZE = 50;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
