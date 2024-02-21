@@ -42,20 +42,21 @@ public class GameScene extends Scene {
     public void show() {
         // spawn the player
         entityManager.addPlayer(
-                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, 30, 30,
+                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, GameConfig.SNAKE_SIZE,
+                        GameConfig.SNAKE_SIZE,
                         200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
                         GameEntityType.SNAKE_HEAD, keyStrokeManager, entityManager));
 
         // spawn the platform borders
         entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
 
-        // randomly spawn the target obstacles
-        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
-                entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
-
         // randomly spawn the platforms obstacles
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
                 entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
+
+        // randomly spawn the target obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
+                entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
 
         timer.startTimer();
         sound.play(GameConfig.MUSIC_VOLUME);
