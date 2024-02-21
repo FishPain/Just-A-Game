@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 
-public class CollisionManager {
+public class CollisionManager{
 
     public static boolean willCollide(Entity entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
         Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, entity.getWidth(), entity.getHeight());

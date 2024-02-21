@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
@@ -17,10 +18,12 @@ public class GameOverLose extends Scene {
     private Texture background;
     private Texture restartButton;
     private SoundEffects sound;
+    private EntityManager entityManager;
 
-    public GameOverLose(SceneManager sceneManager) {
+    public GameOverLose(SceneManager sceneManager, EntityManager entityManager) {
         super();
         this.sceneManager = sceneManager;
+        this.entityManager = entityManager;
         this.sound = GameSceneType.GAME_OVER_LOSE.getSound();
     }
 
@@ -56,7 +59,7 @@ public class GameOverLose extends Scene {
     @Override
     public void hide() {
         sound.stop();
-        // throw new UnsupportedOperationException("Unimplemented method 'hide'");
+        entityManager.dispose(batch);
     }
 
     @Override

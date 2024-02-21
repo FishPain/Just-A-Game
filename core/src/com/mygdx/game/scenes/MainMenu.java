@@ -73,7 +73,6 @@ public class MainMenu extends Scene {
     @Override
     public void hide() {
         sound.stop();
-        // Add logic to hide the scene
     }
 
     @Override

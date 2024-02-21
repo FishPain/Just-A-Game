@@ -1,30 +1,29 @@
 package com.mygdx.game;
 
-import com.mygdx.engine.Utils;
-import com.mygdx.engine.Utils.Settings;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.engine.scene.SceneManager;
 
-import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-
-import org.json.JSONObject;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
     public static final int SCREEN_HEIGHT;
     public static final boolean RESIZABLE = false;
     public static final boolean FULLSCREEN = false;
-    public static final int ASSET_SIZE = 50;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
+    public static int SNAKE_BODY_LENGTH = 0;
+    public static final int TIME_LIMIT = 10;
+    public static final int NUM_OF_OBSTACLES = 30;
+    public static final int NUM_OF_TARGETS = 2;
+    public static final int PLATFORM_SIZE = 50;
+    public static final int SNAKE_SIZE = 25;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -43,43 +42,42 @@ public class GameConfig {
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
 
-    public static final ArrayList<Point> PLATFORM_POSITIONS = new ArrayList<Point>() {
+    public static final Point SNAKE_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
+
+    public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
             int i = 0;
-            while (i * ASSET_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * ASSET_SIZE, 1));
+            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * PLATFORM_SIZE, 0));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
-            while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * ASSET_SIZE + 1));
+            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
+                add(new Point(0, i * PLATFORM_SIZE));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
-            while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE + 1));
+            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
+                add(new Point(SCREEN_WIDTH - PLATFORM_SIZE, i * PLATFORM_SIZE));
                 i++;
             }
 
-            // middle platforms
-            i = 5;
-            while (i * ASSET_SIZE < (SCREEN_WIDTH - ASSET_SIZE * 6)) {
-                add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT / 4));
+            // Top edge
+            i = 1;
+            while (i * PLATFORM_SIZE < SCREEN_WIDTH - 1) {
+                add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
                 i++;
             }
-            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 51));
 
-            // use a random number generator to generate the rest of the platforms
-            Random rand = new Random();
-            for (i = 0; i < 10; i++) {
-                add(new Point(rand.nextInt(SCREEN_WIDTH - ASSET_SIZE), rand.nextInt(SCREEN_HEIGHT
-                        - ASSET_SIZE)));
-            }
+            // // middle platforms
+            // for (i = 7; i < 13; i++) {
+            // add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT / 4));
+            // }
         }
     };
 

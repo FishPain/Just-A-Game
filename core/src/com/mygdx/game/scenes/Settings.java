@@ -10,9 +10,7 @@ import com.mygdx.engine.Utils;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
-import com.mygdx.game.GameConfig.GameSceneType;
 
 public class Settings extends Scene {
 
@@ -54,7 +52,7 @@ public class Settings extends Scene {
 
                     // Play or stop music based on the toggle
                     if (GameConfig.isMusicEnabled) {
-                        sound.play(1.0f);
+                        sound.play(GameConfig.MUSIC_VOLUME);
                     } else {
                         sound.stop();
                     }
@@ -84,7 +82,8 @@ public class Settings extends Scene {
         // Draw toggle button
         batch.draw(
                 new Texture(Utils.getInternalFilePath(
-                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName() : Assets.SOUND_OFF_BTN.getFileName())),
+                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName()
+                                : Assets.SOUND_OFF_BTN.getFileName())),
                 200, 300, 200, 50);
     }
 

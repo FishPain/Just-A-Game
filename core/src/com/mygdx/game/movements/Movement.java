@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.collision.Collision;
 
@@ -22,6 +21,7 @@ public class Movement extends Collision {
             ArrayList<Vector2> bodyPositions, float deltaTime) {
         Vector2 horizontalMovementDelta = calculateHorizontalMovement(entity.x, entity.speed,
                 deltaTime);
+
         // Use the CollisionManager for collision checks
         boolean horizontalCollision = checkHorizontalCollision(entity, horizontalMovementDelta,
                 allEntities, bodyPositions);
@@ -37,29 +37,6 @@ public class Movement extends Collision {
         }
     }
 
-    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities,
-            ArrayList<Vector2> bodyPositions, float deltaTime) {
-        // Vector2 verticalMovementDelta = new Vector2(0, GameConfig.GRAVITY *
-        // deltaTime);
-
-        Vector2 verticalMovementDelta = calculateVerticalMovement(entity.y, entity.speed, deltaTime);
-        // only fall if neither the entity nor its body segments are on a platform
-        boolean isOnPlatform = isOnPlatform(entity, allEntities, bodyPositions);
-
-        boolean verticalCollision = willCollide(entity,
-                new Vector2(entity.x, entity.y + verticalMovementDelta.y), allEntities);
-
-        // Apply vertical movement if no collision detected and not on a platform
-        if (!verticalCollision && !isOnPlatform) {
-            entity.y += verticalMovementDelta.y;
-            // Update body positions vertically
-            for (int i = 0; i < bodyPositions.size(); i++) {
-                Vector2 bodyPos = bodyPositions.get(i);
-                bodyPositions.set(i, new Vector2(bodyPos.x, bodyPos.y + verticalMovementDelta.y));
-            }
-        }
-    }
-
     public Vector2 calculateHorizontalMovement(float x, float speed,
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
@@ -70,6 +47,25 @@ public class Movement extends Collision {
             movementDelta = ControlManager.calculateMovement(movementDelta, speed * deltaTime, 0);
         }
         return movementDelta;
+    }
+
+    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions,
+            float deltaTime) {
+        Vector2 verticalMovementDelta = calculateVerticalMovement(entity.y, entity.speed, deltaTime);
+        boolean isOnPlatform = isOnPlatform(entity, allEntities, bodyPositions);
+
+        boolean verticalCollision = willCollide(entity, new Vector2(entity.x, entity.y + verticalMovementDelta.y),
+                allEntities);
+
+        // Allow upward movement if on a platform or if there's no vertical collision
+        if (!verticalCollision || (isOnPlatform && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
+            entity.y += verticalMovementDelta.y;
+            // Update body positions vertically
+            for (int i = 0; i < bodyPositions.size(); i++) {
+                Vector2 bodyPos = bodyPositions.get(i);
+                bodyPositions.set(i, new Vector2(bodyPos.x, bodyPos.y + verticalMovementDelta.y));
+            }
+        }
     }
 
     public Vector2 calculateVerticalMovement(float y, float speed,

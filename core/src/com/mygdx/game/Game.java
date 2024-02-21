@@ -58,8 +58,8 @@ public class Game extends SimulationManager {
         SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager, keyStrokeManager));
 
         // end scene
-        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager));
-        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager, EntityManager));
     }
 
     @Override
