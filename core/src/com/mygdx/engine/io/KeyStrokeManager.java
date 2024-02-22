@@ -13,7 +13,6 @@ public class KeyStrokeManager extends Settings {
     // Constructor to load default keystroke values
     public KeyStrokeManager(String filePath) {
         this.keyStrokeMap = new HashMap<>();
-
         // Load the default key strokes from the file
         loadKeyStrokes(filePath);
     }

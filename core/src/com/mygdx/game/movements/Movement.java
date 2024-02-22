@@ -19,7 +19,7 @@ public class Movement extends Collision {
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
             ArrayList<Vector2> bodyPositions, float deltaTime) {
-        Vector2 horizontalMovementDelta = calculateHorizontalMovement(entity.x, entity.speed,
+        Vector2 horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(),
                 deltaTime);
 
         // Use the CollisionManager for collision checks
@@ -28,7 +28,8 @@ public class Movement extends Collision {
 
         // Apply horizontal movement if no collision detected
         if (!horizontalCollision) {
-            entity.x += horizontalMovementDelta.x;
+            entity.setX(entity.getX() + horizontalMovementDelta.x);
+            // entity.x += horizontalMovementDelta.x;
             // Update body positions horizontally
             for (int i = 0; i < bodyPositions.size(); i++) {
                 Vector2 bodyPos = bodyPositions.get(i);
@@ -37,7 +38,7 @@ public class Movement extends Collision {
         }
     }
 
-    public Vector2 calculateHorizontalMovement(float x, float speed,
+    public Vector2 calculateHorizontalMovement(float speed,
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
@@ -51,15 +52,16 @@ public class Movement extends Collision {
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions,
             float deltaTime) {
-        Vector2 verticalMovementDelta = calculateVerticalMovement(entity.y, entity.speed, deltaTime);
+        Vector2 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
         boolean isOnPlatform = isOnPlatform(entity, allEntities, bodyPositions);
-
-        boolean verticalCollision = willCollide(entity, new Vector2(entity.x, entity.y + verticalMovementDelta.y),
+        boolean verticalCollision = willCollide(entity,
+                new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
                 allEntities);
 
         // Allow upward movement if on a platform or if there's no vertical collision
         if (!verticalCollision || (isOnPlatform && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
-            entity.y += verticalMovementDelta.y;
+            entity.setY(entity.getY() + verticalMovementDelta.y);
+            // entity.y += verticalMovementDelta.y;
             // Update body positions vertically
             for (int i = 0; i < bodyPositions.size(); i++) {
                 Vector2 bodyPos = bodyPositions.get(i);
@@ -68,7 +70,7 @@ public class Movement extends Collision {
         }
     }
 
-    public Vector2 calculateVerticalMovement(float y, float speed,
+    public Vector2 calculateVerticalMovement(float speed,
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
         if (keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName())) {

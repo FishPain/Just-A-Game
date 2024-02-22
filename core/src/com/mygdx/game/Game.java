@@ -87,5 +87,6 @@ public class Game extends SimulationManager {
     public void dispose() {
         EntityManager.dispose(batch);
         batch.dispose();
+        
     }
 }

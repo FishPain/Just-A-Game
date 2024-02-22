@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
-    public float x, y, width, height, speed;
+    protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
     protected boolean toRemove;
@@ -36,7 +36,6 @@ public abstract class Entity {
 
     public abstract boolean isGameEnd();
 
-    
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)
             return;
@@ -68,19 +67,19 @@ public abstract class Entity {
     }
 
     public float getX() {
-        return rectangle.x;
+        return this.x;
     }
 
     public void setX(float x) {
-        rectangle.x = x;
+        this.x = x;
     }
 
     public float getY() {
-        return rectangle.y;
+        return this.y;
     }
 
     public void setY(float y) {
-        rectangle.y = y;
+        this.y = y;
     }
 
     public float getWidth() {
