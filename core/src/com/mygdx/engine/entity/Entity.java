@@ -27,7 +27,6 @@ public abstract class Entity {
         this.isMovable = isMovable;
         this.entityType = entityType;
         this.toRemove = false;
-
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
