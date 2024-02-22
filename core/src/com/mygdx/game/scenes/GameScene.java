@@ -13,8 +13,6 @@ import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
@@ -28,13 +26,13 @@ public class GameScene extends Scene {
     // Timer timer;
 
     public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-        super();
+        super(Assets.GAME_SCENE_BG.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
         this.platformManager = new PlatformManager();
         this.sound = GameSceneType.GAME_SCENE.getSound();
-        this.timer = new Timer(new SpriteBatch(), GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
+        this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
     }
 
@@ -59,10 +57,8 @@ public class GameScene extends Scene {
                 entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
 
         timer.startTimer();
-        sound.play(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled) {
-            sound.stop();
-        }
+        if (GameConfig.isMusicEnabled)
+            sound.play(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
@@ -74,8 +70,9 @@ public class GameScene extends Scene {
     @Override
     public void render(float delta) {
         ArrayList<Entity> entities = entityManager.getEntities();
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
 
-        timer.updateAndRender();
+        timer.updateAndRender(batch);
         for (Entity entity : entities) {
             entity.draw(batch);
             entity.move(entities);

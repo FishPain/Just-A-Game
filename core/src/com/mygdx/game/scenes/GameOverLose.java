@@ -21,7 +21,7 @@ public class GameOverLose extends Scene {
     private EntityManager entityManager;
 
     public GameOverLose(SceneManager sceneManager, EntityManager entityManager) {
-        super();
+        super(Assets.GAME_OVER_LOSE.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.sound = GameSceneType.GAME_OVER_LOSE.getSound();
@@ -31,7 +31,6 @@ public class GameOverLose extends Scene {
     public void show() {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_LOSE.getFileName()));
         restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
-        sound.play(GameConfig.MUSIC_VOLUME);
 
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
@@ -54,6 +53,9 @@ public class GameOverLose extends Scene {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
+
+        if (GameConfig.isMusicEnabled)
+            sound.play(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
@@ -64,8 +66,8 @@ public class GameOverLose extends Scene {
 
     @Override
     public void render(float delta) {
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(restartButton, Gdx.graphics.getWidth() / 2 - restartButton.getWidth() / 2, 50);
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        batch.draw(restartButton, GameConfig.SCREEN_WIDTH / 2 - restartButton.getWidth() / 2, 50);
     }
 
     @Override

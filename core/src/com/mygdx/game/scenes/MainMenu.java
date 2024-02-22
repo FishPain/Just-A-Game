@@ -21,6 +21,7 @@ public class MainMenu extends Scene {
     private SoundEffects sound;
 
     public MainMenu(SceneManager sceneManager) {
+        super(Assets.MAIN_MENU_BG.getFileName());
         this.sceneManager = sceneManager;
         this.sound = GameSceneType.MAIN_MENU.getSound();
     }
@@ -78,8 +79,7 @@ public class MainMenu extends Scene {
     @Override
     public void render(float delta) {
         float buttonSpacing = 20;
-
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.draw(playButton, Gdx.graphics.getWidth() / 2 - playButton.getWidth() - buttonSpacing / 2,
                 Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2);
         batch.draw(settingButton, Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2,

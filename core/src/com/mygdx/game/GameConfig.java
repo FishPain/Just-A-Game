@@ -69,7 +69,7 @@ public class GameConfig {
 
             // Top edge
             i = 1;
-            while (i * PLATFORM_SIZE < SCREEN_WIDTH - 1) {
+            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
                 add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
                 i++;
             }
@@ -151,19 +151,21 @@ public class GameConfig {
     }
 
     public static enum Assets {
-        SNAKE_HEAD("snakeHead.jpg"),
-        SNAKE_BODY("snakeBody.jpg"),
-        PLATFORM("stoneTex.jpg"),
-        TARGET("badlogic.jpg"),
-        MAIN_MENU_BG("mainMenuBg.jpg"),
-        PLAY_BTN("playBtn.png"),
-        RESTART_BTN("restartBtn.png"),
-        SETTINGS_BTN("settingsBtn.png"),
-        GAME_OVER_WIN("Game_over.png"),
-        GAME_OVER_LOSE("Game_over_lose.png"),
-        BACK_BTN("backBtn.png"),
-        SOUND_ON_BTN("soundOnBtn.png"),
-        SOUND_OFF_BTN("soundOffBtn.png");
+        BACK_BTN("back_btn.png"),
+        GAME_OVER_LOSE("game_over_lose.png"),
+        GAME_OVER_WIN("game_over_win.png"),
+        GAME_SCENE_BG("game_scene_bg.png"),
+        MAIN_MENU_BG("main_menu_bg.jpg"),
+        PLAY_BTN("play_btn.png"),
+        PLATFORM("platform.jpg"),
+        RESTART_BTN("restart_btn.png"),
+        SETTINGS_BTN("settings_btn.png"),
+        SNAKE_BODY("snake_body.jpg"),
+        SNAKE_HEAD("snake.png"),
+        SOUND_OFF_BTN("sound_off_btn.png"),
+        SOUND_ON_BTN("sound_on_btn.png"),
+        TARGET("target.png"),
+        TIMER_BG("timer_bg.png");
 
         private String fileName;
 

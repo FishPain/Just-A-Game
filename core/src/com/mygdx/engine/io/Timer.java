@@ -10,11 +10,9 @@ public class Timer implements Disposable {
     private long countdownTime;
     private boolean isRunning;
     private BitmapFont font;
-    private SpriteBatch batch;
     private float x, y;
 
-    public Timer(SpriteBatch batch, float x, float y, int countdownSeconds) {
-        this.batch = batch;
+    public Timer(float x, float y, int countdownSeconds) {
         this.x = x;
         this.y = y;
         this.font = new BitmapFont();
@@ -38,7 +36,7 @@ public class Timer implements Disposable {
         isRunning = false;
     }
 
-    public void updateAndRender() {
+    public void updateAndRender(SpriteBatch batch) {
         if (isRunning) {
             long currentTime = TimeUtils.millis();
             long elapsedTime = currentTime - startTime;
@@ -48,9 +46,7 @@ public class Timer implements Disposable {
                 stopTimer(); // Optionally stop the timer when it reaches 0
             }
             String timeString = "Time: " + (remainingTime / 1000) + " seconds";
-            batch.begin();
-            font.draw(this.batch, timeString, x,y);
-            batch.end();
+            font.draw(batch, timeString, x, y);
         }
     }
 
