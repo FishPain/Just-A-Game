@@ -1,9 +1,50 @@
 package com.mygdx.engine;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.files.FileHandle;
 
+import java.util.HashMap;
+
+import org.json.JSONObject;
+
 public class Utils {
+    public static class Settings {
+        public static Object loadSettings(String filePath, String key) {
+            String jsonContent;
+
+            // if local file is available, load it, else load the default file
+            if (Gdx.files.local(filePath).exists()) {
+                jsonContent = Gdx.files.local(filePath).readString();
+            } else {
+                jsonContent = Gdx.files.internal(filePath).readString();
+            }
+
+            try {
+                System.out.println("Settings loaded successfully.");
+                return new JSONObject(jsonContent).get(key);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error reading or writing the settings file.");
+                return null;
+            }
+        }
+
+        public static void saveSettings(String filePath, String key, HashMap<String, String> settings) {
+            JSONObject json = new JSONObject();
+            json.put(key, settings);
+            try {
+                Gdx.files.local(filePath).writeString(json.toString(), false);
+                System.out.println("KeyStrokes saved successfully.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error reading or writing the settings file.");
+            }
+        }
+
+    }
+
     // This method is used to get the internal file path defined in the assets
     // folder
     public static FileHandle getInternalFilePath(String filePath) {

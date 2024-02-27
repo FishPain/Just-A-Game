@@ -2,96 +2,89 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.entity.Platform;
+import com.mygdx.game.entity.PlatformManager;
 import com.mygdx.game.entity.Snake;
-
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
-        // this class will load all the required entityies using entity manager
+    private EntityManager entityManager;
+    private SceneManager sceneManager;
+    private SoundEffects sound;
+    private KeyStrokeManager keyStrokeManager;
+    private PlatformManager platformManager;
+    private Timer timer;
 
-        private EntityManager entityManager;
-        private SceneManager sceneManager;
-        KeyStrokeManager keyStrokeManager;
+    // Timer timer;
 
-        public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-                super();
-                this.sceneManager = sceneManager;
-                this.entityManager = entityManager;
+    public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
+        super(Assets.GAME_SCENE_BG.getFileName());
+        this.sceneManager = sceneManager;
+        this.entityManager = entityManager;
+        this.keyStrokeManager = keyStrokeManager;
+        this.platformManager = new PlatformManager();
+        this.sound = GameSceneType.GAME_SCENE.getSound();
+        this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
+                GameConfig.TIME_LIMIT);
+    }
 
-                entityManager.addPlayer(
-                                new Snake(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2, 50, 50,
-                                                200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
-                                                GameEntityType.SNAKE_HEAD, keyStrokeManager));
+    @Override
+    public void show() {
+        // spawn the player
+        entityManager.addPlayer(
+                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, GameConfig.SNAKE_SIZE,
+                        GameConfig.SNAKE_SIZE,
+                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
+                        GameEntityType.SNAKE_HEAD, keyStrokeManager, entityManager));
 
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 150, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50, Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(new Platform(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 50, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 150, GameConfig.SCREEN_HEIGHT / 4, 50, 50,
-                                                Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
-                entityManager.addEntity(
-                                new Platform(GameConfig.SCREEN_WIDTH / 2 + 100, GameConfig.SCREEN_HEIGHT / 4 + 50, 50,
-                                                50,
-                                                Assets.TARGET.getFileName(), GameEntityType.TARGET));
+        // spawn the platform borders
+        entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
+
+        // randomly spawn the platforms obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
+                entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
+
+        // randomly spawn the target obstacles
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
+                entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
+
+        timer.startTimer();
+        if (GameConfig.isMusicEnabled)
+            sound.play(GameConfig.MUSIC_VOLUME);
+    }
+
+    @Override
+    public void hide() {
+        timer.resetTimer();
+        sound.stop();
+    }
+
+    @Override
+    public void render(float delta) {
+        ArrayList<Entity> entities = entityManager.getEntities();
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+
+        timer.updateAndRender(batch);
+        for (Entity entity : entities) {
+            entity.draw(batch);
+            entity.move(entities);
+
+            if (entity.isGameEnd()) {
+                sceneManager.setScene(GameSceneType.GAME_OVER_WIN);
+            } else if (timer.getRemainingTime() <= 0) {
+                sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
+            }
         }
-
-        @Override
-        public void show() {
-                // throw new UnsupportedOperationException("Unimplemented method 'show'");
-        }
-
-        @Override
-        public void hide() {
-                // throw new UnsupportedOperationException("Unimplemented method 'hide'");
-
-        }
-
-        @Override
-        public void render(float delta) {
-                ArrayList<Entity> entities = entityManager.getEntities();
-
-                for (Entity entity : entities) {
-                        entity.draw(batch);
-                        entity.move(entities);
-                        if (entity.isReachEnd(entityManager.getEntities(GameEntityType.TARGET))) {
-                                System.err.println("Reached the end");
-                                sceneManager.setScene(GameSceneType.GAME_OVER_WIN);
-                        }
-                        // else if (isTimeUp()) {
-                        // sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
-                        // }
-
-                        else if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) { //Temporary placeholder to test GAME OVER LOSE scene
-                                System.err.println("YOU LOST!");
-                                sceneManager.setScene(GameSceneType.GAME_OVER_LOSE);
-                        }
-
-                }
-
-        }
-
+        entityManager.removeEntities();
+    }
 }

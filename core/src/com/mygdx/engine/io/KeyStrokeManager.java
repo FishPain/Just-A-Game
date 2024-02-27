@@ -2,21 +2,17 @@ package com.mygdx.engine.io;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.Utils.Settings;
 
 import java.util.HashMap;
 import org.json.JSONObject;
 
-// Assuming KeyStrokeType is an enum you've defined
-public class KeyStrokeManager {
+public class KeyStrokeManager extends Settings {
     private HashMap<String, Integer> keyStrokeMap;
-
-    public KeyStrokeManager() {
-    }
 
     // Constructor to load default keystroke values
     public KeyStrokeManager(String filePath) {
         this.keyStrokeMap = new HashMap<>();
-
         // Load the default key strokes from the file
         loadKeyStrokes(filePath);
     }
@@ -49,37 +45,15 @@ public class KeyStrokeManager {
     }
 
     public void saveKeyStrokes(String filePath) {
-        JSONObject json = new JSONObject();
-        json.put("KeyStrokes", keyCodeToKeyStroke());
-        try {
-            Gdx.files.local(filePath).writeString(json.toString(), false);
-            System.out.println("KeyStrokes saved successfully.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error reading or writing the settings file.");
-        }
+        saveSettings(filePath, "KeyStrokes", keyCodeToKeyStroke());
     }
 
     private void loadKeyStrokes(String filePath) {
-        String jsonContent;
-        // if local file is available, load it, else load the default file
-        if (Gdx.files.local(filePath).exists()) {
-            jsonContent = Gdx.files.local(filePath).readString();
-        } else {
-            jsonContent = Gdx.files.internal(filePath).readString();
+        Object json = loadSettings(filePath, "KeyStrokes");
+        for (String key : ((JSONObject) json).keySet()) {
+            keyStrokeMap.put(key, Utils.keyNameToKeyCode((String) ((JSONObject) json).get(key)));
         }
-
-        try {
-            Object json = new JSONObject(jsonContent).get("KeyStrokes");
-            for (String key : ((JSONObject) json).keySet()) {
-                keyStrokeMap.put(key, Utils.keyNameToKeyCode((String) ((JSONObject) json).get(key)));
-            }
-            System.out.println("KeyStrokes loaded successfully." + keyStrokeMap.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error reading or writing the settings file.");
-        }
+        System.out.println("KeyStrokes loaded successfully." + keyStrokeMap.toString());
     }
 
     private HashMap<String, String> keyCodeToKeyStroke() {
