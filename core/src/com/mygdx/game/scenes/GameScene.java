@@ -6,7 +6,6 @@ import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
@@ -72,7 +71,9 @@ public class GameScene extends Scene {
     @Override
     public void render(float delta) {
         ArrayList<Entity> entities = entityManager.getEntities();
-        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        // renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
 
         timer.updateAndRender(batch);
         for (Entity entity : entities) {

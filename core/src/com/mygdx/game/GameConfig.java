@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
@@ -19,8 +20,9 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
-    public static final int TIME_LIMIT = 10;
-    public static final int NUM_OF_OBSTACLES = 30;
+    
+    public static int TIME_LIMIT = 7;
+    public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_TARGETS = 2;
     public static final int PLATFORM_SIZE = 50;
     public static final int SNAKE_SIZE = 25;
@@ -30,8 +32,15 @@ public class GameConfig {
         System.out.println("Operating System Name: " + osName);
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            SCREEN_WIDTH = screenSize.width / 2;
-            SCREEN_HEIGHT = screenSize.height / 2;
+            SCREEN_WIDTH = screenSize.width;
+            System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
+            SCREEN_HEIGHT = screenSize.height;
+            System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
+            float widthScaleFactor = (float) SCREEN_WIDTH / 800 ;
+            float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
+            TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
+            System.out.println("TIME_LIMIT: " + TIME_LIMIT);
+
         } else {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
