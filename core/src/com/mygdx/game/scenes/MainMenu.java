@@ -19,6 +19,7 @@ public class MainMenu extends Scene {
     private Texture settingButton;
     private SceneManager sceneManager;
     private SoundEffects sound;
+    boolean sceneActive = true;
 
     public MainMenu(SceneManager sceneManager) {
         super(Assets.MAIN_MENU_BG.getFileName());
@@ -41,10 +42,13 @@ public class MainMenu extends Scene {
         settingButton = new Texture(Utils.getInternalFilePath(Assets.SETTINGS_BTN.getFileName()));
 
         final float buttonSpacing = 20;
-
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
+
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                if (!sceneActive){
+                        return false;
+                    }
                 int worldX = screenX;
                 int worldY = Gdx.graphics.getHeight() - screenY;
 
@@ -52,25 +56,26 @@ public class MainMenu extends Scene {
                         worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 &&
                         worldY >= Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + playButton.getHeight() / 2) {
-
+                        
                     sceneManager.setScene(GameSceneType.GAME_SCENE);
+                    sceneActive = false;
                 } else if (worldX >= Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2 &&
                         worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 + settingButton.getWidth() &&
                         worldY >= Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + settingButton.getHeight() / 2) {
 
                     sceneManager.setScene(GameSceneType.SETTINGS);
+                    sceneActive = false;
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-
+        
         sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
         }
     }
-
     @Override
     public void hide() {
         sound.stop();
@@ -78,12 +83,15 @@ public class MainMenu extends Scene {
 
     @Override
     public void render(float delta) {
+        sceneActive = true;
         float buttonSpacing = 20;
+        int Xscale = Gdx.graphics.getWidth()/16; // Scaling of buttons to different window sizes
+        int Yscale = Gdx.graphics.getHeight()/9;
         renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(playButton, Gdx.graphics.getWidth() / 2 - playButton.getWidth() - buttonSpacing / 2,
-                Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2);
-        batch.draw(settingButton, Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2,
-                Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2);
+        batch.draw(playButton, Gdx.graphics.getWidth() / 2 - Xscale - buttonSpacing / 2,
+                Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2, Xscale, Yscale);
+        batch.draw(settingButton, Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth()/16 + buttonSpacing / 2,
+                Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2, Xscale, Yscale);
     }
 
     @Override
