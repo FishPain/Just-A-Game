@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
@@ -17,10 +18,12 @@ public class GameOverWin extends Scene {
     private Texture restartButton;
     private Texture background;
     private SoundEffects sound;
+    private EntityManager entityManager;
 
-    public GameOverWin(SceneManager sceneManager) {
-        super();
+    public GameOverWin(SceneManager sceneManager, EntityManager entityManager) {
+        super(Assets.GAME_OVER_WIN.getFileName());
         this.sceneManager = sceneManager;
+        this.entityManager = entityManager;
         this.sound = GameSceneType.GAME_OVER_WIN.getSound();
     }
 
@@ -29,11 +32,6 @@ public class GameOverWin extends Scene {
         System.out.println("YOU WIN!");
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_WIN.getFileName()));
         restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
-
-        sound.play(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled) {
-            sound.stop();
-        } 
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -51,18 +49,22 @@ public class GameOverWin extends Scene {
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
-        });       
+        });
+
+        if (GameConfig.isMusicEnabled)
+            sound.play(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
         sound.stop();
-        // throw new UnsupportedOperationException("Unimplemented method 'hide'");
+        entityManager.dispose(batch);
     }
+
     @Override
     public void render(float delta) {
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(restartButton, Gdx.graphics.getWidth() / 2 - restartButton.getWidth() / 2, 50);
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        batch.draw(restartButton, GameConfig.SCREEN_WIDTH / 2 - restartButton.getWidth() / 2, 50);
     }
 
     @Override

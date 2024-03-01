@@ -12,9 +12,10 @@ import java.util.ArrayList;
 public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
-    public float x, y, width, height, speed;
+    protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
+    protected boolean toRemove;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
             EntityType entityType) {
@@ -25,14 +26,14 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
-
+        this.toRemove = false;
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
     public abstract void move(ArrayList<Entity> allEntities);
 
-    public abstract boolean isReachEnd(ArrayList<Entity> allEntities);
+    public abstract boolean isGameEnd();
 
     public void draw(SpriteBatch batch) {
         if (batch == null || texture == null)
@@ -52,25 +53,32 @@ public abstract class Entity {
         return rectangle.getPosition(new Vector2());
     }
 
+    public boolean isToRemove() {
+        return toRemove;
+    }
+
+    public void setToRemove(boolean toRemove) {
+        this.toRemove = toRemove;
+    }
+
     public void dispose() {
-        if (texture != null)
-            texture.dispose();
+        texture.dispose();
     }
 
     public float getX() {
-        return rectangle.x;
+        return this.x;
     }
 
     public void setX(float x) {
-        rectangle.x = x;
+        this.x = x;
     }
 
     public float getY() {
-        return rectangle.y;
+        return this.y;
     }
 
     public void setY(float y) {
-        rectangle.y = y;
+        this.y = y;
     }
 
     public float getWidth() {

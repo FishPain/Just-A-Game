@@ -1,38 +1,46 @@
 package com.mygdx.game;
 
-import com.mygdx.engine.Utils;
-import com.mygdx.engine.Utils.Settings;
+import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.engine.scene.SceneManager;
 
-import java.util.Random;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
-
-import org.json.JSONObject;
 
 public class GameConfig {
     public static final int SCREEN_WIDTH;
     public static final int SCREEN_HEIGHT;
     public static final boolean RESIZABLE = false;
     public static final boolean FULLSCREEN = false;
-    public static final int ASSET_SIZE = 50;
     public static final int FPS = 60;
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
+    public static int SNAKE_BODY_LENGTH = 0;
+    
+    public static int TIME_LIMIT = 7;
+    public static final int NUM_OF_OBSTACLES = 100;
+    public static final int NUM_OF_TARGETS = 2;
+    public static final int PLATFORM_SIZE = 50;
+    public static final int SNAKE_SIZE = 25;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Operating System Name: " + osName);
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            SCREEN_WIDTH = screenSize.width / 2;
-            SCREEN_HEIGHT = screenSize.height / 2;
+            SCREEN_WIDTH = screenSize.width;
+            System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
+            SCREEN_HEIGHT = screenSize.height;
+            System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
+            float widthScaleFactor = (float) SCREEN_WIDTH / 800 ;
+            float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
+            TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
+            System.out.println("TIME_LIMIT: " + TIME_LIMIT);
+
         } else {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
@@ -43,43 +51,42 @@ public class GameConfig {
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
 
-    public static final ArrayList<Point> PLATFORM_POSITIONS = new ArrayList<Point>() {
+    public static final Point SNAKE_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
+
+    public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
             int i = 0;
-            while (i * ASSET_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * ASSET_SIZE, 1));
+            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * PLATFORM_SIZE, 0));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
-            while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * ASSET_SIZE + 1));
+            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
+                add(new Point(0, i * PLATFORM_SIZE));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
-            while (i * ASSET_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - ASSET_SIZE, i * ASSET_SIZE + 1));
+            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
+                add(new Point(SCREEN_WIDTH - PLATFORM_SIZE, i * PLATFORM_SIZE));
                 i++;
             }
 
-            // middle platforms
-            i = 5;
-            while (i * ASSET_SIZE < (SCREEN_WIDTH - ASSET_SIZE * 6)) {
-                add(new Point(i * ASSET_SIZE, SCREEN_HEIGHT / 4));
+            // Top edge
+            i = 1;
+            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
                 i++;
             }
-            add(new Point((i * ASSET_SIZE) - 450, (SCREEN_HEIGHT / 4) + 51));
 
-            // use a random number generator to generate the rest of the platforms
-            Random rand = new Random();
-            for (i = 0; i < 10; i++) {
-                add(new Point(rand.nextInt(SCREEN_WIDTH - ASSET_SIZE), rand.nextInt(SCREEN_HEIGHT
-                        - ASSET_SIZE)));
-            }
+            // // middle platforms
+            // for (i = 7; i < 13; i++) {
+            // add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT / 4));
+            // }
         }
     };
 
@@ -153,19 +160,21 @@ public class GameConfig {
     }
 
     public static enum Assets {
-        SNAKE_HEAD("snakeHead.jpg"),
-        SNAKE_BODY("snakeBody.jpg"),
-        PLATFORM("stoneTex.jpg"),
-        TARGET("badlogic.jpg"),
-        MAIN_MENU_BG("mainMenuBg.jpg"),
-        PLAY_BTN("playBtn.png"),
-        RESTART_BTN("restartBtn.png"),
-        SETTINGS_BTN("settingsBtn.png"),
-        GAME_OVER_WIN("Game_over.png"),
-        GAME_OVER_LOSE("Game_over_lose.png"),
-        BACK_BTN("backBtn.png"),
-        SOUND_ON_BTN("soundOnBtn.png"),
-        SOUND_OFF_BTN("soundOffBtn.png");
+        BACK_BTN("back_btn.png"),
+        GAME_OVER_LOSE("game_over_lose.png"),
+        GAME_OVER_WIN("game_over_win.png"),
+        GAME_SCENE_BG("game_scene_bg.png"),
+        MAIN_MENU_BG("main_menu_bg.jpg"),
+        PLAY_BTN("play_btn.png"),
+        PLATFORM("platform.jpg"),
+        RESTART_BTN("restart_btn.png"),
+        SETTINGS_BTN("settings_btn.png"),
+        SNAKE_BODY("snake_body.jpg"),
+        SNAKE_HEAD("snake.png"),
+        SOUND_OFF_BTN("sound_off_btn.png"),
+        SOUND_ON_BTN("sound_on_btn.png"),
+        TARGET("target.png"),
+        TIMER_BG("timer_bg.png");
 
         private String fileName;
 

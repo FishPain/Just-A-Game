@@ -10,9 +10,7 @@ import com.mygdx.engine.Utils;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.engine.io.SoundEffects;
-import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
-import com.mygdx.game.GameConfig.GameSceneType;
 
 public class Settings extends Scene {
 
@@ -24,6 +22,7 @@ public class Settings extends Scene {
     private BitmapFont font;
 
     public Settings(SceneManager sceneManager) {
+        super(Assets.MAIN_MENU_BG.getFileName());
         this.sceneManager = sceneManager;
         this.sound = GameSceneType.SETTINGS.getSound();
         font = new BitmapFont();
@@ -31,7 +30,6 @@ public class Settings extends Scene {
 
     @Override
     public void show() {
-        background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
         backButton = new Texture(Utils.getInternalFilePath(Assets.BACK_BTN.getFileName()));
 
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -54,7 +52,7 @@ public class Settings extends Scene {
 
                     // Play or stop music based on the toggle
                     if (GameConfig.isMusicEnabled) {
-                        sound.play(1.0f);
+                        sound.play(GameConfig.MUSIC_VOLUME);
                     } else {
                         sound.stop();
                     }
@@ -62,8 +60,8 @@ public class Settings extends Scene {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-
-        sound.play(GameConfig.MUSIC_VOLUME);
+        if (GameConfig.isMusicEnabled)
+            sound.play(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
@@ -74,8 +72,7 @@ public class Settings extends Scene {
 
     @Override
     public void render(float delta) {
-
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         batch.draw(backButton, 50, Gdx.graphics.getHeight() - backButton.getHeight() - 50);
 
         // Draw sound label
@@ -84,7 +81,8 @@ public class Settings extends Scene {
         // Draw toggle button
         batch.draw(
                 new Texture(Utils.getInternalFilePath(
-                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName() : Assets.SOUND_OFF_BTN.getFileName())),
+                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName()
+                                : Assets.SOUND_OFF_BTN.getFileName())),
                 200, 300, 200, 50);
     }
 
