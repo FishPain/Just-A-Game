@@ -26,6 +26,12 @@ public class EntityManager {
         this.entities.addAll(entities);
     }
 
+    public void setMovability(ArrayList<? extends Entity> entities, boolean isMovable) {
+        for (Entity entity : entities) {
+            entity.setMovable(isMovable);
+        }
+    }
+
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }

@@ -22,8 +22,8 @@ public class GameScene extends Scene {
     private KeyStrokeManager keyStrokeManager;
     private PlatformManager platformManager;
     private Timer timer;
-
-    // Timer timer;
+    private boolean isPaused;
+    private boolean pauseKeyIsPressed;
 
     public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
         super(Assets.GAME_SCENE_BG.getFileName());
@@ -34,6 +34,8 @@ public class GameScene extends Scene {
         this.sound = GameSceneType.GAME_SCENE.getSound();
         this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
+        this.isPaused = false;
+        this.pauseKeyIsPressed = false;
     }
 
     @Override
@@ -69,15 +71,22 @@ public class GameScene extends Scene {
 
     @Override
     public void render(float delta) {
-        ArrayList<Entity> entities = entityManager.getEntities();
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        // renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         timer.updateAndRender(batch);
+
+        if (keyStrokeManager.isKeyPressed(GameConfig.Keystroke.PAUSE_RESUME.getKeystrokeName())) {
+            if (!pauseKeyIsPressed) {
+                togglePause();
+                pauseKeyIsPressed = true;
+            }
+        } else {
+            pauseKeyIsPressed = false;
+        }
+
+        ArrayList<Entity> entities = entityManager.getEntities();
         for (Entity entity : entities) {
             entity.draw(batch);
-            entity.move(entities);
-
+            entity.move(entities, delta);
             if (entity.isGameEnd()) {
                 sceneManager.setScene(GameSceneType.GAME_OVER_WIN);
             } else if (timer.getRemainingTime() <= 0) {
@@ -85,5 +94,16 @@ public class GameScene extends Scene {
             }
         }
         entityManager.removeEntities();
+    }
+
+    private void togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            timer.pauseTimer();
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.SNAKE_HEAD), false);
+        } else {
+            timer.resumeTimer();
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.SNAKE_HEAD), true);
+        }
     }
 }

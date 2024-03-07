@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -51,9 +52,10 @@ public class Game extends SimulationManager {
     @Override
     public void render() {
         ScreenUtils.clear(0, 0, 1, 1);
+        float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         SceneManager.getCurrentScene().setBatch(batch);
-        SceneManager.getCurrentScene().render(0); // Assuming render method now accepts a SpriteBatch
+        SceneManager.getCurrentScene().render(deltaTime); // Assuming render method now accepts a SpriteBatch
         batch.end();
     }
 

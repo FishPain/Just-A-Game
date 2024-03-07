@@ -142,6 +142,9 @@ public class Utils {
             case "SHIFT_RIGHT":
                 result = 60;
                 break;
+            case "ESCAPE":
+                result = 111;
+                break;
             default:
                 System.out.println("Key not handled: " + key);
                 break;
@@ -209,10 +212,10 @@ public class Utils {
                 return "SHIFT_LEFT";
             case 60:
                 return "SHIFT_RIGHT";
-            // Assuming CTRL_LEFT and CTRL_RIGHT have their actual key codes
-            // Add those cases here when the key codes are known
             case 61:
                 return "TAB";
+            case 111:
+                return "ESCAPE";
             // Include F1-F12 and other keys if their codes are defined
             default:
                 return "UNKNOWN";

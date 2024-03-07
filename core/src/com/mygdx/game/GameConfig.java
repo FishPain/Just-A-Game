@@ -145,6 +145,7 @@ public class GameConfig {
         RIGHT("RIGHT"),
         JUMP("JUMP"),
         SHOOT("SHOOT"),
+        PAUSE_RESUME("PAUSE_RESUME"),
         FILE_PATH("Settings.json");
 
         private String keyStrokeName;
