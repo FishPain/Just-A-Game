@@ -57,7 +57,7 @@ public class MainMenu extends Scene {
                         worldY >= Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2 &&
                         worldY <= Gdx.graphics.getHeight() / 2 + playButton.getHeight() / 2) {
                         
-                    sceneManager.setScene(GameSceneType.GAME_SCENE);
+                    sceneManager.setScene(GameSceneType.TUTORIAL);
                     sceneActive = false;
                 } else if (worldX >= Gdx.graphics.getWidth() / 2 + playButton.getWidth() + buttonSpacing / 2 &&
                         worldX <= Gdx.graphics.getWidth() / 2 + playButton.getWidth() / 2 + settingButton.getWidth() &&
