@@ -36,16 +36,22 @@ public class Settings extends Scene {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 int worldX = screenX;
-                int worldY = Gdx.graphics.getHeight() - screenY;
+                int worldY = GameConfig.SCREEN_HEIGHT - screenY;
 
-                if (worldX >= 50 && worldX <= 50 + backButton.getWidth() &&
-                        worldY >= Gdx.graphics.getHeight() - backButton.getHeight() - 50 &&
-                        worldY <= Gdx.graphics.getHeight() - 50) {
+                // Calculate button positions based on screen size
+                float backButtonX = GameConfig.SCREEN_WIDTH * 0.05f;
+                float backButtonY = GameConfig.SCREEN_HEIGHT - backButton.getHeight()
+                        - (GameConfig.SCREEN_HEIGHT * 0.05f);
+                float toggleButtonX = GameConfig.SCREEN_WIDTH * 0.2f;
+                float toggleButtonY = GameConfig.SCREEN_HEIGHT * 0.6f;
+
+                if (worldX >= backButtonX && worldX <= backButtonX + backButton.getWidth() &&
+                        worldY >= backButtonY && worldY <= backButtonY + backButton.getHeight()) {
 
                     // Go back to the main menu
                     sceneManager.setScene(GameSceneType.MAIN_MENU);
-                } else if (worldX >= 200 && worldX <= 400 &&
-                        worldY >= 300 && worldY <= 350) {
+                } else if (worldX >= toggleButtonX && worldX <= toggleButtonX + 200 &&
+                        worldY >= toggleButtonY && worldY <= toggleButtonY + 50) {
 
                     // Toggle music on/off
                     GameConfig.isMusicEnabled = !GameConfig.isMusicEnabled;
@@ -67,23 +73,28 @@ public class Settings extends Scene {
     @Override
     public void hide() {
         sound.stop();
-        // Add logic to hide the scene
     }
 
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        batch.draw(backButton, 50, Gdx.graphics.getHeight() - backButton.getHeight() - 50);
 
-        // Draw sound label
-        font.draw(batch, "Sound " + (GameConfig.isMusicEnabled ? "On" : "Off"), 200, 400);
+        // Calculate button positions based on screen size
+        float backButtonX = GameConfig.SCREEN_WIDTH * 0.05f;
+        float backButtonY = GameConfig.SCREEN_HEIGHT - backButton.getHeight() - (GameConfig.SCREEN_HEIGHT * 0.05f);
+        float soundLabelX = GameConfig.SCREEN_WIDTH * 0.2f;
+        float soundLabelY = GameConfig.SCREEN_HEIGHT * 0.7f;
+        float toggleButtonX = GameConfig.SCREEN_WIDTH * 0.2f;
+        float toggleButtonY = GameConfig.SCREEN_HEIGHT * 0.6f;
 
-        // Draw toggle button
+        // Draw buttons
+        batch.draw(backButton, backButtonX, backButtonY);
+        font.draw(batch, "Sound " + (GameConfig.isMusicEnabled ? "On" : "Off"), soundLabelX, soundLabelY);
         batch.draw(
                 new Texture(Utils.getInternalFilePath(
                         GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName()
                                 : Assets.SOUND_OFF_BTN.getFileName())),
-                200, 300, 200, 50);
+                toggleButtonX, toggleButtonY, 200, 50);
     }
 
     @Override

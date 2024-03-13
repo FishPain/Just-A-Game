@@ -10,8 +10,8 @@ public class DesktopLauncher {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
         // Set fixed window size
-        // config.setWindowedMode(GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Windowed mode
-        config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode()); // Full screen
+        config.setWindowedMode(GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Windowed mode
+        // config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode()); // Full screen
         
         config.setResizable(GameConfig.RESIZABLE); // Make window not resizable
 

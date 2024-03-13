@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
@@ -20,7 +19,7 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
-    
+
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_TARGETS = 2;
@@ -36,7 +35,7 @@ public class GameConfig {
             System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
             SCREEN_HEIGHT = screenSize.height;
             System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
-            float widthScaleFactor = (float) SCREEN_WIDTH / 800 ;
+            float widthScaleFactor = (float) SCREEN_WIDTH / 800;
             float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
             TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
             System.out.println("TIME_LIMIT: " + TIME_LIMIT);
@@ -134,6 +133,14 @@ public class GameConfig {
             public SoundEffects getSound() {
                 return sound;
             }
+        },
+        TUTORIAL {
+            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
+
+            @Override
+            public SoundEffects getSound() {
+                return sound;
+            }
         };
     }
 
@@ -146,6 +153,7 @@ public class GameConfig {
         RIGHT("RIGHT"),
         JUMP("JUMP"),
         SHOOT("SHOOT"),
+        PAUSE_RESUME("PAUSE_RESUME"),
         FILE_PATH("Settings.json");
 
         private String keyStrokeName;
@@ -165,6 +173,8 @@ public class GameConfig {
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
         MAIN_MENU_BG("main_menu_bg.jpg"),
+        TUTORIAL_BG("main_menu_bg.jpg"),
+        TIMER_BG("timer_bg.png"),
         PLAY_BTN("play_btn.png"),
         PLATFORM("platform.jpg"),
         RESTART_BTN("restart_btn.png"),
@@ -173,8 +183,7 @@ public class GameConfig {
         SNAKE_HEAD("snake.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        TARGET("target.png"),
-        TIMER_BG("timer_bg.png");
+        TARGET("target.png");
 
         private String fileName;
 

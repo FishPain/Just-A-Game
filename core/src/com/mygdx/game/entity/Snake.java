@@ -43,12 +43,11 @@ public class Snake extends Entity {
     }
 
     @Override
-    public void move(ArrayList<Entity> allEntities) {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
-        movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
-
+    public void move(ArrayList<Entity> allEntities, float deltaTime) {
+        if (this.isMovable) {
+            movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
+            movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+        }
         updatePosition();
     }
 

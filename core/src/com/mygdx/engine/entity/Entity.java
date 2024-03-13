@@ -31,7 +31,7 @@ public abstract class Entity {
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
-    public abstract void move(ArrayList<Entity> allEntities);
+    public abstract void move(ArrayList<Entity> allEntities, float deltaTime);
 
     public abstract boolean isGameEnd();
 
