@@ -2,7 +2,6 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.entity.Entity;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 public class GameScene extends Scene {
     private EntityManager entityManager;
     private SceneManager sceneManager;
-    private SoundEffects sound;
     private KeyStrokeManager keyStrokeManager;
     private PlatformManager platformManager;
     private Timer timer;
@@ -26,12 +24,11 @@ public class GameScene extends Scene {
     private boolean pauseKeyIsPressed;
 
     public GameScene(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-        super(Assets.GAME_SCENE_BG.getFileName());
+        super(Assets.GAME_SCENE_BG.getFileName(), Assets.GAME_SCENE_SOUND.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
         this.platformManager = new PlatformManager();
-        this.sound = GameSceneType.GAME_SCENE.getSound();
         this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
         this.isPaused = false;
@@ -60,13 +57,15 @@ public class GameScene extends Scene {
 
         timer.startTimer();
         if (GameConfig.isMusicEnabled)
-            sound.play(GameConfig.MUSIC_VOLUME);
+        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
         timer.resetTimer();
-        sound.stop();
+        if (GameConfig.isMusicEnabled) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
-import com.mygdx.engine.io.SoundEffects;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -94,54 +93,12 @@ public class GameConfig {
     }
 
     public static enum GameSceneType implements SceneType {
-        MAIN_MENU {
-            private final SoundEffects sound = new SoundEffects("sounds/mainMenuSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_SCENE {
-            private final SoundEffects sound = new SoundEffects("sounds/gameSceneSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_OVER_WIN {
-            private final SoundEffects sound = new SoundEffects("sounds/gameOverWinSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_OVER_LOSE {
-            private final SoundEffects sound = new SoundEffects("sounds/gameOverLoseSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        SETTINGS {
-            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        TUTORIAL {
-            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        };
+        MAIN_MENU,
+        GAME_SCENE,
+        GAME_OVER_WIN,
+        GAME_OVER_LOSE,
+        SETTINGS,
+        TUTORIAL
     }
 
     public static boolean isMusicEnabled = true;
@@ -183,7 +140,13 @@ public class GameConfig {
         SNAKE_HEAD("snake.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        TARGET("target.png");
+        TARGET("target.png"),
+        MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
+        GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
+        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
+        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.mp3"),
+        SETTINGS_SOUND("sounds/settingsSound.mp3"),
+        TUTORIAL_SOUND("sounds/settingsSound.mp3");
 
         private String fileName;
 
