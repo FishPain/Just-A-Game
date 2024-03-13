@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -11,8 +9,9 @@ public class DesktopLauncher {
 
         // Set fixed window size
         config.setWindowedMode(GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT); // Windowed mode
-        // config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode()); // Full screen
-        
+        // config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode()); //
+        // Full screen
+
         config.setResizable(GameConfig.RESIZABLE); // Make window not resizable
 
         // Configure other settings
