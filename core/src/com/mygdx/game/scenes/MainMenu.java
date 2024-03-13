@@ -43,6 +43,7 @@ public class MainMenu extends Scene {
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
+
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 if (!sceneActive) {
                     return false;
@@ -75,13 +76,12 @@ public class MainMenu extends Scene {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-
+        
         sound.play(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
             sound.stop();
         }
     }
-
     @Override
     public void hide() {
         sound.stop();

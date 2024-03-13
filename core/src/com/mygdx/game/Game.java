@@ -11,6 +11,7 @@ import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.scenes.GameOverWin;
 import com.mygdx.game.scenes.GameOverLose;
 import com.mygdx.game.scenes.GameScene;
+import com.mygdx.game.scenes.Tutorial;
 // scenes
 import com.mygdx.game.scenes.MainMenu;
 
@@ -43,6 +44,9 @@ public class Game extends SimulationManager {
 
         // the main game scene
         SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager, keyStrokeManager));
+
+        // tutorial scene
+        SceneManager.addScene(GameSceneType.TUTORIAL, new Tutorial(SceneManager));
 
         // end scene
         SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
