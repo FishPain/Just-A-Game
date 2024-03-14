@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
@@ -20,6 +19,7 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
+
 
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
@@ -149,7 +149,7 @@ public class GameConfig {
             }
         },
         TUTORIAL {
-            private final SoundEffects sound = new SoundEffects("sounds/gameSceneSound.mp3");
+            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
 
             @Override
             public SoundEffects getSound() {
@@ -167,6 +167,7 @@ public class GameConfig {
         RIGHT("RIGHT"),
         JUMP("JUMP"),
         SHOOT("SHOOT"),
+        PAUSE_RESUME("PAUSE_RESUME"),
         FILE_PATH("Settings.json");
 
         private String keyStrokeName;
@@ -186,6 +187,8 @@ public class GameConfig {
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
         MAIN_MENU_BG("main_menu_bg.jpg"),
+        TUTORIAL_BG("main_menu_bg.jpg"),
+        TIMER_BG("timer_bg.png"),
         PLAY_BTN("play_btn.png"),
         PLATFORM("platform.jpg"),
         RESTART_BTN("restart_btn.png"),

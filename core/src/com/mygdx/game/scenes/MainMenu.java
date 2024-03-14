@@ -43,7 +43,6 @@ public class MainMenu extends Scene {
         playButton = new Texture(Utils.getInternalFilePath(Assets.PLAY_BTN.getFileName()));
         settingButton = new Texture(Utils.getInternalFilePath(Assets.SETTINGS_BTN.getFileName()));
 
-        final float buttonSpacing = 20;
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
 
@@ -51,23 +50,30 @@ public class MainMenu extends Scene {
                 if (!sceneActive) {
                     return false;
                 }
+                if (!sceneActive) {
+                    return false;
+                }
                 int worldX = screenX;
-                int worldY = Gdx.graphics.getHeight() - screenY;
+                int worldY = GameConfig.SCREEN_HEIGHT - screenY;
 
-                if (worldX >= Gdx.graphics.getWidth() / 2 - (Xscale) - buttonSpacing / 2 &&
-                        worldX <= Gdx.graphics.getWidth() / 2 + (Xscale) / 2 &&
-                        worldY >= Gdx.graphics.getHeight() / 2 - (Yscale / 2) &&
-                        worldY <= Gdx.graphics.getHeight() / 2 + (Yscale)) {
-                    sceneManager.setScene(GameSceneType.TUTORIAL);
+                float buttonWidth = Gdx.graphics.getWidth() / 16;
+                float buttonHeight = GameConfig.SCREEN_HEIGHT / 9;
+                float buttonSpacing = 20;
+                float startX = (Gdx.graphics.getWidth() - 2 * buttonWidth - buttonSpacing) / 2;
 
+                // Check if the touch event is within the play button's area
+                if (worldX >= startX && worldX <= startX + buttonWidth &&
+                        worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
+                        worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
+
+                    sceneManager.setScene(GameSceneType.GAME_SCENE);
                     sceneActive = false;
-                    System.out.println("sceneActive: " + sceneActive);
-                } else if (worldX >= Gdx.graphics.getWidth() / 2 + (Xscale) + buttonSpacing / 2 &&
-                        worldX <= Gdx.graphics.getWidth() / 2 + (Xscale)
-                                + Xscale
-                        &&
-                        worldY >= Gdx.graphics.getHeight() / 2 - (Yscale / 2) &&
-                        worldY <= Gdx.graphics.getHeight() / 2 + (Yscale)) {
+                }
+                // Check if the touch event is within the setting button's area
+                else if (worldX >= startX + buttonWidth + buttonSpacing &&
+                        worldX <= startX + 2 * buttonWidth + buttonSpacing &&
+                        worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
+                        worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
 
                     sceneManager.setScene(GameSceneType.SETTINGS);
                     sceneActive = false;
@@ -90,12 +96,23 @@ public class MainMenu extends Scene {
     @Override
     public void render(float delta) {
         sceneActive = true;
-        float buttonSpacing = 20;
-        renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(playButton, Gdx.graphics.getWidth() / 2 - Xscale - buttonSpacing / 2,
-                Gdx.graphics.getHeight() / 2 - playButton.getHeight() / 2, Xscale, Yscale);
-        batch.draw(settingButton, Gdx.graphics.getWidth() / 2 + Gdx.graphics.getWidth() / 16 + buttonSpacing / 2,
-                Gdx.graphics.getHeight() / 2 - settingButton.getHeight() / 2, Xscale, Yscale);
+        float buttonSpacing = 50;
+        int Xscale = GameConfig.SCREEN_WIDTH / 16;
+        int Yscale = GameConfig.SCREEN_HEIGHT / 9;
+        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+
+        // Calculate button positions based on screen size percentages
+        float buttonWidth = Xscale;
+        float buttonHeight = Yscale;
+        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float playButtonX = startX;
+        float playButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float settingButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+
+        batch.draw(playButton, playButtonX, playButtonY, buttonWidth, buttonHeight);
+        batch.draw(settingButton, settingButtonX, settingButtonY, buttonWidth, buttonHeight);
     }
 
     @Override
