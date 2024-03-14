@@ -14,11 +14,10 @@ import com.mygdx.game.scenes.GameScene;
 import com.mygdx.game.scenes.Tutorial;
 // scenes
 import com.mygdx.game.scenes.MainMenu;
-
+import com.mygdx.game.scenes.Settings;
 // entities
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.GameConfig.Keystroke;
-import com.mygdx.game.scenes.Settings;
 
 public class Game extends SimulationManager {
 

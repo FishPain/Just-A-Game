@@ -50,9 +50,6 @@ public class MainMenu extends Scene {
                 if (!sceneActive) {
                     return false;
                 }
-                if (!sceneActive) {
-                    return false;
-                }
                 int worldX = screenX;
                 int worldY = GameConfig.SCREEN_HEIGHT - screenY;
 
@@ -66,7 +63,7 @@ public class MainMenu extends Scene {
                         worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
                         worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
 
-                    sceneManager.setScene(GameSceneType.GAME_SCENE);
+                    sceneManager.setScene(GameSceneType.TUTORIAL);
                     sceneActive = false;
                 }
                 // Check if the touch event is within the setting button's area
@@ -83,7 +80,7 @@ public class MainMenu extends Scene {
         });
 
         sound.play(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled){
+        if (!GameConfig.isMusicEnabled) {
             sound.stop();
         }
     }
