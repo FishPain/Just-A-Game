@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.SoundEffects;
@@ -23,7 +24,7 @@ public class GameConfig {
 
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
-    public static final int NUM_OF_TARGETS = 2;
+    public static final int NUM_OF_TARGETS = 5;
     public static final int PLATFORM_SIZE = 50;
     public static final int SNAKE_SIZE = 25;
 
@@ -197,9 +198,7 @@ public class GameConfig {
         SNAKE_HEAD("snake.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        TUTORIAL_BG("tutorial.png"),
         TARGET("target.png"),
-        TIMER_BG("timer_bg.png"), 
         BURGER("burger.png"),
         RAIN("droplet.png");
 
