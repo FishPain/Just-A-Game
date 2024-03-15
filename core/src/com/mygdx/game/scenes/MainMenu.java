@@ -17,11 +17,12 @@ public class MainMenu extends Scene {
     private Texture background;
     private Texture playButton;
     private Texture settingButton;
+    private Texture logoTexture;
     private SceneManager sceneManager;
     private SoundEffects sound;
     boolean sceneActive = true;
-    protected int Xscale = Gdx.graphics.getWidth() / 16;
-    protected int Yscale = Gdx.graphics.getHeight() / 9;
+    protected int Xscale = GameConfig.SCREEN_WIDTH / 16;
+    protected int Yscale = GameConfig.SCREEN_HEIGHT / 9;
 
     public MainMenu(SceneManager sceneManager) {
         super(Assets.MAIN_MENU_BG.getFileName());
@@ -37,11 +38,16 @@ public class MainMenu extends Scene {
         return settingButton;
     }
 
+    public Texture getLogoTexture() {
+        return logoTexture;
+    }
+
     @Override
     public void show() {
         background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
         playButton = new Texture(Utils.getInternalFilePath(Assets.PLAY_BTN.getFileName()));
         settingButton = new Texture(Utils.getInternalFilePath(Assets.SETTINGS_BTN.getFileName()));
+        logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -53,10 +59,10 @@ public class MainMenu extends Scene {
                 int worldX = screenX;
                 int worldY = GameConfig.SCREEN_HEIGHT - screenY;
 
-                float buttonWidth = Gdx.graphics.getWidth() / 16;
+                float buttonWidth = GameConfig.SCREEN_WIDTH / 16;
                 float buttonHeight = GameConfig.SCREEN_HEIGHT / 9;
                 float buttonSpacing = 20;
-                float startX = (Gdx.graphics.getWidth() - 2 * buttonWidth - buttonSpacing) / 2;
+                float startX = (GameConfig.SCREEN_WIDTH - 2 * buttonWidth - buttonSpacing) / 2;
 
                 // Check if the touch event is within the play button's area
                 if (worldX >= startX && worldX <= startX + buttonWidth &&
@@ -101,15 +107,19 @@ public class MainMenu extends Scene {
         // Calculate button positions based on screen size percentages
         float buttonWidth = Xscale;
         float buttonHeight = Yscale;
+        float logoWidth = 420;
+        float logoHeight = 240;
         float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2; // Common Y for buttons
         float playButtonX = startX;
-        float playButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
         float settingButtonX = startX + buttonWidth + buttonSpacing;
-        float settingButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float logoX = (GameConfig.SCREEN_WIDTH - logoWidth) / 2;
+        float logoY = GameConfig.SCREEN_HEIGHT / 3 - logoHeight / 2; // Simplified Y for logo
 
-        batch.draw(playButton, playButtonX, playButtonY, buttonWidth, buttonHeight);
-        batch.draw(settingButton, settingButtonX, settingButtonY, buttonWidth, buttonHeight);
+        batch.draw(playButton, playButtonX, buttonY, buttonWidth, buttonHeight);
+        batch.draw(settingButton, settingButtonX, buttonY, buttonWidth, buttonHeight);
+        batch.draw(logoTexture, logoX, logoY, logoWidth, logoHeight);
     }
 
     @Override
@@ -117,5 +127,6 @@ public class MainMenu extends Scene {
         background.dispose();
         playButton.dispose();
         settingButton.dispose();
+        logoTexture.dispose();
     }
 }
