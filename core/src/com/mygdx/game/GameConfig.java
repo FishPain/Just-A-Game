@@ -155,7 +155,7 @@ public class GameConfig {
         TARGET("target.png"),
         BURGER("burger.png"),
         RAIN("droplet.png"), 
-        LOGO("logo.png");
+        LOGO("logo.png"),
         MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
         GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
         GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
