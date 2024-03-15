@@ -54,7 +54,7 @@ public class Snake extends Entity {
     @Override
     public boolean isGameEnd() {
         int targetCount = entityManager.getEntities(GameEntityType.TARGET).size();
-        if (targetCount < 1) {
+        if (targetCount < 3) {
             return true;
         }
         return false;
