@@ -9,7 +9,6 @@ import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.game.GameConfig.Assets;
 
 public class Settings extends Scene {
@@ -17,14 +16,11 @@ public class Settings extends Scene {
     private Texture background;
     private Texture backButton;
     private SceneManager sceneManager;
-    private SoundEffects sound;
-
     private BitmapFont font;
 
     public Settings(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        this.sound = GameSceneType.SETTINGS.getSound();
         font = new BitmapFont();
     }
 
@@ -58,21 +54,23 @@ public class Settings extends Scene {
 
                     // Play or stop music based on the toggle
                     if (GameConfig.isMusicEnabled) {
-                        sound.play(GameConfig.MUSIC_VOLUME);
+                        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
                     } else {
-                        sound.stop();
+                        stopBackgroundMusic();
                     }
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
         if (GameConfig.isMusicEnabled)
-            sound.play(GameConfig.MUSIC_VOLUME);
+            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.isMusicEnabled) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override

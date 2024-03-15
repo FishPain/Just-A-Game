@@ -33,7 +33,6 @@ public class Tutorial extends Scene {
         super(Assets.TUTORIAL_BG.getFileName());
         this.sceneManager = sceneManager;
         this.sound = GameSceneType.TUTORIAL.getSound();
-
     }
 
     @Override
@@ -80,16 +79,17 @@ public class Tutorial extends Scene {
                 return true;
             }
         });
-
-        sound.play(GameConfig.MUSIC_VOLUME);
+        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
         if (!GameConfig.isMusicEnabled) {
-            sound.stop();
+            stopBackgroundMusic();
         }
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.isMusicEnabled) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override

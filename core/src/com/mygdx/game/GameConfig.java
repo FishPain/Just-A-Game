@@ -3,7 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
-import com.mygdx.engine.io.SoundEffects;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -20,8 +19,6 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int SNAKE_BODY_LENGTH = 0;
-
-
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_TARGETS = 5;
@@ -49,7 +46,6 @@ public class GameConfig {
 
             System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
             System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
-
             float widthScaleFactor = (float) SCREEN_WIDTH / 800;
             float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
             TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
@@ -109,54 +105,12 @@ public class GameConfig {
     }
 
     public static enum GameSceneType implements SceneType {
-        MAIN_MENU {
-            private final SoundEffects sound = new SoundEffects("sounds/mainMenuSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_SCENE {
-            private final SoundEffects sound = new SoundEffects("sounds/gameSceneSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_OVER_WIN {
-            private final SoundEffects sound = new SoundEffects("sounds/gameOverWinSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        GAME_OVER_LOSE {
-            private final SoundEffects sound = new SoundEffects("sounds/gameOverLoseSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        SETTINGS {
-            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        },
-        TUTORIAL {
-            private final SoundEffects sound = new SoundEffects("sounds/settingsSound.mp3");
-
-            @Override
-            public SoundEffects getSound() {
-                return sound;
-            }
-        };
+        MAIN_MENU,
+        GAME_SCENE,
+        GAME_OVER_WIN,
+        GAME_OVER_LOSE,
+        SETTINGS,
+        TUTORIAL
     }
 
     public static boolean isMusicEnabled = true;
@@ -202,6 +156,12 @@ public class GameConfig {
         BURGER("burger.png"),
         RAIN("droplet.png"), 
         LOGO("logo.png");
+        MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
+        GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
+        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
+        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.mp3"),
+        SETTINGS_SOUND("sounds/settingsSound.mp3"),
+        TUTORIAL_SOUND("sounds/settingsSound.mp3");
 
         private String fileName;
 

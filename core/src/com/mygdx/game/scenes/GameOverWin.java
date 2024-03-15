@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.GameConfig;
@@ -17,14 +16,12 @@ public class GameOverWin extends Scene {
     SceneManager sceneManager;
     private Texture restartButton;
     private Texture background;
-    private SoundEffects sound;
     private EntityManager entityManager;
 
     public GameOverWin(SceneManager sceneManager, EntityManager entityManager) {
-        super(Assets.GAME_OVER_WIN.getFileName());
+        super(Assets.GAME_OVER_WIN.getFileName(), Assets.GAME_OVER_WIN_SOUND.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
-        this.sound = GameSceneType.GAME_OVER_WIN.getSound();
     }
 
     @Override
@@ -52,12 +49,14 @@ public class GameOverWin extends Scene {
         });
 
         if (GameConfig.isMusicEnabled)
-            sound.play(GameConfig.MUSIC_VOLUME);
+            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.isMusicEnabled) {
+            stopBackgroundMusic();
+        }
         entityManager.dispose(batch);
     }
 
