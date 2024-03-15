@@ -80,7 +80,15 @@ public class MainMenu extends Scene {
 
                     sceneManager.setScene(GameSceneType.SETTINGS);
                     sceneActive = false;
+                } else if (worldX >= startX + 2 * buttonWidth + 2 * buttonSpacing && // Check if the touch event is
+                                                                                     // within the quit button's area
+                        worldX <= startX + 3 * buttonWidth + 2 * buttonSpacing &&
+                        worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
+                        worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
+
+                    Gdx.app.exit(); // Exit the application
                 }
+
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
@@ -109,17 +117,20 @@ public class MainMenu extends Scene {
         float buttonHeight = Yscale;
         float logoWidth = 420;
         float logoHeight = 240;
-        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing; // Update totalButtonWidth for three buttons
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2; // Calculate startX for center alignment
         float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2; // Common Y for buttons
         float playButtonX = startX;
         float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
         float logoX = (GameConfig.SCREEN_WIDTH - logoWidth) / 2;
-        float logoY = GameConfig.SCREEN_HEIGHT / 3 - logoHeight / 2; // Simplified Y for logo
+        float logoY = GameConfig.SCREEN_HEIGHT / 3 - logoHeight / 2;
 
         batch.draw(playButton, playButtonX, buttonY, buttonWidth, buttonHeight);
         batch.draw(settingButton, settingButtonX, buttonY, buttonWidth, buttonHeight);
+        batch.draw(playButton, quitButtonX, buttonY, buttonWidth, buttonHeight);
         batch.draw(logoTexture, logoX, logoY, logoWidth, logoHeight);
+
     }
 
     @Override

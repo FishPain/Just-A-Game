@@ -188,7 +188,7 @@ public class GameConfig {
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
         MAIN_MENU_BG("main_menu_bg.jpg"),
-        TUTORIAL_BG("main_menu_bg.jpg"),
+        TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
         PLAY_BTN("play_btn.png"),
         PLATFORM("platform.jpg"),
@@ -200,7 +200,8 @@ public class GameConfig {
         SOUND_ON_BTN("sound_on_btn.png"),
         TARGET("target.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png");
+        RAIN("droplet.png"), 
+        LOGO("logo.png");
 
         private String fileName;
 

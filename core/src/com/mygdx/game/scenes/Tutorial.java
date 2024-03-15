@@ -27,7 +27,7 @@ public class Tutorial extends Scene {
     private SceneManager sceneManager;
     private SoundEffects sound;
     boolean sceneActive = true;
-    private Texture Tutorial;
+    private Texture background;
 
     public Tutorial(SceneManager sceneManager) {
         super(Assets.TUTORIAL_BG.getFileName());
@@ -41,7 +41,7 @@ public class Tutorial extends Scene {
         burger = new Texture(Utils.getInternalFilePath(Assets.BURGER.getFileName()));
         rain = new Texture(Utils.getInternalFilePath(Assets.RAIN.getFileName()));
         platform = new Texture(Utils.getInternalFilePath(Assets.PLATFORM.getFileName()));
-        Tutorial = new Texture(Utils.getInternalFilePath(Assets.TUTORIAL_BG.getFileName()))
+        background = new Texture(Utils.getInternalFilePath(Assets.TUTORIAL_BG.getFileName()));
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
