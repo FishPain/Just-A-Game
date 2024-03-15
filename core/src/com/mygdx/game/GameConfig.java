@@ -152,10 +152,10 @@ public class GameConfig {
         SNAKE_HEAD("snake.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        TARGET("target.png"),
+        APPLE("apple.png"),
         BURGER("burger.png"),
         RAIN("droplet.png"), 
-        LOGO("logo.png");
+        LOGO("logo.png"),
         MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
         GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
         GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),

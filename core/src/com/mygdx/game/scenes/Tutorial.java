@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
@@ -25,14 +24,11 @@ public class Tutorial extends Scene {
     private Texture platform;
     private Stage stage;
     private SceneManager sceneManager;
-    private SoundEffects sound;
     boolean sceneActive = true;
-    private Texture background;
 
     public Tutorial(SceneManager sceneManager) {
-        super(Assets.TUTORIAL_BG.getFileName());
+        super(Assets.TUTORIAL_BG.getFileName(), Assets.TUTORIAL_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        this.sound = GameSceneType.TUTORIAL.getSound();
     }
 
     @Override
@@ -40,7 +36,6 @@ public class Tutorial extends Scene {
         burger = new Texture(Utils.getInternalFilePath(Assets.BURGER.getFileName()));
         rain = new Texture(Utils.getInternalFilePath(Assets.RAIN.getFileName()));
         platform = new Texture(Utils.getInternalFilePath(Assets.PLATFORM.getFileName()));
-        background = new Texture(Utils.getInternalFilePath(Assets.TUTORIAL_BG.getFileName()));
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
