@@ -9,9 +9,11 @@ import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.Button;
 import com.mygdx.engine.io.ButtonClickListener;
 import com.mygdx.engine.io.ButtonManager;
+import com.mygdx.engine.io.ButtonType;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.GameConfig.GameButtonType;
 
 public class MainMenu extends Scene {
 
@@ -22,6 +24,7 @@ public class MainMenu extends Scene {
     protected int Yscale = GameConfig.SCREEN_HEIGHT / 9;
     private Button tutorialBtn;
     private Button settingsBtn;
+    private Button quitBtn;
     private ButtonManager buttonManager;
 
     public MainMenu(SceneManager sceneManager) {
@@ -35,12 +38,12 @@ public class MainMenu extends Scene {
 
     private ButtonClickListener clickListener = new ButtonClickListener() {
         @Override
-        public void onClick(String buttonText) {
-            if (buttonText.equals("tutorial")) {
+        public void onClick(ButtonType btnType) {
+            if (btnType.equals(GameButtonType.PLAY)) {
                 sceneManager.setScene(GameSceneType.TUTORIAL);
-            } else if (buttonText.equals("settings")) {
+            } else if (btnType.equals(GameButtonType.SETTINGS)) {
                 sceneManager.setScene(GameSceneType.SETTINGS);
-            } else if (buttonText.equals("Quit")) {
+            } else if (btnType.equals(GameButtonType.QUIT)) {
                 Gdx.app.exit();
             }
         }
@@ -51,24 +54,30 @@ public class MainMenu extends Scene {
         background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
         logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
 
-        // Calculate button dimensions and positions
-        float buttonWidth = GameConfig.SCREEN_WIDTH / 6;
-        float buttonHeight = GameConfig.SCREEN_HEIGHT / 9;
         float buttonSpacing = 50;
-        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
+        float buttonWidth = Xscale;
+        float buttonHeight = Yscale;
+        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
         float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float playButtonX = startX;
+        float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
 
         // Create buttons
-        tutorialBtn = new Button((int) startX, (int) buttonY, (int) buttonWidth, (int) buttonHeight, "tutorial",
+        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY,
                 Assets.PLAY_BTN.getFileName());
-        settingsBtn = new Button((int) (startX + buttonWidth + buttonSpacing), (int) buttonY, (int) buttonWidth,
-                (int) buttonHeight, "settings", Assets.SETTINGS_BTN.getFileName());
+        settingsBtn = new Button(settingButtonX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.SETTINGS, Assets.SETTINGS_BTN.getFileName());
 
-        // Create a ButtonManager
+        quitBtn = new Button(quitButtonX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.QUIT, Assets.QUIT_BTN.getFileName());
+
+        // Register the buttons
         buttonManager = new ButtonManager(clickListener);
         buttonManager.addButton(tutorialBtn);
         buttonManager.addButton(settingsBtn);
+        buttonManager.addButton(quitBtn);
 
         // Set input processor for buttons
         buttonManager.setButtonsInputProcessor();
@@ -112,8 +121,7 @@ public class MainMenu extends Scene {
         // float logoY = GameConfig.SCREEN_HEIGHT / 3 - logoHeight / 2;
 
         // Draw buttons
-        tutorialBtn.draw(batch);
-        settingsBtn.draw(batch);
+        buttonManager.drawButtons(batch);
 
         // batch.draw(logoTexture, logoX, logoY, logoWidth, logoHeight);
     }
@@ -121,8 +129,7 @@ public class MainMenu extends Scene {
     @Override
     public void dispose() {
         background.dispose();
-        tutorialBtn.dispose();
-        settingsBtn.dispose();
         logoTexture.dispose();
+        buttonManager.dispose();
     }
 }

@@ -22,7 +22,7 @@ public class ButtonManager extends InputAdapter {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         for (Button btn : buttons) {
             if (btn.isPressed(screenX, Gdx.graphics.getHeight() - screenY)) {
-                clickListener.onClick(btn.getText());
+                clickListener.onClick(btn.getButtonType());
                 return true;
             }
         }
@@ -36,6 +36,12 @@ public class ButtonManager extends InputAdapter {
     public void drawButtons(Batch batch) {
         for (Button btn : buttons) {
             btn.draw(batch);
+        }
+    }
+
+    public void dispose() {
+        for (Button btn : buttons) {
+            btn.dispose();
         }
     }
 }

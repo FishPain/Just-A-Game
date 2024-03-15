@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Button {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private String text;
+    private float x;
+    private float y;
+    private float width;
+    private float height;
+    private ButtonType buttonType;
     private Texture texture;
 
-    public Button(int x, int y, int width, int height, String text, String texturePath) {
+    public Button(float x, float y, float width, float height, ButtonType buttonType, String texturePath) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.text = text;
+        this.buttonType = buttonType;
         this.texture = new Texture(Gdx.files.internal(texturePath));
     }
 
@@ -38,24 +38,24 @@ public class Button {
         batch.draw(texture, x, y, width, height);
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public String getText() {
-        return text;
+    public ButtonType getButtonType() {
+        return buttonType;
     }
 
     public void dispose() {

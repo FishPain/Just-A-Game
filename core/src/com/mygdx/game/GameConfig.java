@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
+import com.mygdx.engine.io.ButtonType;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -37,8 +38,10 @@ public class GameConfig {
                     Math.abs(height - 800) < Math.abs(height - 600)) {
                 SCREEN_WIDTH = 1920;
                 SCREEN_HEIGHT = 1080;
-                /* SCREEN_WIDTH = 800;
-                SCREEN_HEIGHT = 600; */
+                /*
+                 * SCREEN_WIDTH = 800;
+                 * SCREEN_HEIGHT = 600;
+                 */
             } else {
                 SCREEN_WIDTH = 800;
                 SCREEN_HEIGHT = 600;
@@ -136,27 +139,37 @@ public class GameConfig {
         }
     }
 
+    public static enum GameButtonType implements ButtonType {
+        PLAY, SETTINGS, QUIT, START, RESTART, BACK, SOUND_ON, SOUND_OFF
+    }
+
     public static enum Assets {
-        // Images
-        BACK_BTN("back_btn.png"),
+        // Backgrounds
         GAME_OVER_LOSE("game_over_lose.png"),
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
         MAIN_MENU_BG("main_menu_bg.jpg"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
-        PLAY_BTN("play_btn.png"),
+
+        // Entity textures
         PLATFORM("platform.jpg"),
-        RESTART_BTN("restart_btn.png"),
-        SETTINGS_BTN("settings_btn.png"),
         SNAKE_BODY("snake_body.jpg"),
         SNAKE_HEAD("snake.png"),
-        SOUND_OFF_BTN("sound_off_btn.png"),
-        SOUND_ON_BTN("sound_on_btn.png"),
         APPLE("apple.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png"), 
+        RAIN("droplet.png"),
         LOGO("logo.png"),
+
+        // Buttons
+        BACK_BTN("back_btn.png"),
+        PLAY_BTN("play_btn.png"),
+        START_BTN("start_btn.png"),
+        RESTART_BTN("restart_btn.png"),
+        SETTINGS_BTN("settings_btn.png"),
+        SOUND_OFF_BTN("sound_off_btn.png"),
+        SOUND_ON_BTN("sound_on_btn.png"),
+        QUIT_BTN("quit_btn.png"),
 
         // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
@@ -178,10 +191,10 @@ public class GameConfig {
     }
 
     public static int Xscale() {
-        return Gdx.graphics.getWidth()/16;
+        return Gdx.graphics.getWidth() / 16;
     }
 
     public static int Yscale() {
-        return Gdx.graphics.getHeight()/9;
+        return Gdx.graphics.getHeight() / 9;
     }
 }
