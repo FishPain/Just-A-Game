@@ -51,13 +51,17 @@ public class GameScene extends Scene {
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
                 entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
 
-        // randomly spawn the target obstacles
+        // randomly spawn the apples
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
-                entityManager.getAllEntityPosition(), Assets.TARGET.getFileName(), GameEntityType.TARGET));
+                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.TARGET));
+
+        // randomly spawn the burgers
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
+                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.TARGET));
 
         timer.startTimer();
         if (GameConfig.isMusicEnabled)
-        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
