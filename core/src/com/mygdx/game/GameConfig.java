@@ -137,6 +137,7 @@ public class GameConfig {
     }
 
     public static enum Assets {
+        // Images
         BACK_BTN("back_btn.png"),
         GAME_OVER_LOSE("game_over_lose.png"),
         GAME_OVER_WIN("game_over_win.png"),
@@ -156,6 +157,8 @@ public class GameConfig {
         BURGER("burger.png"),
         RAIN("droplet.png"), 
         LOGO("logo.png"),
+
+        // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
         GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
         GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
