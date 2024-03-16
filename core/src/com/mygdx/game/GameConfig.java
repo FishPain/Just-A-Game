@@ -19,12 +19,15 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
-    public static int SNAKE_BODY_LENGTH = 0;
+    public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
-    public static final int NUM_OF_TARGETS = 5;
+    public static final int NUM_OF_APPLES = 3;
+    public static final int NUM_OF_BURGERS = 10;
     public static final int PLATFORM_SIZE = 50;
-    public static final int SNAKE_SIZE = 25;
+    public static final int PLAYER_SIZE = 25;
+    // increase to slow down the entity
+    public static final float SPEED_REDUCTION_FACTOR = 1.5f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -64,7 +67,7 @@ public class GameConfig {
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
 
-    public static final Point SNAKE_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
+    public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
 
     public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
         {
@@ -95,16 +98,11 @@ public class GameConfig {
                 add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
                 i++;
             }
-
-            // // middle platforms
-            // for (i = 7; i < 13; i++) {
-            // add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT / 4));
-            // }
         }
     };
 
     public static enum GameEntityType implements EntityType {
-        SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
+        PLAYER_HEAD, PLAYER_BODY, PLATFORM, APPLE, BURGER, RAIN
     }
 
     public static enum GameSceneType implements SceneType {
@@ -154,8 +152,8 @@ public class GameConfig {
 
         // Entity textures
         PLATFORM("platform.jpg"),
-        SNAKE_BODY("snake_body.jpg"),
-        SNAKE_HEAD("snake.png"),
+        PLAYER_BODY("player_body.jpg"),
+        PLAYER_HEAD("player.png"),
         APPLE("apple.png"),
         BURGER("burger.png"),
         RAIN("droplet.png"),

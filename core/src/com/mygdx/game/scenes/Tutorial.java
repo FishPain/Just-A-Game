@@ -21,7 +21,6 @@ import com.mygdx.game.GameConfig.GameButtonType;
 import com.mygdx.game.GameConfig.GameSceneType;
 
 public class Tutorial extends Scene {
-
     private Texture burger;
     private Texture rain;
     private Texture platform;
@@ -121,7 +120,7 @@ public class Tutorial extends Scene {
 
         // Draw the buttons
         buttonManager.drawButtons(batch);
-        
+
         drawAndPrint(burger, "Burger", 0);
         drawAndPrint(rain, "Rain", 100);
         drawAndPrint(platform, "Platform", 100 + rain.getHeight());
@@ -131,7 +130,6 @@ public class Tutorial extends Scene {
         float x = Gdx.graphics.getWidth() / 2 - GameConfig.Xscale();
         float y = Gdx.graphics.getHeight() / 2 - burger.getHeight() / 2 - yOffset;
         batch.draw(texture, x, y, GameConfig.Xscale(), GameConfig.Yscale());
-        System.out.println(name + ": X = " + x + ", Y = " + y);
     }
 
     @Override

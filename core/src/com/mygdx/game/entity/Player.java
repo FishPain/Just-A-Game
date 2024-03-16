@@ -15,14 +15,14 @@ import com.mygdx.game.GameConfig.GameEntityType;
 
 import java.util.ArrayList;
 
-public class Snake extends Entity {
+public class Player extends Entity {
     private ArrayList<Vector2> bodyPositions;
     private Texture headTexture, bodyTexture;
     private Movement movement;
     private EntityManager entityManager;
     private final float segmentSpacing = GameConfig.PLATFORM_SIZE;
 
-    public Snake(float x, float y, float width, float height, float speed, String headTexturePath,
+    public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
         super(x, y, width, height, headTexturePath, speed, true, entityType);
@@ -53,8 +53,8 @@ public class Snake extends Entity {
 
     @Override
     public boolean isGameEnd() {
-        int targetCount = entityManager.getEntities(GameEntityType.TARGET).size();
-        if (targetCount < 3) {
+        // If the player has eaten all the apples, the game ends
+        if (entityManager.getEntities(GameEntityType.APPLE).size() == 0) {
             return true;
         }
         return false;
@@ -67,7 +67,7 @@ public class Snake extends Entity {
     }
 
     private void initializeBodyPositions(float x, float y) {
-        for (int i = 1; i <= GameConfig.SNAKE_BODY_LENGTH; i++) {
+        for (int i = 1; i <= GameConfig.PLAYER_BODY_LENGTH; i++) {
             bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
         }
     }

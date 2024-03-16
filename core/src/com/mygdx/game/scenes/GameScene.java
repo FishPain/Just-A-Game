@@ -11,7 +11,7 @@ import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.PlatformManager;
-import com.mygdx.game.entity.Snake;
+import com.mygdx.game.entity.Player;
 import java.util.ArrayList;
 
 public class GameScene extends Scene {
@@ -39,10 +39,11 @@ public class GameScene extends Scene {
     public void show() {
         // spawn the player
         entityManager.addPlayer(
-                new Snake(GameConfig.SNAKE_START_POSITION.x, GameConfig.SNAKE_START_POSITION.y, GameConfig.SNAKE_SIZE,
-                        GameConfig.SNAKE_SIZE,
-                        200, Assets.SNAKE_HEAD.getFileName(), Assets.SNAKE_BODY.getFileName(),
-                        GameEntityType.SNAKE_HEAD, keyStrokeManager, entityManager));
+                new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
+                        GameConfig.PLAYER_SIZE,
+                        GameConfig.PLAYER_SIZE,
+                        200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
+                        GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
 
         // spawn the platform borders
         entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
@@ -52,12 +53,12 @@ public class GameScene extends Scene {
                 entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
 
         // randomly spawn the apples
-        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
-                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.TARGET));
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_APPLES,
+                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE));
 
         // randomly spawn the burgers
-        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_TARGETS,
-                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.TARGET));
+        entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_BURGERS,
+                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER));
 
         timer.startTimer();
         if (GameConfig.isMusicEnabled)
@@ -103,10 +104,10 @@ public class GameScene extends Scene {
         isPaused = !isPaused;
         if (isPaused) {
             timer.pauseTimer();
-            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.SNAKE_HEAD), false);
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD), false);
         } else {
             timer.resumeTimer();
-            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.SNAKE_HEAD), true);
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD), true);
         }
     }
 }

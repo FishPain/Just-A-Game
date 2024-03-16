@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
 
 public class Collision extends CollisionManager {
@@ -60,8 +61,11 @@ public class Collision extends CollisionManager {
         Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, entity.getWidth(), entity.getHeight());
         for (Entity other : allEntities) {
             if (other != entity && newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.TARGET) {
+                if (other.getEntityType() == GameEntityType.APPLE) {
                     other.setToRemove(true);
+                } else if (other.getEntityType() == GameEntityType.BURGER) {
+                    other.setToRemove(true);
+                    entity.setSpeed(entity.getSpeed() / GameConfig.SPEED_REDUCTION_FACTOR);
                 }
                 return true; // Collision detected
             }
@@ -73,7 +77,7 @@ public class Collision extends CollisionManager {
         Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
         for (Entity other : allEntities) {
             if (newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.TARGET) {
+                if (other.getEntityType() == GameEntityType.APPLE || other.getEntityType() == GameEntityType.BURGER) {
                     other.setToRemove(true);
                 }
                 return true; // Collision detected
