@@ -48,6 +48,9 @@ public class GameScene extends Scene {
         // spawn the platform borders
         entityManager.addEntities(platformManager.createPlatforms(GameConfig.PLATFORM_BORDER_POSITIONS));
 
+        // spawn exit portal
+        entityManager.addEntity(platformManager.createExitPortal(GameConfig.EXIT_PORTAL_POSITION));
+
         // randomly spawn the platforms obstacles
         entityManager.addEntities(platformManager.createRandomPlatforms(GameConfig.NUM_OF_OBSTACLES,
                 entityManager.getAllEntityPosition(), Assets.PLATFORM.getFileName(), GameEntityType.PLATFORM));
@@ -90,7 +93,7 @@ public class GameScene extends Scene {
         ArrayList<Entity> entities = entityManager.getEntities();
         for (Entity entity : entities) {
             entity.draw(batch);
-            entity.move(entities, delta);
+            entity.move(entityManager.getAllCollidableEntity(), delta);
             if (entity.isGameEnd()) {
                 sceneManager.setScene(GameSceneType.GAME_OVER_WIN);
             } else if (timer.getRemainingTime() <= 0) {

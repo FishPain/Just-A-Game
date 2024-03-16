@@ -5,8 +5,8 @@ import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.ButtonType;
 
-import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
@@ -66,8 +66,8 @@ public class GameConfig {
         // "SoundEffects");
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
-
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
+    public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
 
     public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
         {
@@ -102,7 +102,7 @@ public class GameConfig {
     };
 
     public static enum GameEntityType implements EntityType {
-        PLAYER_HEAD, PLAYER_BODY, PLATFORM, APPLE, BURGER, RAIN
+        PLAYER_HEAD, PLAYER_BODY, PLATFORM, APPLE, BURGER, RAIN, EXIT_PORTAL
     }
 
     public static enum GameSceneType implements SceneType {
@@ -158,6 +158,7 @@ public class GameConfig {
         BURGER("burger.png"),
         RAIN("droplet.png"),
         LOGO("logo.png"),
+        EXIT_PORTAL("droplet.png"),
 
         // Buttons
         BACK_BTN("back_btn.png"),

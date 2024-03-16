@@ -8,6 +8,7 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.collision.CollisionManager;
 
 import com.mygdx.game.movements.Movement;
 import com.mygdx.game.GameConfig;
@@ -25,7 +26,7 @@ public class Player extends Entity {
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
-        super(x, y, width, height, headTexturePath, speed, true, entityType);
+        super(x, y, width, height, headTexturePath, speed, true, entityType, true);
         this.entityManager = entityManager;
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
@@ -55,7 +56,13 @@ public class Player extends Entity {
     public boolean isGameEnd() {
         // If the player has eaten all the apples, the game ends
         if (entityManager.getEntities(GameEntityType.APPLE).size() == 0) {
-            return true;
+            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL)) {
+                if (!entity.isVisable()) {
+                    entity.setVisable(true);
+                } else if (CollisionManager.isCollidingWith(this, entity)) {
+                    return true;
+                }
+            }
         }
         return false;
     }

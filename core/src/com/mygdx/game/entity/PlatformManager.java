@@ -18,10 +18,18 @@ public class PlatformManager {
         for (Point position : platformPositions) {
             Platform platform = new Platform(position.x, position.y, GameConfig.PLATFORM_SIZE, GameConfig.PLATFORM_SIZE,
                     Assets.PLATFORM.getFileName(),
-                    GameEntityType.PLATFORM);
+                    GameEntityType.PLATFORM, true);
             platforms.add(platform);
         }
         return platforms;
+    }
+
+    public Platform createExitPortal(Point position) {
+        Platform portal = new Platform(position.x, position.y, GameConfig.PLATFORM_SIZE, GameConfig.PLATFORM_SIZE,
+                Assets.EXIT_PORTAL.getFileName(),
+                GameEntityType.EXIT_PORTAL, false);
+        portal.setCollidable(false);
+        return portal;
     }
 
     public ArrayList<Platform> createRandomPlatforms(int numOfPlatforms, ArrayList<Point> allEntityPosition,
@@ -60,7 +68,7 @@ public class PlatformManager {
             if (attempts < MAX_ATTEMPTS && potentialPosition != null) {
                 Platform platform = new Platform(potentialPosition.x, potentialPosition.y, GameConfig.PLATFORM_SIZE,
                         GameConfig.PLATFORM_SIZE,
-                        assetFilePath, entityType);
+                        assetFilePath, entityType, true);
                 obstacles.add(platform);
             }
         }
