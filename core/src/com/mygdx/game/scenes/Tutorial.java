@@ -23,7 +23,7 @@ import com.mygdx.game.GameConfig.GameSceneType;
 public class Tutorial extends Scene {
     private Texture burger;
     private Texture rain;
-    private Texture platform;
+    private Texture block;
     private Stage stage;
     private SceneManager sceneManager;
     boolean sceneActive = true;
@@ -40,7 +40,7 @@ public class Tutorial extends Scene {
         @Override
         public void onClick(ButtonType btnType) {
             if (btnType.equals(GameButtonType.START)) {
-                sceneManager.setScene(GameSceneType.GAME_SCENE);
+                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1);
             } else if (btnType.equals(GameButtonType.BACK)) {
                 sceneManager.setScene(GameSceneType.MAIN_MENU);
             }
@@ -51,7 +51,7 @@ public class Tutorial extends Scene {
     public void show() {
         burger = new Texture(Utils.getInternalFilePath(Assets.BURGER.getFileName()));
         rain = new Texture(Utils.getInternalFilePath(Assets.RAIN.getFileName()));
-        platform = new Texture(Utils.getInternalFilePath(Assets.PLATFORM.getFileName()));
+        block = new Texture(Utils.getInternalFilePath(Assets.BLOCK.getFileName()));
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -60,21 +60,21 @@ public class Tutorial extends Scene {
         // Create labels for texture descriptions
         Label burgerLabel = new Label("Burger: Delicious burger with lettuce, tomato, and cheese", labelStyle);
         Label rainLabel = new Label("rain: Crispy golden rain with a touch of salt", labelStyle);
-        Label platformLabel = new Label("platform: Refreshing soda with ice cubes", labelStyle);
+        Label blockLabel = new Label("block: Refreshing soda with ice cubes", labelStyle);
 
         // Position labels below their respective textures
         burgerLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
                 Gdx.graphics.getHeight() / 2 - burger.getHeight() / 2 - 20);
         rainLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
                 Gdx.graphics.getHeight() / 2 - rain.getHeight() / 2 - 20 - rain.getHeight());
-        platformLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
-                Gdx.graphics.getHeight() / 2 - platform.getHeight() / 2 - 20 - platform.getHeight() - 20
-                        - platform.getHeight());
+        blockLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
+                Gdx.graphics.getHeight() / 2 - block.getHeight() / 2 - 20 - block.getHeight() - 20
+                        - block.getHeight());
 
         // Add labels to the stage
         stage.addActor(burgerLabel);
         stage.addActor(rainLabel);
-        stage.addActor(platformLabel);
+        stage.addActor(blockLabel);
 
         float buttonSpacing = 50;
         float buttonWidth = Xscale;
@@ -123,7 +123,7 @@ public class Tutorial extends Scene {
 
         drawAndPrint(burger, "Burger", 0);
         drawAndPrint(rain, "Rain", 100);
-        drawAndPrint(platform, "Platform", 100 + rain.getHeight());
+        drawAndPrint(block, "Block", 100 + rain.getHeight());
     }
 
     private void drawAndPrint(Texture texture, String name, float yOffset) {
@@ -139,7 +139,7 @@ public class Tutorial extends Scene {
          * stage.dispose();
          * burger.dispose();
          * rain.dispose();
-         * platform.dispose();
+         * block.dispose();
          */
     }
 }

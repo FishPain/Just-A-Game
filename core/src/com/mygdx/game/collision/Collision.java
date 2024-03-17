@@ -10,32 +10,32 @@ import com.mygdx.game.GameConfig.GameEntityType;
 
 public class Collision extends CollisionManager {
 
-    public static boolean isOnPlatform(Entity entity, ArrayList<Entity> platforms, ArrayList<Vector2> bodyPositions) {
+    public static boolean isOnBlock(Entity entity, ArrayList<Entity> blocks, ArrayList<Vector2> bodyPositions) {
         // Check entity's position
-        if (isEntityOnPlatform(entity, platforms))
+        if (isEntityOnBlock(entity, blocks))
             return true;
 
         // Check body positions
-        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnPlatform(bodyPosition, platforms));
+        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnBlock(bodyPosition, blocks));
     }
 
-    private static boolean isEntityOnPlatform(Entity entity, ArrayList<Entity> platforms) {
+    private static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
         Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
         slightlyBelow.y -= 1; // Check just below the entity
-        for (Entity platform : platforms) {
-            if (platform.getEntityType() == GameEntityType.PLATFORM
-                    && slightlyBelow.overlaps(platform.getRectangle())) {
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK
+                    && slightlyBelow.overlaps(block.getRectangle())) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean isBodyPositionOnPlatform(Vector2 bodyPosition, ArrayList<Entity> platforms) {
+    private static boolean isBodyPositionOnBlock(Vector2 bodyPosition, ArrayList<Entity> blocks) {
         Rectangle bodyRect = new Rectangle(bodyPosition.x, bodyPosition.y, 1, 1);
         bodyRect.y -= 1;
-        for (Entity platform : platforms) {
-            if (platform.getEntityType() == GameEntityType.PLATFORM && bodyRect.overlaps(platform.getRectangle())) {
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK && bodyRect.overlaps(block.getRectangle())) {
                 return true;
             }
         }

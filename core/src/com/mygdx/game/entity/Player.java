@@ -21,7 +21,7 @@ public class Player extends Entity {
     private Texture headTexture, bodyTexture;
     private Movement movement;
     private EntityManager entityManager;
-    private final float segmentSpacing = GameConfig.PLATFORM_SIZE;
+    private final float segmentSpacing = GameConfig.BLOCK_SIZE;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,

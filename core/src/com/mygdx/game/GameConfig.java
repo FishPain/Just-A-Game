@@ -24,7 +24,7 @@ public class GameConfig {
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
     public static final int NUM_OF_BURGERS = 10;
-    public static final int PLATFORM_SIZE = 50;
+    public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
@@ -66,48 +66,49 @@ public class GameConfig {
         // "SoundEffects");
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
-    public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
-    public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
+    public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
 
-    public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
+    public static final ArrayList<Point> BLOCK_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
             int i = 0;
-            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * PLATFORM_SIZE, 0));
+            while (i * BLOCK_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * BLOCK_SIZE, 0));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
-            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_HEIGHT) {
+                add(new Point(0, i * BLOCK_SIZE));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
-            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - PLATFORM_SIZE, i * PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_HEIGHT) {
+                add(new Point(SCREEN_WIDTH - BLOCK_SIZE, i * BLOCK_SIZE));
                 i++;
             }
 
             // Top edge
             i = 1;
-            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * BLOCK_SIZE, SCREEN_HEIGHT - BLOCK_SIZE));
                 i++;
             }
         }
     };
 
     public static enum GameEntityType implements EntityType {
-        PLAYER_HEAD, PLAYER_BODY, PLATFORM, APPLE, BURGER, RAIN, EXIT_PORTAL
+        PLAYER_HEAD, PLAYER_BODY, BLOCK, APPLE, BURGER, RAIN, EXIT_PORTAL
     }
 
     public static enum GameSceneType implements SceneType {
         MAIN_MENU,
-        GAME_SCENE,
+        GAME_SCENE_LVL1,
+        GAME_SCENE_LVL2,
         GAME_OVER_WIN,
         GAME_OVER_LOSE,
         SETTINGS,
@@ -151,7 +152,7 @@ public class GameConfig {
         TIMER_BG("timer_bg.png"),
 
         // Entity textures
-        PLATFORM("platform.jpg"),
+        BLOCK("block.jpg"),
         PLAYER_BODY("player_body.jpg"),
         PLAYER_HEAD("player.png"),
         APPLE("apple.png"),
