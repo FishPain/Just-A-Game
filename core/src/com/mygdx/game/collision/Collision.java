@@ -5,36 +5,37 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
 
 public class Collision extends CollisionManager {
 
-    public static boolean isOnPlatform(Entity entity, ArrayList<Entity> platforms, ArrayList<Vector2> bodyPositions) {
+    public static boolean isOnBlock(Entity entity, ArrayList<Entity> blocks, ArrayList<Vector2> bodyPositions) {
         // Check entity's position
-        if (isEntityOnPlatform(entity, platforms))
+        if (isEntityOnBlock(entity, blocks))
             return true;
 
         // Check body positions
-        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnPlatform(bodyPosition, platforms));
+        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnBlock(bodyPosition, blocks));
     }
 
-    private static boolean isEntityOnPlatform(Entity entity, ArrayList<Entity> platforms) {
+    private static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
         Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
         slightlyBelow.y -= 1; // Check just below the entity
-        for (Entity platform : platforms) {
-            if (platform.getEntityType() == GameEntityType.PLATFORM
-                    && slightlyBelow.overlaps(platform.getRectangle())) {
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK
+                    && slightlyBelow.overlaps(block.getRectangle())) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean isBodyPositionOnPlatform(Vector2 bodyPosition, ArrayList<Entity> platforms) {
+    private static boolean isBodyPositionOnBlock(Vector2 bodyPosition, ArrayList<Entity> blocks) {
         Rectangle bodyRect = new Rectangle(bodyPosition.x, bodyPosition.y, 1, 1);
         bodyRect.y -= 1;
-        for (Entity platform : platforms) {
-            if (platform.getEntityType() == GameEntityType.PLATFORM && bodyRect.overlaps(platform.getRectangle())) {
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK && bodyRect.overlaps(block.getRectangle())) {
                 return true;
             }
         }
@@ -60,8 +61,11 @@ public class Collision extends CollisionManager {
         Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, entity.getWidth(), entity.getHeight());
         for (Entity other : allEntities) {
             if (other != entity && newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.TARGET) {
+                if (other.getEntityType() == GameEntityType.APPLE) {
                     other.setToRemove(true);
+                } else if (other.getEntityType() == GameEntityType.BURGER) {
+                    other.setToRemove(true);
+                    entity.setSpeed(entity.getSpeed() / GameConfig.SPEED_REDUCTION_FACTOR);
                 }
                 return true; // Collision detected
             }
@@ -73,7 +77,7 @@ public class Collision extends CollisionManager {
         Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
         for (Entity other : allEntities) {
             if (newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.TARGET) {
+                if (other.getEntityType() == GameEntityType.APPLE || other.getEntityType() == GameEntityType.BURGER) {
                     other.setToRemove(true);
                 }
                 return true; // Collision detected

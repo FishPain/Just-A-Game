@@ -15,10 +15,12 @@ public abstract class Entity {
     protected float x, y, width, height, speed;
     protected EntityType entityType;
     protected boolean isMovable;
+    protected boolean isCollidable;
     protected boolean toRemove;
+    protected boolean isVisable;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
-            EntityType entityType) {
+            EntityType entityType, boolean isVisable) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -26,7 +28,9 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
+        this.isVisable = isVisable;
         this.toRemove = false;
+        this.isCollidable = true;
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
@@ -36,7 +40,7 @@ public abstract class Entity {
     public abstract boolean isGameEnd();
 
     public void draw(SpriteBatch batch) {
-        if (batch == null || texture == null)
+        if (batch == null || texture == null || !isVisable)
             return;
         batch.draw(texture, x, y, width, height);
     }
@@ -53,12 +57,28 @@ public abstract class Entity {
         return rectangle.getPosition(new Vector2());
     }
 
+    public void setCollidable(boolean isCollidable) {
+        this.isCollidable = isCollidable;
+    }
+
+    public boolean isCollidable() {
+        return isCollidable;
+    }
+
     public boolean isToRemove() {
         return toRemove;
     }
 
     public void setToRemove(boolean toRemove) {
         this.toRemove = toRemove;
+    }
+
+    public boolean isVisable() {
+        return isVisable;
+    }
+
+    public void setVisable(boolean isVisable) {
+        this.isVisable = isVisable;
     }
 
     public void dispose() {

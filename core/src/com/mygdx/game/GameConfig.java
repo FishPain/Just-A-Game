@@ -3,9 +3,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
+import com.mygdx.engine.io.ButtonType;
 
-import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
@@ -18,12 +19,15 @@ public class GameConfig {
     public static final String TITLE = "My GDX Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
-    public static int SNAKE_BODY_LENGTH = 0;
+    public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 7;
     public static final int NUM_OF_OBSTACLES = 100;
-    public static final int NUM_OF_TARGETS = 5;
-    public static final int PLATFORM_SIZE = 50;
-    public static final int SNAKE_SIZE = 25;
+    public static final int NUM_OF_APPLES = 3;
+    public static final int NUM_OF_BURGERS = 10;
+    public static final int BLOCK_SIZE = 50;
+    public static final int PLAYER_SIZE = 25;
+    // increase to slow down the entity
+    public static final float SPEED_REDUCTION_FACTOR = 1.5f;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -37,8 +41,10 @@ public class GameConfig {
                     Math.abs(height - 800) < Math.abs(height - 600)) {
                 SCREEN_WIDTH = 1920;
                 SCREEN_HEIGHT = 1080;
-                /* SCREEN_WIDTH = 800;
-                SCREEN_HEIGHT = 600; */
+                /*
+                 * SCREEN_WIDTH = 800;
+                 * SCREEN_HEIGHT = 600;
+                 */
             } else {
                 SCREEN_WIDTH = 800;
                 SCREEN_HEIGHT = 600;
@@ -60,53 +66,49 @@ public class GameConfig {
         // "SoundEffects");
         // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
+    public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
 
-    public static final Point SNAKE_START_POSITION = new Point(SCREEN_WIDTH / 2, PLATFORM_SIZE);
-
-    public static final ArrayList<Point> PLATFORM_BORDER_POSITIONS = new ArrayList<Point>() {
+    public static final ArrayList<Point> BLOCK_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
             int i = 0;
-            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * PLATFORM_SIZE, 0));
+            while (i * BLOCK_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * BLOCK_SIZE, 0));
                 i++;
             }
 
             // Left edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-left corner
-            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
-                add(new Point(0, i * PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_HEIGHT) {
+                add(new Point(0, i * BLOCK_SIZE));
                 i++;
             }
 
             // Right edge (excluding corners to avoid duplicates)
             i = 1; // Start from 1 to avoid the bottom-right corner
-            while (i * PLATFORM_SIZE < SCREEN_HEIGHT) {
-                add(new Point(SCREEN_WIDTH - PLATFORM_SIZE, i * PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_HEIGHT) {
+                add(new Point(SCREEN_WIDTH - BLOCK_SIZE, i * BLOCK_SIZE));
                 i++;
             }
 
             // Top edge
             i = 1;
-            while (i * PLATFORM_SIZE < SCREEN_WIDTH) {
-                add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT - PLATFORM_SIZE));
+            while (i * BLOCK_SIZE < SCREEN_WIDTH) {
+                add(new Point(i * BLOCK_SIZE, SCREEN_HEIGHT - BLOCK_SIZE));
                 i++;
             }
-
-            // // middle platforms
-            // for (i = 7; i < 13; i++) {
-            // add(new Point(i * PLATFORM_SIZE, SCREEN_HEIGHT / 4));
-            // }
         }
     };
 
     public static enum GameEntityType implements EntityType {
-        SNAKE_HEAD, SNAKE_BODY, PLATFORM, TARGET
+        PLAYER_HEAD, PLAYER_BODY, BLOCK, APPLE, BURGER, RAIN, EXIT_PORTAL
     }
 
     public static enum GameSceneType implements SceneType {
         MAIN_MENU,
-        GAME_SCENE,
+        GAME_SCENE_LVL1,
+        GAME_SCENE_LVL2,
         GAME_OVER_WIN,
         GAME_OVER_LOSE,
         SETTINGS,
@@ -136,26 +138,40 @@ public class GameConfig {
         }
     }
 
+    public static enum GameButtonType implements ButtonType {
+        PLAY, SETTINGS, QUIT, START, RESTART, BACK, SOUND_ON, SOUND_OFF
+    }
+
     public static enum Assets {
-        BACK_BTN("back_btn.png"),
+        // Backgrounds
         GAME_OVER_LOSE("game_over_lose.png"),
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
         MAIN_MENU_BG("main_menu_bg.jpg"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
-        PLAY_BTN("play_btn.png"),
-        PLATFORM("platform.jpg"),
-        RESTART_BTN("restart_btn.png"),
-        SETTINGS_BTN("settings_btn.png"),
-        SNAKE_BODY("snake_body.jpg"),
-        SNAKE_HEAD("snake.png"),
-        SOUND_OFF_BTN("sound_off_btn.png"),
-        SOUND_ON_BTN("sound_on_btn.png"),
+
+        // Entity textures
+        BLOCK("block.jpg"),
+        PLAYER_BODY("player_body.jpg"),
+        PLAYER_HEAD("player.png"),
         APPLE("apple.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png"), 
+        RAIN("droplet.png"),
         LOGO("logo.png"),
+        EXIT_PORTAL("droplet.png"),
+
+        // Buttons
+        BACK_BTN("back_btn.png"),
+        PLAY_BTN("play_btn.png"),
+        START_BTN("start_btn.png"),
+        RESTART_BTN("restart_btn.png"),
+        SETTINGS_BTN("settings_btn.png"),
+        SOUND_OFF_BTN("sound_off_btn.png"),
+        SOUND_ON_BTN("sound_on_btn.png"),
+        QUIT_BTN("quit_btn.png"),
+
+        // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
         GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
         GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
@@ -175,10 +191,10 @@ public class GameConfig {
     }
 
     public static int Xscale() {
-        return Gdx.graphics.getWidth()/16;
+        return Gdx.graphics.getWidth() / 16;
     }
 
     public static int Yscale() {
-        return Gdx.graphics.getHeight()/9;
+        return Gdx.graphics.getHeight() / 9;
     }
 }

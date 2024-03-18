@@ -10,7 +10,8 @@ import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.scenes.GameOverWin;
 import com.mygdx.game.scenes.GameOverLose;
-import com.mygdx.game.scenes.GameScene;
+import com.mygdx.game.scenes.GameSceneLvl1;
+import com.mygdx.game.scenes.GameSceneLvl2;
 import com.mygdx.game.scenes.Tutorial;
 // scenes
 import com.mygdx.game.scenes.MainMenu;
@@ -41,11 +42,16 @@ public class Game extends SimulationManager {
         // settings scene
         SceneManager.addScene(GameSceneType.SETTINGS, new Settings(SceneManager));
 
-        // the main game scene
-        SceneManager.addScene(GameSceneType.GAME_SCENE, new GameScene(SceneManager, EntityManager, keyStrokeManager));
-
         // tutorial scene
         SceneManager.addScene(GameSceneType.TUTORIAL, new Tutorial(SceneManager));
+
+        // the game scene level 1
+        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL1,
+                new GameSceneLvl1(SceneManager, EntityManager, keyStrokeManager));
+
+        // the game scene level 2
+        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL2,
+                new GameSceneLvl2(SceneManager, EntityManager, keyStrokeManager));
 
         // end scene
         SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
