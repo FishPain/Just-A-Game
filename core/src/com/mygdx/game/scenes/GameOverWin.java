@@ -48,13 +48,13 @@ public class GameOverWin extends Scene {
             }
         });
 
-        if (GameConfig.isMusicEnabled)
+        if (GameConfig.IS_MUSIC_ENABLED)
             playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
-        if (GameConfig.isMusicEnabled) {
+        if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
         entityManager.dispose(batch);

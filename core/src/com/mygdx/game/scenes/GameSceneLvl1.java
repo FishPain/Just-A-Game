@@ -64,14 +64,14 @@ public class GameSceneLvl1 extends Scene {
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER));
 
         timer.startTimer();
-        if (GameConfig.isMusicEnabled)
+        if (GameConfig.IS_MUSIC_ENABLED)
             playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
         timer.resetTimer();
-        if (GameConfig.isMusicEnabled) {
+        if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
         entityManager.dispose(batch);
