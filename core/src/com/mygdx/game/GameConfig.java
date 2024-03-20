@@ -172,12 +172,12 @@ public class GameConfig {
         QUIT_BTN("quit_btn.png"),
 
         // Sounds
-        MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
-        GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
-        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
-        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.mp3"),
-        SETTINGS_SOUND("sounds/settingsSound.mp3"),
-        TUTORIAL_SOUND("sounds/settingsSound.mp3");
+        MAIN_MENU_SOUND("sounds/mainMenuSound.ogg"),
+        GAME_SCENE_SOUND("sounds/gameSceneSound.ogg"),
+        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.ogg"),
+        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.ogg"),
+        SETTINGS_SOUND("sounds/settingsSound.ogg"),
+        TUTORIAL_SOUND("sounds/settingsSound.ogg");
 
         private String fileName;
 
