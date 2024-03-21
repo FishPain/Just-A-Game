@@ -46,6 +46,12 @@ public class Tutorial extends Scene {
             }
         }
     };
+    
+    private void setPositionCentered(Label label, float additionalYOffset) {
+        float x = Gdx.graphics.getWidth() / 2 - GameConfig.Xscale();
+        float y = Gdx.graphics.getHeight() / 2 - label.getHeight() / 2 - 20 - additionalYOffset;
+        label.setPosition(x, y);
+    }
 
     @Override
     public void show() {
@@ -63,13 +69,11 @@ public class Tutorial extends Scene {
         Label blockLabel = new Label("block: Refreshing soda with ice cubes", labelStyle);
 
         // Position labels below their respective textures
-        burgerLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
-                Gdx.graphics.getHeight() / 2 - burger.getHeight() / 2 - 20);
-        rainLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
-                Gdx.graphics.getHeight() / 2 - rain.getHeight() / 2 - 20 - rain.getHeight());
-        blockLabel.setPosition(Gdx.graphics.getWidth() / 2 - GameConfig.Xscale(),
-                Gdx.graphics.getHeight() / 2 - block.getHeight() / 2 - 20 - block.getHeight() - 20
-                        - block.getHeight());
+
+
+        setPositionCentered(burgerLabel, 0);
+        setPositionCentered(rainLabel, rain.getHeight());
+        setPositionCentered(blockLabel, block.getHeight() * 2 + 20);
 
         // Add labels to the stage
         stage.addActor(burgerLabel);
@@ -81,7 +85,7 @@ public class Tutorial extends Scene {
         float buttonHeight = Yscale;
         float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float buttonY = GameConfig.SCREEN_HEIGHT / 3 - buttonHeight / 2;
         float playButtonX = startX;
         float settingButtonX = startX + buttonWidth + buttonSpacing;
 
@@ -121,9 +125,9 @@ public class Tutorial extends Scene {
         // Draw the buttons
         buttonManager.drawButtons(batch);
 
-        drawAndPrint(burger, "Burger", 0);
-        drawAndPrint(rain, "Rain", 100);
-        drawAndPrint(block, "Block", 100 + rain.getHeight());
+        // drawAndPrint(burger, "Burger", 0);
+        // drawAndPrint(rain, "Rain", 100);
+        // drawAndPrint(block, "Block", 100 + rain.getHeight());
     }
 
     private void drawAndPrint(Texture texture, String name, float yOffset) {

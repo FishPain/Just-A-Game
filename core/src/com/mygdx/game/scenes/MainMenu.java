@@ -60,18 +60,20 @@ public class MainMenu extends Scene {
         float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
         float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
-        float playButtonX = startX;
-        float settingButtonX = startX + buttonWidth + buttonSpacing;
-        float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
 
-        // Create buttons
-        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY,
-                Assets.PLAY_BTN.getFileName());
-        settingsBtn = new Button(settingButtonX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.SETTINGS, Assets.SETTINGS_BTN.getFileName());
+        Button[] buttons = new Button[3];
+        GameButtonType[] buttonTypes = { GameButtonType.PLAY, GameButtonType.SETTINGS, GameButtonType.QUIT };
+        String[] buttonAssets = { Assets.PLAY_BTN.getFileName(), Assets.SETTINGS_BTN.getFileName(),
+                Assets.QUIT_BTN.getFileName() };
 
-        quitBtn = new Button(quitButtonX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.QUIT, Assets.QUIT_BTN.getFileName());
+        for (int i = 0; i < buttons.length; i++) {
+            float buttonX = startX + i * (buttonWidth + buttonSpacing);
+            buttons[i] = new Button(buttonX, buttonY, buttonWidth, buttonHeight, buttonTypes[i], buttonAssets[i]);
+        }
+
+        tutorialBtn = buttons[0];
+        settingsBtn = buttons[1];
+        quitBtn = buttons[2];
 
         // Register the buttons
         buttonManager = new ButtonManager(clickListener);
