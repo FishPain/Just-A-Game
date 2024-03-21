@@ -20,8 +20,6 @@ public class MainMenu extends Scene {
     private Texture background;
     private Texture logoTexture;
     private SceneManager sceneManager;
-    protected int Xscale = GameConfig.SCREEN_WIDTH / 16;
-    protected int Yscale = GameConfig.SCREEN_HEIGHT / 9;
     private Button tutorialBtn;
     private Button settingsBtn;
     private Button quitBtn;
@@ -55,25 +53,29 @@ public class MainMenu extends Scene {
         logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
 
         float buttonSpacing = 50;
-        float buttonWidth = Xscale;
-        float buttonHeight = Yscale;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
         float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
         float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float playButtonX = startX;
+        float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
 
-        Button[] buttons = new Button[3];
-        GameButtonType[] buttonTypes = { GameButtonType.PLAY, GameButtonType.SETTINGS, GameButtonType.QUIT };
-        String[] buttonAssets = { Assets.PLAY_BTN.getFileName(), Assets.SETTINGS_BTN.getFileName(),
-                Assets.QUIT_BTN.getFileName() };
+        // Create buttons
+        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY,
+                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.PLAY_BTN.getText(),
+                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
 
-        for (int i = 0; i < buttons.length; i++) {
-            float buttonX = startX + i * (buttonWidth + buttonSpacing);
-            buttons[i] = new Button(buttonX, buttonY, buttonWidth, buttonHeight, buttonTypes[i], buttonAssets[i]);
-        }
+        settingsBtn = new Button(settingButtonX, buttonY, buttonWidth, buttonHeight,
+                GameButtonType.SETTINGS, Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.SETTINGS_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
 
-        tutorialBtn = buttons[0];
-        settingsBtn = buttons[1];
-        quitBtn = buttons[2];
+        quitBtn = new Button(quitButtonX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.QUIT, Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
 
         // Register the buttons
         buttonManager = new ButtonManager(clickListener);
@@ -85,14 +87,14 @@ public class MainMenu extends Scene {
         buttonManager.setButtonsInputProcessor();
 
         playBackgroundMusic(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled) {
+        if (!GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
     }
 
     @Override
     public void hide() {
-        if (GameConfig.isMusicEnabled) {
+        if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
     }
@@ -100,32 +102,7 @@ public class MainMenu extends Scene {
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        // float buttonSpacing = 50;
-        // int Xscale = GameConfig.SCREEN_WIDTH / 16;
-        // int Yscale = GameConfig.SCREEN_HEIGHT / 9;
-
-        // Calculate button positions based on screen size percentages
-
-        // float buttonWidth = Xscale;
-        // float buttonHeight = Yscale;
-        // float logoWidth = 420;
-        // float logoHeight = 240;
-        // float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing; // Update
-        // totalButtonWidth for three buttons
-        // float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2; // Calculate
-        // startX for center alignment
-        // float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2; // Common Y
-        // for buttons
-        // float playButtonX = startX;
-        // float settingButtonX = startX + buttonWidth + buttonSpacing;
-        // float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
-        // float logoX = (GameConfig.SCREEN_WIDTH - logoWidth) / 2;
-        // float logoY = GameConfig.SCREEN_HEIGHT / 3 - logoHeight / 2;
-
-        // Draw buttons
         buttonManager.drawButtons(batch);
-
-        // batch.draw(logoTexture, logoX, logoY, logoWidth, logoHeight);
     }
 
     @Override
