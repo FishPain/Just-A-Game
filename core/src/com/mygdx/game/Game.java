@@ -31,6 +31,7 @@ public class Game extends SimulationManager {
     public void create() {
         EntityManager = new EntityManager();
         SceneManager = new SceneManager();
+
         // Load the default key strokes from the file
         keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
         batch = new SpriteBatch();

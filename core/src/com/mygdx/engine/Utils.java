@@ -42,7 +42,6 @@ public class Utils {
                 System.out.println("Error reading or writing the settings file.");
             }
         }
-
     }
 
     // This method is used to get the internal file path defined in the assets

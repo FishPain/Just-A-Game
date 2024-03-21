@@ -20,7 +20,7 @@ public class GameConfig {
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int PLAYER_BODY_LENGTH = 0;
-    public static int TIME_LIMIT = 7;
+    public static int TIME_LIMIT = 5;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
     public static final int NUM_OF_BURGERS = 10;
@@ -28,6 +28,8 @@ public class GameConfig {
     public static final int PLAYER_SIZE = 25;
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
+    public static boolean IS_MUSIC_ENABLED = false;
+    public static final int BUTTON_FONT_SIZE = 20;
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
@@ -41,10 +43,6 @@ public class GameConfig {
                     Math.abs(height - 800) < Math.abs(height - 600)) {
                 SCREEN_WIDTH = 1920;
                 SCREEN_HEIGHT = 1080;
-                /*
-                 * SCREEN_WIDTH = 800;
-                 * SCREEN_HEIGHT = 600;
-                 */
             } else {
                 SCREEN_WIDTH = 800;
                 SCREEN_HEIGHT = 600;
@@ -61,13 +59,11 @@ public class GameConfig {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
         }
-        // Object soundSettings =
-        // Settings.loadSettings(Keystroke.FILE_PATH.getKeystrokeName(),
-        // "SoundEffects");
-        // MUSIC_VOLUME = (int) ((JSONObject) soundSettings).get("Volume");
     }
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
+    public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;
 
     public static final ArrayList<Point> BLOCK_BORDER_POSITIONS = new ArrayList<Point>() {
         {
@@ -115,8 +111,6 @@ public class GameConfig {
         TUTORIAL
     }
 
-    public static boolean isMusicEnabled = true;
-
     public static enum Keystroke {
         UP("UP"),
         DOWN("DOWN"),
@@ -140,6 +134,27 @@ public class GameConfig {
 
     public static enum GameButtonType implements ButtonType {
         PLAY, SETTINGS, QUIT, START, RESTART, BACK, SOUND_ON, SOUND_OFF
+    }
+
+    public static enum GameButtonText {
+        BACK_BTN("BACK"),
+        PLAY_BTN("PLAY"),
+        START_BTN("START"),
+        RESTART_BTN("RESTART"),
+        SETTINGS_BTN("SETTINGS"),
+        SOUND_OFF_BTN("sound_off_btn.png"),
+        SOUND_ON_BTN("sound_on_btn.png"),
+        QUIT_BTN("QUIT");
+
+        private String text;
+
+        private GameButtonText(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
     }
 
     public static enum Assets {
@@ -169,15 +184,18 @@ public class GameConfig {
         SETTINGS_BTN("settings_btn.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        QUIT_BTN("quit_btn.png"),
+        BUTTON_BG("ui_pack/PNG/buttonLong_beige.png"),
 
         // Sounds
-        MAIN_MENU_SOUND("sounds/mainMenuSound.mp3"),
-        GAME_SCENE_SOUND("sounds/gameSceneSound.mp3"),
-        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.mp3"),
-        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.mp3"),
-        SETTINGS_SOUND("sounds/settingsSound.mp3"),
-        TUTORIAL_SOUND("sounds/settingsSound.mp3");
+        MAIN_MENU_SOUND("sounds/mainMenuSound.ogg"),
+        GAME_SCENE_SOUND("sounds/gameSceneSound.ogg"),
+        GAME_OVER_WIN_SOUND("sounds/gameOverWinSound.ogg"),
+        GAME_OVER_LOSE_SOUND("sounds/gameOverLoseSound.ogg"),
+        SETTINGS_SOUND("sounds/settingsSound.ogg"),
+        TUTORIAL_SOUND("sounds/settingsSound.ogg"),
+
+        // Fonts
+        FONT_PATH("fonts/JungleAdventurer.ttf");
 
         private String fileName;
 

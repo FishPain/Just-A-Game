@@ -29,7 +29,7 @@ public class GameOverLose extends Scene {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_LOSE.getFileName()));
         restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
 
-        if (!GameConfig.isMusicEnabled) {
+        if (!GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
 
@@ -51,14 +51,14 @@ public class GameOverLose extends Scene {
             }
         });
 
-        if (GameConfig.isMusicEnabled)
+        if (GameConfig.IS_MUSIC_ENABLED)
             playBackgroundMusic(GameConfig.MUSIC_VOLUME);
 
     }
 
     @Override
     public void hide() {
-        if (GameConfig.isMusicEnabled) {
+        if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
         entityManager.dispose(batch);

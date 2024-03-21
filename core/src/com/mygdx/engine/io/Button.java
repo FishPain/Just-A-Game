@@ -1,24 +1,34 @@
 package com.mygdx.engine.io;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.mygdx.engine.fonts.Font;
+import com.badlogic.gdx.graphics.Texture;
 
-public class Button {
+import com.badlogic.gdx.Gdx;
+
+public class Button extends Font {
     private float x;
     private float y;
     private float width;
     private float height;
     private ButtonType buttonType;
     private Texture texture;
+    private String text;
+    private BitmapFont font;
 
-    public Button(float x, float y, float width, float height, ButtonType buttonType, String texturePath) {
+    public Button(float x, float y, float width, float height, ButtonType buttonType, String texturePath, String text,
+            String fontPath, int fontSize) {
+        super(fontPath, fontSize);
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.buttonType = buttonType;
         this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.text = text;
+        this.font = createFont();
     }
 
     // Method to check if the button is pressed
@@ -36,6 +46,12 @@ public class Button {
 
     public void draw(Batch batch) {
         batch.draw(texture, x, y, width, height);
+
+        // Draw text centered on the button
+        GlyphLayout layout = new GlyphLayout(font, text);
+        float textX = x + (width - layout.width) / 2;
+        float textY = y + (height + layout.height) / 2;
+        font.draw(batch, layout, textX, textY);
     }
 
     public float getX() {
@@ -60,5 +76,6 @@ public class Button {
 
     public void dispose() {
         texture.dispose();
+        font.dispose();
     }
 }

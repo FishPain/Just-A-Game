@@ -27,8 +27,6 @@ public class Tutorial extends Scene {
     private Stage stage;
     private SceneManager sceneManager;
     boolean sceneActive = true;
-    protected int Xscale = GameConfig.SCREEN_WIDTH / 16;
-    protected int Yscale = GameConfig.SCREEN_HEIGHT / 9;
     private ButtonManager buttonManager;
 
     public Tutorial(SceneManager sceneManager) {
@@ -81,8 +79,8 @@ public class Tutorial extends Scene {
         stage.addActor(blockLabel);
 
         float buttonSpacing = 50;
-        float buttonWidth = Xscale;
-        float buttonHeight = Yscale;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
         float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
         float buttonY = GameConfig.SCREEN_HEIGHT / 3 - buttonHeight / 2;
@@ -91,9 +89,13 @@ public class Tutorial extends Scene {
 
         // Create buttons
         Button startGameBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.START,
-                Assets.START_BTN.getFileName());
+                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.START_BTN.getText(),
+                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
+
         Button backBtn = new Button(settingButtonX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.BACK, Assets.BACK_BTN.getFileName());
+                buttonHeight, GameButtonType.BACK, Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.BACK_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
 
         // Register the buttons
         buttonManager = new ButtonManager(clickListener);
@@ -104,14 +106,14 @@ public class Tutorial extends Scene {
         buttonManager.setButtonsInputProcessor();
 
         playBackgroundMusic(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled) {
+        if (!GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
     }
 
     @Override
     public void hide() {
-        if (GameConfig.isMusicEnabled) {
+        if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
     }
