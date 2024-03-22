@@ -11,10 +11,16 @@ public class Timer implements Disposable {
     private boolean isRunning;
     private BitmapFont font;
     private float x, y;
+    private boolean isPaused;
+    private long pauseStartTime;
+    private long pausedTime;
 
     public Timer(float x, float y, int countdownSeconds) {
         this.x = x;
         this.y = y;
+        this.isPaused = false;
+        this.pauseStartTime = 0;
+        this.pausedTime = 0;
         this.font = new BitmapFont();
         this.countdownTime = countdownSeconds * 1000; // Convert seconds to milliseconds
         resetTimer();
@@ -22,8 +28,31 @@ public class Timer implements Disposable {
 
     public void startTimer() {
         if (!isRunning) {
-            startTime = TimeUtils.millis();
+            long currentTime = TimeUtils.millis();
+            if (!isPaused) {
+                startTime = currentTime;
+            } else {
+                long pauseDuration = currentTime - pauseStartTime;
+                startTime += pauseDuration; // Adjust start time to account for pause time
+            }
             isRunning = true;
+            isPaused = false;
+        }
+    }
+
+    public void pauseTimer() {
+        if (isRunning && !isPaused) {
+            isPaused = true;
+            pauseStartTime = TimeUtils.millis();
+        }
+    }
+
+    public void resumeTimer() {
+        if (isRunning && isPaused) {
+            isPaused = false;
+            long currentTime = TimeUtils.millis();
+            long pauseDuration = currentTime - pauseStartTime;
+            pausedTime += pauseDuration;
         }
     }
 
@@ -34,25 +63,31 @@ public class Timer implements Disposable {
     public void resetTimer() {
         startTime = TimeUtils.millis();
         isRunning = false;
+        isPaused = false;
+        pausedTime = 0;
     }
 
     public void updateAndRender(SpriteBatch batch) {
         if (isRunning) {
-            long currentTime = TimeUtils.millis();
-            long elapsedTime = currentTime - startTime;
-            long remainingTime = countdownTime - elapsedTime;
-            if (remainingTime < 0) {
-                remainingTime = 0;
-                stopTimer(); // Optionally stop the timer when it reaches 0
+            if (isPaused) {
+                font.draw(batch, "Paused", x, y);
+            } else {
+                long currentTime = TimeUtils.millis();
+                long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
+                long remainingTime = countdownTime - elapsedTime;
+                if (remainingTime < 0) {
+                    remainingTime = 0;
+                    stopTimer(); // Optionally stop the timer when it reaches 0
+                }
+                String timeString = "Time: " + (remainingTime / 1000) + " seconds";
+                font.draw(batch, timeString, x, y);
             }
-            String timeString = "Time: " + (remainingTime / 1000) + " seconds";
-            font.draw(batch, timeString, x, y);
         }
     }
 
     public int getRemainingTime() {
         long currentTime = TimeUtils.millis();
-        long elapsedTime = currentTime - startTime;
+        long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
         long remainingTime = countdownTime - elapsedTime;
         if (remainingTime < 0) {
             remainingTime = 0;
@@ -61,7 +96,9 @@ public class Timer implements Disposable {
     }
 
     public long getElapsedTime() {
-        return TimeUtils.timeSinceMillis(startTime) / 1000;
+        long currentTime = TimeUtils.millis();
+        long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
+        return elapsedTime / 1000;
     }
 
     @Override

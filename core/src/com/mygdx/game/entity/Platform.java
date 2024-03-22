@@ -11,7 +11,7 @@ public class Platform extends Entity {
     }
 
     @Override
-    public void move(ArrayList<Entity> allEntities) {
+    public void move(ArrayList<Entity> allEntities, float deltaTime) {
         // Platforms typically don't move, so this may be left empty or implement logic
         // for moving platforms
     }

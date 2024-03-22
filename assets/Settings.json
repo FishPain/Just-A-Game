@@ -4,7 +4,8 @@
     "DOWN": "S",
     "LEFT": "A",
     "RIGHT": "D",
-    "JUMP": "SPACE"
+    "JUMP": "SPACE",
+    "PAUSE_RESUME": "ESCAPE"
   },
   "SoundEffects": {
     "Volume": 0.5
