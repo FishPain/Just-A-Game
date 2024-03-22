@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.GameConfig;
@@ -17,14 +16,12 @@ public class GameOverLose extends Scene {
     SceneManager sceneManager;
     private Texture background;
     private Texture restartButton;
-    private SoundEffects sound;
     private EntityManager entityManager;
 
     public GameOverLose(SceneManager sceneManager, EntityManager entityManager) {
-        super(Assets.GAME_OVER_LOSE.getFileName());
+        super(Assets.GAME_OVER_LOSE.getFileName(), Assets.GAME_OVER_LOSE_SOUND.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
-        this.sound = GameSceneType.GAME_OVER_LOSE.getSound();
     }
 
     @Override
@@ -32,8 +29,8 @@ public class GameOverLose extends Scene {
         background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_LOSE.getFileName()));
         restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
 
-        if (!GameConfig.isMusicEnabled) {
-            sound.stop();
+        if (!GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
         }
 
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -54,13 +51,16 @@ public class GameOverLose extends Scene {
             }
         });
 
-        if (GameConfig.isMusicEnabled)
-            sound.play(GameConfig.MUSIC_VOLUME);
+        if (GameConfig.IS_MUSIC_ENABLED)
+            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
+        }
         entityManager.dispose(batch);
     }
 

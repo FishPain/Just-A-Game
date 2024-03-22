@@ -9,7 +9,6 @@ import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.engine.io.SoundEffects;
 import com.mygdx.game.GameConfig.Assets;
 
 public class Settings extends Scene {
@@ -17,14 +16,11 @@ public class Settings extends Scene {
     private Texture background;
     private Texture backButton;
     private SceneManager sceneManager;
-    private SoundEffects sound;
-
     private BitmapFont font;
 
     public Settings(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        this.sound = GameSceneType.SETTINGS.getSound();
         font = new BitmapFont();
     }
 
@@ -54,25 +50,27 @@ public class Settings extends Scene {
                         worldY >= toggleButtonY && worldY <= toggleButtonY + 50) {
 
                     // Toggle music on/off
-                    GameConfig.isMusicEnabled = !GameConfig.isMusicEnabled;
+                    GameConfig.IS_MUSIC_ENABLED = !GameConfig.IS_MUSIC_ENABLED;
 
                     // Play or stop music based on the toggle
-                    if (GameConfig.isMusicEnabled) {
-                        sound.play(GameConfig.MUSIC_VOLUME);
+                    if (GameConfig.IS_MUSIC_ENABLED) {
+                        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
                     } else {
-                        sound.stop();
+                        stopBackgroundMusic();
                     }
                 }
                 return super.touchUp(screenX, screenY, pointer, button);
             }
         });
-        if (GameConfig.isMusicEnabled)
-            sound.play(GameConfig.MUSIC_VOLUME);
+        if (GameConfig.IS_MUSIC_ENABLED)
+            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override
@@ -89,10 +87,10 @@ public class Settings extends Scene {
 
         // Draw buttons
         batch.draw(backButton, backButtonX, backButtonY);
-        font.draw(batch, "Sound " + (GameConfig.isMusicEnabled ? "On" : "Off"), soundLabelX, soundLabelY);
+        font.draw(batch, "Sound " + (GameConfig.IS_MUSIC_ENABLED ? "On" : "Off"), soundLabelX, soundLabelY);
         batch.draw(
                 new Texture(Utils.getInternalFilePath(
-                        GameConfig.isMusicEnabled ? Assets.SOUND_ON_BTN.getFileName()
+                        GameConfig.IS_MUSIC_ENABLED ? Assets.SOUND_ON_BTN.getFileName()
                                 : Assets.SOUND_OFF_BTN.getFileName())),
                 toggleButtonX, toggleButtonY, 200, 50);
     }

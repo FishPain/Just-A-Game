@@ -1,118 +1,114 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
-import com.mygdx.engine.io.SoundEffects;
+import com.mygdx.engine.io.Button;
+import com.mygdx.engine.io.ButtonClickListener;
+import com.mygdx.engine.io.ButtonManager;
+import com.mygdx.engine.io.ButtonType;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.GameConfig.GameButtonType;
 
 public class MainMenu extends Scene {
 
     private Texture background;
-    private Texture playButton;
-    private Texture settingButton;
+    private Texture logoTexture;
     private SceneManager sceneManager;
-    private SoundEffects sound;
-    boolean sceneActive = true;
+    private Button tutorialBtn;
+    private Button settingsBtn;
+    private Button quitBtn;
+    private ButtonManager buttonManager;
 
     public MainMenu(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        this.sound = GameSceneType.MAIN_MENU.getSound();
     }
 
-    public Texture getPlayButton() {
-        return playButton;
+    public Texture getLogoTexture() {
+        return logoTexture;
     }
 
-    public Texture getSettingButton() {
-        return settingButton;
-    }
+    private ButtonClickListener clickListener = new ButtonClickListener() {
+        @Override
+        public void onClick(ButtonType btnType) {
+            if (btnType.equals(GameButtonType.PLAY)) {
+                sceneManager.setScene(GameSceneType.TUTORIAL);
+            } else if (btnType.equals(GameButtonType.SETTINGS)) {
+                sceneManager.setScene(GameSceneType.SETTINGS);
+            } else if (btnType.equals(GameButtonType.QUIT)) {
+                Gdx.app.exit();
+            }
+        }
+    };
 
     @Override
     public void show() {
         background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
-        playButton = new Texture(Utils.getInternalFilePath(Assets.PLAY_BTN.getFileName()));
-        settingButton = new Texture(Utils.getInternalFilePath(Assets.SETTINGS_BTN.getFileName()));
+        logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                if (!sceneActive) {
-                    return false;
-                }
-                int worldX = screenX;
-                int worldY = GameConfig.SCREEN_HEIGHT - screenY;
+        float buttonSpacing = 50;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float playButtonX = startX;
+        float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
 
-                float buttonWidth = Gdx.graphics.getWidth() / 16;
-                float buttonHeight = GameConfig.SCREEN_HEIGHT / 9;
-                float buttonSpacing = 20;
-                float startX = (Gdx.graphics.getWidth() - 2 * buttonWidth - buttonSpacing) / 2;
+        // Create buttons
+        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY,
+                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.PLAY_BTN.getText(),
+                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
 
-                // Check if the touch event is within the play button's area
-                if (worldX >= startX && worldX <= startX + buttonWidth &&
-                        worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
-                        worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
+        settingsBtn = new Button(settingButtonX, buttonY, buttonWidth, buttonHeight,
+                GameButtonType.SETTINGS, Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.SETTINGS_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
 
-                    sceneManager.setScene(GameSceneType.GAME_SCENE);
-                    sceneActive = false;
-                }
-                // Check if the touch event is within the setting button's area
-                else if (worldX >= startX + buttonWidth + buttonSpacing &&
-                        worldX <= startX + 2 * buttonWidth + buttonSpacing &&
-                        worldY >= GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2 &&
-                        worldY <= GameConfig.SCREEN_HEIGHT / 2 + buttonHeight / 2) {
+        quitBtn = new Button(quitButtonX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.QUIT, Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
 
-                    sceneManager.setScene(GameSceneType.SETTINGS);
-                    sceneActive = false;
-                }
-                return super.touchUp(screenX, screenY, pointer, button);
-            }
-        });
+        // Register the buttons
+        buttonManager = new ButtonManager(clickListener);
+        buttonManager.addButton(tutorialBtn);
+        buttonManager.addButton(settingsBtn);
+        buttonManager.addButton(quitBtn);
 
-        sound.play(GameConfig.MUSIC_VOLUME);
-        if (!GameConfig.isMusicEnabled) {
-            sound.stop();
+        // Set input processor for buttons
+        buttonManager.setButtonsInputProcessor();
+
+        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+        if (!GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
         }
     }
 
     @Override
     public void hide() {
-        sound.stop();
+        if (GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override
     public void render(float delta) {
-        sceneActive = true;
-        float buttonSpacing = 50;
-        int Xscale = GameConfig.SCREEN_WIDTH / 16;
-        int Yscale = GameConfig.SCREEN_HEIGHT / 9;
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-
-        // Calculate button positions based on screen size percentages
-        float buttonWidth = Xscale;
-        float buttonHeight = Yscale;
-        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float playButtonX = startX;
-        float playButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
-        float settingButtonX = startX + buttonWidth + buttonSpacing;
-        float settingButtonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
-
-        batch.draw(playButton, playButtonX, playButtonY, buttonWidth, buttonHeight);
-        batch.draw(settingButton, settingButtonX, settingButtonY, buttonWidth, buttonHeight);
+        buttonManager.drawButtons(batch);
     }
 
     @Override
     public void dispose() {
         background.dispose();
-        playButton.dispose();
-        settingButton.dispose();
+        logoTexture.dispose();
+        buttonManager.dispose();
     }
 }

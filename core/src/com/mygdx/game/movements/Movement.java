@@ -53,13 +53,13 @@ public class Movement extends Collision {
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions,
             float deltaTime) {
         Vector2 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
-        boolean isOnPlatform = isOnPlatform(entity, allEntities, bodyPositions);
+        boolean isOnBlock = isOnBlock(entity, allEntities, bodyPositions);
         boolean verticalCollision = willCollide(entity,
                 new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
                 allEntities);
 
-        // Allow upward movement if on a platform or if there's no vertical collision
-        if (!verticalCollision || (isOnPlatform && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
+        // Allow upward movement if on a block or if there's no vertical collision
+        if (!verticalCollision || (isOnBlock && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
             entity.setY(entity.getY() + verticalMovementDelta.y);
             // entity.y += verticalMovementDelta.y;
             // Update body positions vertically

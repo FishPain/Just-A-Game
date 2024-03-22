@@ -63,6 +63,15 @@ public class EntityManager {
         return entitiesByType;
     }
 
+    public ArrayList<Entity> getAllCollidableEntity() {
+        ArrayList<Entity> collidableEntities = new ArrayList<Entity>();
+        for (Entity entity : entities) {
+            if (entity.isCollidable()) {
+                collidableEntities.add(entity);
+            }
+        }
+        return collidableEntities;
+    }
     public int getEntitiesCount() {
         return entities.size();
     }

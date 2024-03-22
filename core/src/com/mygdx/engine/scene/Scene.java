@@ -4,14 +4,17 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.Utils;
+import com.mygdx.engine.io.SoundEffects;
 
 public abstract class Scene extends ScreenAdapter {
 
     protected SpriteBatch batch;
     private Texture background;
+    private SoundEffects backgroundMusic;
 
-    public Scene(String backgroundFileName) {
+    public Scene(String backgroundFileName, String backgroundMusicFileName) {
         this.background = new Texture(Utils.getInternalFilePath(backgroundFileName));
+        this.backgroundMusic = new SoundEffects(backgroundMusicFileName);
     }
 
     public void setBatch(SpriteBatch batch) {
@@ -26,6 +29,18 @@ public abstract class Scene extends ScreenAdapter {
 
     public void renderBackground(float x, float y, float width, float height) {
         batch.draw(background, x, y, width, height);
+    }
+
+    public void playBackgroundMusic(float volume) {
+        backgroundMusic.play(volume);
+    }
+
+    public void stopBackgroundMusic() {
+        backgroundMusic.stop();
+    }
+
+    public void disposeBackgroundMusic() {
+        backgroundMusic.dispose();
     }
 
 }
