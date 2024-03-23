@@ -10,6 +10,7 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
+import com.mygdx.engine.ai.MovementAI;
 import com.mygdx.engine.collision.CollisionManager;
 
 import com.mygdx.game.movements.Movement;
@@ -19,7 +20,7 @@ import com.mygdx.game.GameConfig.GameEntityType;
 public class AIPlayer extends Entity {
     private ArrayList<Vector2> bodyPositions;
     private Texture headTexture, bodyTexture;
-    private Movement movement;
+    private MovementAI movementAI;
     private EntityManager entityManager;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
 
@@ -30,8 +31,7 @@ public class AIPlayer extends Entity {
         this.entityManager = entityManager;
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.movement = new Movement(keyStrokeManager, x, speed, false, 0,
-                GameConfig.GRAVITY);
+        this.movementAI = new MovementAI();
         this.bodyPositions = new ArrayList<Vector2>();
         initializeBodyPositions(x, y);
     }
@@ -95,8 +95,8 @@ public class AIPlayer extends Entity {
     @Override
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
         if (this.isMovable) {
-            movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
-            movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+            movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
+            movementAI.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
         }
         updatePosition();
     }

@@ -4,6 +4,7 @@ import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
@@ -20,15 +21,18 @@ public class GameSceneLvl2 extends Scene {
     private SceneManager sceneManager;
     private KeyStrokeManager keyStrokeManager;
     private BlockManager blockManager;
+    private AIManager aiManager;
     private Timer timer;
     private boolean isPaused;
     private boolean pauseKeyIsPressed;
 
-    public GameSceneLvl2(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
+    public GameSceneLvl2(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager,
+            AIManager aiManager) {
         super(Assets.GAME_SCENE_BG.getFileName(), Assets.GAME_SCENE_SOUND.getFileName());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
+        this.aiManager = aiManager;
         this.blockManager = new BlockManager();
         this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
