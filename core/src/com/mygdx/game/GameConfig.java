@@ -21,11 +21,12 @@ public class GameConfig {
     public static float MUSIC_VOLUME = 0.2f;
     public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 5;
-    public static final int NUM_OF_OBSTACLES = 100;
+    public static final int NUM_OF_OBSTACLES = 70;
     public static final int NUM_OF_APPLES = 3;
     public static final int NUM_OF_BURGERS = 10;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
+    public static final int AI_PLAYER_SIZE = 30;
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
     public static boolean IS_MUSIC_ENABLED = false;
@@ -61,6 +62,7 @@ public class GameConfig {
         }
     }
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final Point AI_PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 3, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
     public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;

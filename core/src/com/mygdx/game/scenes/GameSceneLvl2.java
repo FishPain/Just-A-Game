@@ -10,6 +10,7 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
 import java.util.ArrayList;
@@ -45,6 +46,13 @@ public class GameSceneLvl2 extends Scene {
                         200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
                         GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
 
+        // spawn AI Player
+        entityManager.addAiPlayer(
+                new AIPlayer(GameConfig.AI_PLAYER_START_POSITION.x, GameConfig.AI_PLAYER_START_POSITION.y,
+                        GameConfig.PLAYER_SIZE,
+                        GameConfig.PLAYER_SIZE,
+                        200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
+                        GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
         // spawn the block borders
         entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 

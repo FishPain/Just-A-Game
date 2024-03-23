@@ -17,6 +17,11 @@ public class EntityManager {
         entities.add(player);
     }
 
+    public void addAiPlayer(Entity aiPlayer) {
+        System.out.println("Entity entity: " + (aiPlayer));
+        entities.add(aiPlayer);
+    }
+
     public void addEntity(Entity entity) {
         System.out.println("Entity entity: " + (entity));
         entities.add(entity);
@@ -72,6 +77,7 @@ public class EntityManager {
         }
         return collidableEntities;
     }
+
     public int getEntitiesCount() {
         return entities.size();
     }
