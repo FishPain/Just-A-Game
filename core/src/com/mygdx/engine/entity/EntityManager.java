@@ -1,6 +1,7 @@
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GameConfig.GameEntityType;
 
 import java.util.ArrayList;
 import java.awt.Point;
@@ -13,12 +14,12 @@ public class EntityManager {
     }
 
     public void addPlayer(Entity player) {
-        System.out.println("Entity entity: " + (player));
+        System.out.println("Entity: " + (player));
         entities.add(player);
     }
 
     public void addEntity(Entity entity) {
-        System.out.println("Entity entity: " + (entity));
+        System.out.println("Entity: " + (entity));
         entities.add(entity);
     }
 

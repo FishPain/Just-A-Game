@@ -22,6 +22,8 @@ public class Player extends Entity {
     private Movement movement;
     private EntityManager entityManager;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
+    private boolean isAppleEffectActive = false;
+    private boolean isCarrotEffectActive = false;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,
@@ -43,11 +45,29 @@ public class Player extends Entity {
         }
     }
 
-    @Override
+    // EFFECT FLAGS
+    public boolean isAppleEffectActive() {
+        return isAppleEffectActive;
+    }
+
+    public void setAppleEffectActive(boolean active) {
+        isAppleEffectActive = active;
+    }
+
+    public boolean isCarrotEffectActive() {
+        return isCarrotEffectActive;
+    }
+
+    public void setCarrotEffectActive(boolean active) {
+        isCarrotEffectActive = active;
+    }
+    // END OF EFFECT FLAG
+
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
         if (this.isMovable) {
             movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
             movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+            // movement.applyMovement(this, allEntities, bodyPositions, deltaTime);
         }
         updatePosition();
     }
@@ -55,7 +75,8 @@ public class Player extends Entity {
     @Override
     public boolean isGameEnd() {
         // If the player has eaten all the apples, the game ends
-        if (entityManager.getEntities(GameEntityType.APPLE).size() == 0) {
+        if (entityManager.getEntities(GameEntityType.APPLE).size() == 0
+                || entityManager.getEntities(GameEntityType.CARROT).size() == 0) {
             for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL)) {
                 if (!entity.isVisable()) {
                     entity.setVisable(true);

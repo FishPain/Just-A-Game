@@ -4,12 +4,15 @@ import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.badlogic.gdx.math.Vector2;
+import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.game.collision.Collision;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ public class GameSceneLvl1 extends Scene {
     private KeyStrokeManager keyStrokeManager;
     private BlockManager blockManager;
     private Timer timer;
+
     private boolean isPaused;
     private boolean pauseKeyIsPressed;
 
@@ -38,13 +42,14 @@ public class GameSceneLvl1 extends Scene {
     @Override
     public void show() {
         // spawn the player
-        entityManager.addPlayer(
-                new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
-                        GameConfig.PLAYER_SIZE,
-                        GameConfig.PLAYER_SIZE,
-                        200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
-                        GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
 
+        Player snake = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
+                GameConfig.PLAYER_SIZE,
+                GameConfig.PLAYER_SIZE,
+                GameConfig.PLAYER_SPEED, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
+                GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager);
+        System.out.println("GameConfig.PLAYER_SPEED: " + GameConfig.PLAYER_SPEED);
+        entityManager.addPlayer(snake);
         // spawn the block borders
         entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 
@@ -58,6 +63,9 @@ public class GameSceneLvl1 extends Scene {
         // randomly spawn the apples
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
                 entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE));
+
+        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_CARROT,
+                entityManager.getAllEntityPosition(), Assets.CARROT.getFileName(), GameEntityType.CARROT));
 
         // randomly spawn the burgers
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
@@ -95,6 +103,19 @@ public class GameSceneLvl1 extends Scene {
         GameSceneType nextScene = null;
         for (Entity entity : entities) {
             entity.draw(batch);
+            GameEntityType collision = Collision.willCollide(entity, new Vector2(entity.getX(), entity.getY()),
+                    entities);
+            if (collision != null) {
+                if (entity.getEntityType() == GameEntityType.PLAYER_HEAD) {
+                    System.out.println("entity.getEntityType(): " + entity.getEntityType());
+                    Collision.collideEffect(collision, (Player) entity);
+                }
+                if (entity.getEntityType() == GameEntityType.BURGER) {
+                    Player snake = (Player) entity; 
+                    System.out.println(snake.getSpeed());
+                }
+            }
+
             entity.move(entityManager.getAllCollidableEntity(), delta);
             if (entity.isGameEnd()) {
                 nextScene = GameSceneType.GAME_SCENE_LVL2;

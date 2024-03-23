@@ -1,89 +1,66 @@
 package com.mygdx.game.collision;
 
 import java.util.ArrayList;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.fonts.Font;
+import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.entity.Player;
 
 public class Collision extends CollisionManager {
+    static private Timer timerApple = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50, 3);
+    static private Timer timerCarrot = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 100, 6);
 
-    public static boolean isOnBlock(Entity entity, ArrayList<Entity> blocks, ArrayList<Vector2> bodyPositions) {
-        // Check entity's position
-        if (isEntityOnBlock(entity, blocks))
-            return true;
+    public static void collideEffect(GameEntityType entity, Player snake) {
+        if (entity == GameEntityType.APPLE) {
+            timerApple.startTimer();
+            System.out.println("APPLE");
+            snake.setSpeed(snake.getSpeed() * 2);
+            System.out.println("snake.setSpeed: " + snake.getSpeed());
+            snake.setAppleEffectActive(true);
 
-        // Check body positions
-        return bodyPositions.stream().anyMatch(bodyPosition -> isBodyPositionOnBlock(bodyPosition, blocks));
-    }
+        } else if (entity == GameEntityType.CARROT) {
+            System.out.println("CARROT");
+            timerCarrot.startTimer();
+            snake.setSpeed(snake.getSpeed() * 4);
+            System.out.println("snake.getSpeed(): " + snake.getSpeed());
+            snake.setCarrotEffectActive(true);
 
-    private static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
-        Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-        slightlyBelow.y -= 1; // Check just below the entity
-        for (Entity block : blocks) {
-            if (block.getEntityType() == GameEntityType.BLOCK
-                    && slightlyBelow.overlaps(block.getRectangle())) {
-                return true;
-            }
+        } else if (entity == GameEntityType.BURGER) {
+            System.out.println("BURGER");
+            snake.setSpeed(snake.getSpeed() / 1.5f);
+            System.out.println("snake.getSpeed(): " + snake.getSpeed());
+
+        } else if (entity == GameEntityType.BLOCK) {
+            System.out.println("BLOCK");
+            System.out.println("SPEED AT BLOCK: " + snake.getSpeed());
         }
-        return false;
-    }
 
-    private static boolean isBodyPositionOnBlock(Vector2 bodyPosition, ArrayList<Entity> blocks) {
-        Rectangle bodyRect = new Rectangle(bodyPosition.x, bodyPosition.y, 1, 1);
-        bodyRect.y -= 1;
-        for (Entity block : blocks) {
-            if (block.getEntityType() == GameEntityType.BLOCK && bodyRect.overlaps(block.getRectangle())) {
-                return true;
-            }
+        // Update timers
+        if (snake.isAppleEffectActive() == true) {
+            timerApple.updateEffect();
         }
-        return false;
-    }
+        if (snake.isCarrotEffectActive() == true) {
+            timerCarrot.updateEffect();
+        }
 
-    // A helper method to check horizontal collisions for both head and body
-    // segments
-    public static boolean checkHorizontalCollision(Entity entity, Vector2 horizontalMovementDelta,
-            ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions) {
-        if (willCollide(entity, new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY()), allEntities)) {
-            return true;
-        }
-        for (Vector2 body : bodyPositions) {
-            if (willCollide(body, new Vector2(body.x + horizontalMovementDelta.x, body.y), allEntities)) {
-                return true;
-            }
-        }
-        return false;
-    }
+        // Check if timers have expired and restore speed accordingly
+        if (timerApple.getRemainingTime() <= 0) {
+            snake.setSpeed(GameConfig.PLAYER_SPEED / 2); // Set speed back to original value
 
-    public static boolean willCollide(Entity entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
-        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, entity.getWidth(), entity.getHeight());
-        for (Entity other : allEntities) {
-            if (other != entity && newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.APPLE) {
-                    other.setToRemove(true);
-                } else if (other.getEntityType() == GameEntityType.BURGER) {
-                    other.setToRemove(true);
-                    entity.setSpeed(entity.getSpeed() / GameConfig.SPEED_REDUCTION_FACTOR);
-                }
-                return true; // Collision detected
-            }
+            snake.setAppleEffectActive(false); // Reset apple effect flag
         }
-        return false; // No collision detected
-    }
+        if (timerCarrot.getRemainingTime() <= 0) {
+            snake.setSpeed(GameConfig.PLAYER_SPEED / 3); // Set speed back to original value
 
-    public static boolean willCollide(Vector2 entity, Vector2 newPosition, ArrayList<Entity> allEntities) {
-        Rectangle newRect = new Rectangle(newPosition.x, newPosition.y, 1, 1);
-        for (Entity other : allEntities) {
-            if (newRect.overlaps(other.getRectangle())) {
-                if (other.getEntityType() == GameEntityType.APPLE || other.getEntityType() == GameEntityType.BURGER) {
-                    other.setToRemove(true);
-                }
-                return true; // Collision detected
-            }
+            snake.setCarrotEffectActive(false); // Reset carrot effect flag
         }
-        return false; // No collision detected
     }
 
 }
