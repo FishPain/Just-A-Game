@@ -85,6 +85,18 @@ public class Timer implements Disposable {
         }
     }
 
+    public void updateEffect() {
+        if (isRunning) {
+            long currentTime = TimeUtils.millis();
+            long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
+            long remainingTime = countdownTime - elapsedTime;
+            if (remainingTime < 0) {
+                remainingTime = 0;
+                stopTimer(); // Optionally stop the timer when it reaches 0
+            }
+        }
+    }
+
     public int getRemainingTime() {
         long currentTime = TimeUtils.millis();
         long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
