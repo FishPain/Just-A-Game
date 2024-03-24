@@ -5,6 +5,7 @@ import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.collision.CollisionManager;
+import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;

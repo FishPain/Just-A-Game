@@ -36,6 +36,8 @@ public class Player extends Entity {
         this.bodyPositions = new ArrayList<Vector2>();
         this.isAppleEffectActive = false;
         this.isCarrotEffectActive = false;
+        this.isAppleEffectActive = false;
+        this.isCarrotEffectActive = false;
         initializeBodyPositions(x, y);
     }
 
@@ -46,6 +48,32 @@ public class Player extends Entity {
             batch.draw(bodyTexture, pos.x, pos.y, width, height);
         }
     }
+
+    // EFFECT FLAGS
+    public boolean isAppleEffectActive() {
+        return isAppleEffectActive;
+    }
+
+    public void setAppleEffectActive(boolean active) {
+        isAppleEffectActive = active;
+    }
+
+    public boolean isCarrotEffectActive() {
+        return isCarrotEffectActive;
+    }
+
+    public void setCarrotEffectActive(boolean active) {
+        isCarrotEffectActive = active;
+    }
+
+    public boolean isBurgerEffectActive() {
+        return isBurgerEffectActive;
+    }
+
+    public void setBurgerEffectActive(boolean active) {
+        isBurgerEffectActive = active;
+    }
+    // END OF EFFECT FLAG
 
     // EFFECT FLAGS
     public boolean isAppleEffectActive() {
