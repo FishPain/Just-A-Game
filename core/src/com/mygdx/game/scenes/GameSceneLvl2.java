@@ -61,12 +61,15 @@ public class GameSceneLvl2 extends Scene {
                                 GameConfig.AI_PLAYER_START_POSITION.y,
                                 GameConfig.AI_PLAYER_SIZE,
                                 GameConfig.AI_PLAYER_SIZE,
-                                200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
+                                Assets.PLAYER_HEAD.getFileName(), GameConfig.PLAYER_SPEED,
+                                Assets.PLAYER_BODY.getFileName(),
                                 GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
 
                 System.out.println("GameConfig.PLAYER_SPEED: " + GameConfig.PLAYER_SPEED);
 
                 entityManager.addEntity(player);
+
+                entityManager.addAiPlayer(aiPlayer);
                 // spawn the block borders
                 entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 

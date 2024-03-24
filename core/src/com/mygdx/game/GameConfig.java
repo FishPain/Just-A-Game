@@ -18,7 +18,7 @@ public class GameConfig {
     public static float MUSIC_VOLUME = 0.2f;
     public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 5;
-    public static final int NUM_OF_OBSTACLES = 100;
+    public static final int NUM_OF_OBSTACLES = 5;
     public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;

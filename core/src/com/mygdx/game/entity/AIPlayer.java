@@ -21,18 +21,26 @@ public class AIPlayer extends Entity {
     private ArrayList<Vector2> bodyPositions;
     private Texture headTexture, bodyTexture;
     private MovementAI movementAI;
+    private Movement movement;
     private EntityManager entityManager;
+    private boolean isAppleEffectActive;
+    private boolean isCarrotEffectActive;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
 
-    public AIPlayer(float x, float y, float width, float height, float speed, String headTexturePath,
+    public AIPlayer(float x, float y, float width, float height, String headTexturePath, float speed,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
         super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
-        this.entityManager = entityManager;
+
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
-        this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
+        ths.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
         this.movementAI = new MovementAI();
-        this.bodyPositions = new ArrayList<Vector2>();
+        //this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
+        th is.bodyPositions = new ArrayList<Vector2>();
+        // 
+        // 
+        ths.isAppleEffectActive = false;
+        this.isCarrotEffectActive = false;
         initializeBodyPositions(x, y);
     }
 

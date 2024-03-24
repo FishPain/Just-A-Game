@@ -3,7 +3,7 @@ package com.mygdx.engine.ai;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.entity.EntityType;
+
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.entity.AIPlayer;
 
@@ -25,7 +25,7 @@ public class AIManager extends EntityManager {
         aiEntities = new ArrayList<Entity>();
     }
 
-    public ArrayList<Point> getEntityPositionsByType(EntityType entityType) {
+    public ArrayList<Point> getEntityPositionsByType(String entityType) {
 
         ArrayList<Entity> entitiesByType = getEntities(entityType);
         for (Entity entity : entitiesByType) {
@@ -36,7 +36,7 @@ public class AIManager extends EntityManager {
         return positions;
     }
 
-    public ArrayList<Entity> getEntities(EntityType entityType) {
+    public ArrayList<Entity> getEntities(String entityType) {
         ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
         for (Entity entity : aiEntities) {
             if (entity.getEntityType() == entityType) {
