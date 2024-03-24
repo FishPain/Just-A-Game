@@ -4,6 +4,7 @@ import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
@@ -21,7 +22,7 @@ public class GameSceneLvl1 extends Scene {
     private BlockManager blockManager;
     private Timer timer;
     private Player player;
-
+    private GameSceneType nextScene;
     private boolean isPaused;
     private boolean pauseKeyIsPressed;
 
@@ -35,6 +36,7 @@ public class GameSceneLvl1 extends Scene {
                 GameConfig.TIME_LIMIT);
         this.isPaused = false;
         this.pauseKeyIsPressed = false;
+        this.nextScene = null;
     }
 
     @Override
@@ -63,9 +65,6 @@ public class GameSceneLvl1 extends Scene {
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
                 entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
 
-        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_CARROT,
-                entityManager.getAllEntityPosition(), Assets.CARROT.getFileName(), GameEntityType.CARROT.getValue()));
-
         // randomly spawn the burgers
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
@@ -86,9 +85,13 @@ public class GameSceneLvl1 extends Scene {
 
     @Override
     public void render(float delta) {
+
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         // update timer
         timer.updateAndRender(batch);
+        if (timer.getRemainingTime() <= 0) {
+            nextScene = GameSceneType.GAME_OVER_LOSE;
+        }
 
         // press esc key to pause the game and resume the game
         if (keyStrokeManager.isKeyPressed(GameConfig.Keystroke.PAUSE_RESUME.getKeystrokeName())) {
@@ -102,25 +105,24 @@ public class GameSceneLvl1 extends Scene {
 
         // draw and move the entities
         ArrayList<Entity> entities = entityManager.getEntities();
-        GameSceneType nextScene = null;
         for (Entity entity : entities) {
             entity.draw(batch);
             entity.move(entityManager.getAllCollidableEntity(), delta);
-            // if game ends, then move to the next scene
-            if (entity.isGameEnd()) {
-                nextScene = GameSceneType.GAME_SCENE_LVL2;
-            } else if (timer.getRemainingTime() <= 0) {
-                nextScene = GameSceneType.GAME_OVER_LOSE;
+
+            // If the player has eaten all the apples, the game ends
+            if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
+                for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
+                    if (!exitPortal.isVisable()) {
+                        exitPortal.setVisable(true);
+                    } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
+                        nextScene = GameSceneType.GAME_SCENE_LVL2;
+                    }
+                }
             }
         }
 
         // bulk remove entity to prevent concurrent modification
         entityManager.removeEntities();
-
-        if (player.isCarrotEffectActive()) {
-            timer.addTime(10);
-            player.setCarrotEffectActive(false);
-        }
 
         // set the next scene
         if (nextScene != null)

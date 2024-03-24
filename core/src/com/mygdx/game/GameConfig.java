@@ -23,7 +23,7 @@ public class GameConfig {
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
     public static final int NUM_OF_BURGERS = 6;
-    public static final int NUM_OF_CARROT = 3;
+    public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
     public static final int PLAYER_STAMINA = 100;
