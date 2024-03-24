@@ -1,4 +1,4 @@
-package com.mygdx.engine.io;
+package com.mygdx.engine.io.button;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -22,7 +22,7 @@ public class ButtonManager extends InputAdapter {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         for (Button btn : buttons) {
             if (btn.isPressed(screenX, Gdx.graphics.getHeight() - screenY)) {
-                clickListener.onClick(btn.getButtonType());
+                clickListener.onClick(btn);
                 return true;
             }
         }
