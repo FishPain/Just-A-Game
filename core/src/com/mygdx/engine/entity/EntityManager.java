@@ -23,7 +23,6 @@ public class EntityManager {
     }
 
     public void addEntity(Entity entity) {
-        System.out.println("Entity entity: " + (entity));
         entities.add(entity);
     }
 
@@ -49,6 +48,16 @@ public class EntityManager {
         return entities;
     }
 
+    public ArrayList<Entity> getEntitiesByInteractability(boolean isInteractable) {
+        ArrayList<Entity> EntitiesByInteractability = new ArrayList<Entity>();
+        for (Entity entity : entities) {
+            if (entity.isInteractable() == isInteractable) {
+                EntitiesByInteractability.add(entity);
+            }
+        }
+        return EntitiesByInteractability;
+    }
+
     public ArrayList<Point> getAllEntityPosition() {
         ArrayList<Point> positions = new ArrayList<Point>();
         for (Entity entity : entities) {
@@ -58,7 +67,16 @@ public class EntityManager {
     }
 
     // get all entities by type
-    public ArrayList<Entity> getEntities(EntityType entityType) {
+    public ArrayList<Point> getAllEntityPosition(String entityType) {
+        ArrayList<Point> positions = new ArrayList<Point>();
+        for (Entity entity : getEntities(entityType)) {
+            positions.add(new Point((int) entity.x, (int) entity.y));
+        }
+        return positions;
+    }
+
+    // get all entities by type
+    public ArrayList<Entity> getEntities(String entityType) {
         ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
         for (Entity entity : entities) {
             if (entity.getEntityType() == entityType) {
@@ -82,7 +100,7 @@ public class EntityManager {
         return entities.size();
     }
 
-    public int getEntitiesCount(EntityType entityType) {
+    public int getEntitiesCount(String entityType) {
         return (int) entities.stream()
                 .filter(entity -> entity.getEntityType() == entityType)
                 .count();

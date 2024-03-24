@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import com.mygdx.engine.SimulationManager;
-import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.SceneManager;
@@ -26,7 +25,6 @@ public class Game extends SimulationManager {
     EntityManager EntityManager;
     SceneManager SceneManager;
     KeyStrokeManager keyStrokeManager;
-    AIManager aiManager;
     SpriteBatch batch;
 
     @Override
@@ -54,7 +52,7 @@ public class Game extends SimulationManager {
 
         // the game scene level 2
         SceneManager.addScene(GameSceneType.GAME_SCENE_LVL2,
-                new GameSceneLvl2(SceneManager, EntityManager, keyStrokeManager, aiManager));
+                new GameSceneLvl2(SceneManager, EntityManager, keyStrokeManager));
 
         // end scene
         SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
