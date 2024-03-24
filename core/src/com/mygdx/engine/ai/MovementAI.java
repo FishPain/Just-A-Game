@@ -13,10 +13,11 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.collision.GameCollision;
+import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.Player;
 
 public class MovementAI extends CollisionManager {
-    private AIManager aiManager = new AIManager();
+    // private AIManager aiManager = new AIManager();
     // Call getEntityPositionsByType with the desired entityType
 
     // get all the apple position
@@ -51,7 +52,7 @@ public class MovementAI extends CollisionManager {
         if (horizontalCollision == null) {
             entity.setX(entity.getX() + horizontalMovementDelta.x);
         } else {
-            GameCollision.collideEffect(horizontalCollision, (Player) entity);
+            GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity);
         }
     }
 
@@ -87,7 +88,7 @@ public class MovementAI extends CollisionManager {
         if (collidedEntity == null || (isOnBlock)) {
             entity.setY(entity.getY() + verticalMovementDelta.y);
         } else {
-            GameCollision.collideEffect(collidedEntity, (Player) entity);
+            GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity);
         }
     }
 

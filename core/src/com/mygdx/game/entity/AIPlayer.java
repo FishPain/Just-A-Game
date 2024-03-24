@@ -33,13 +33,13 @@ public class AIPlayer extends Entity {
         super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
 
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
-        ths.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
+        this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
         this.movementAI = new MovementAI();
         //this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
-        th is.bodyPositions = new ArrayList<Vector2>();
-        // 
-        // 
-        ths.isAppleEffectActive = false;
+        this.bodyPositions = new ArrayList<Vector2>();
+        //
+        //
+        this.isAppleEffectActive = false;
         this.isCarrotEffectActive = false;
         initializeBodyPositions(x, y);
     }

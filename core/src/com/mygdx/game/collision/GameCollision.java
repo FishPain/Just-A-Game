@@ -6,6 +6,7 @@ import com.mygdx.engine.io.Timer;
 
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.Player;
 
 public class GameCollision extends CollisionManager {
@@ -61,6 +62,12 @@ public class GameCollision extends CollisionManager {
             collidedEntity.setToRemove(true);
             player.setSpeed(player.getSpeed() / 1.5f);
         }
+    }
+
+    // collision for AI
+    public static void collideEffectAI(Entity collidedEntity, AIPlayer aiPlayer) {
+        // String entityType = collidedEntity.getEntityType();
+
     }
 
 }
