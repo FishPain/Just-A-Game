@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.ButtonType;
 
@@ -101,9 +100,35 @@ public class GameConfig {
         }
     };
 
+    public enum GameEntityType {
+        PLAYER_HEAD("PLAYER_HEAD"),
+        PLAYER_BODY("PLAYER_BODY"),
+        BLOCK("BLOCK"),
+        APPLE("APPLE"),
+        BURGER("BURGER"),
+        RAIN("RAIN"),
+        EXIT_PORTAL("EXIT_PORTAL"),
+        CARROT("CARROT");
 
-    public static enum GameEntityType implements EntityType {
-        PLAYER_HEAD, PLAYER_BODY, BLOCK, APPLE, BURGER, RAIN, EXIT_PORTAL, CARROT
+        private final String value;
+
+        GameEntityType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameEntityType fromValue(String value) {
+            for (GameEntityType type : GameEntityType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum GameSceneType implements SceneType {

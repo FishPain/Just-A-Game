@@ -40,6 +40,12 @@ public class Timer implements Disposable {
         }
     }
 
+    public void addTime(int additionalSeconds) {
+        if (isRunning && !isPaused) {
+            countdownTime += additionalSeconds * 1000; // Convert seconds to milliseconds and add to countdown time
+        }
+    }
+
     public void pauseTimer() {
         if (isRunning && !isPaused) {
             isPaused = true;

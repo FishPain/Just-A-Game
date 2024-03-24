@@ -13,14 +13,15 @@ public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
     protected float x, y, width, height, speed;
-    protected EntityType entityType;
+    protected String entityType;
     protected boolean isMovable;
     protected boolean isCollidable;
     protected boolean toRemove;
     protected boolean isVisable;
+    protected boolean isInteractable;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
-            EntityType entityType, boolean isVisable) {
+            String entityType, boolean isVisable, boolean isInteractable) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -29,6 +30,7 @@ public abstract class Entity {
         this.isMovable = isMovable;
         this.entityType = entityType;
         this.isVisable = isVisable;
+        this.isInteractable = false;
         this.toRemove = false;
         this.isCollidable = true;
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
@@ -55,6 +57,14 @@ public abstract class Entity {
 
     public Vector2 getPosition() {
         return rectangle.getPosition(new Vector2());
+    }
+
+    public void setInteractable(boolean isInteractable) {
+        this.isInteractable = isInteractable;
+    }
+
+    public boolean isInteractable() {
+        return isInteractable;
     }
 
     public void setCollidable(boolean isCollidable) {
@@ -125,11 +135,11 @@ public abstract class Entity {
         this.speed = speed;
     }
 
-    public EntityType getEntityType() {
+    public String getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(EntityType entityType) {
+    public void setEntityType(String entityType) {
         this.entityType = entityType;
     }
 

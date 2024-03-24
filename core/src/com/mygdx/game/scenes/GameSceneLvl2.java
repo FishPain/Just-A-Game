@@ -38,12 +38,12 @@ public class GameSceneLvl2 extends Scene {
     @Override
     public void show() {
         // spawn the player
-        entityManager.addPlayer(
+        entityManager.addEntity(
                 new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
                         GameConfig.PLAYER_SIZE,
                         GameConfig.PLAYER_SIZE,
                         200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
-                        GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
+                        GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager));
 
         // spawn the block borders
         entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
@@ -53,15 +53,15 @@ public class GameSceneLvl2 extends Scene {
 
         // randomly spawn the blocks obstacles
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_OBSTACLES,
-                entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK));
+                entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK.getValue()));
 
         // randomly spawn the apples
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
-                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE));
+                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
 
         // randomly spawn the burgers
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
-                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER));
+                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
 
         timer.startTimer();
         if (GameConfig.IS_MUSIC_ENABLED)
@@ -111,10 +111,12 @@ public class GameSceneLvl2 extends Scene {
         isPaused = !isPaused;
         if (isPaused) {
             timer.pauseTimer();
-            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD), false);
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD.getValue()),
+                    false);
         } else {
             timer.resumeTimer();
-            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD), true);
+            entityManager.setMovability(entityManager.getEntities(GameConfig.GameEntityType.PLAYER_HEAD.getValue()),
+                    true);
         }
     }
 }
