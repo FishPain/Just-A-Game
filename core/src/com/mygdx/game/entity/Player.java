@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.collision.CollisionManager;
 
@@ -22,18 +21,21 @@ public class Player extends Entity {
     private Movement movement;
     private EntityManager entityManager;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
-    private boolean isAppleEffectActive = false;
-    private boolean isCarrotEffectActive = false;
+    private boolean isAppleEffectActive;
+    private boolean isCarrotEffectActive;
+    private boolean isBurgerEffectActive;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
-            String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,
+            String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
-        super(x, y, width, height, headTexturePath, speed, true, entityType, true);
+        super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
         this.entityManager = entityManager;
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
         this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
         this.bodyPositions = new ArrayList<Vector2>();
+        this.isAppleEffectActive = false;
+        this.isCarrotEffectActive = false;
         initializeBodyPositions(x, y);
     }
 
@@ -61,12 +63,20 @@ public class Player extends Entity {
     public void setCarrotEffectActive(boolean active) {
         isCarrotEffectActive = active;
     }
+
+    public boolean isBurgerEffectActive() {
+        return isBurgerEffectActive;
+    }
+
+    public void setBurgerEffectActive(boolean active) {
+        isBurgerEffectActive = active;
+    }
     // END OF EFFECT FLAG
 
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
         if (this.isMovable) {
-            movement.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
-            movement.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+            movement.applyHorizontalMovement(this, allEntities, deltaTime);
+            movement.applyVerticalMovement(this, allEntities, deltaTime);
             // movement.applyMovement(this, allEntities, bodyPositions, deltaTime);
         }
         updatePosition();
@@ -75,9 +85,9 @@ public class Player extends Entity {
     @Override
     public boolean isGameEnd() {
         // If the player has eaten all the apples, the game ends
-        if (entityManager.getEntities(GameEntityType.APPLE).size() == 0
-                || entityManager.getEntities(GameEntityType.CARROT).size() == 0) {
-            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL)) {
+        if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0
+                || entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
+            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
                 if (!entity.isVisable()) {
                     entity.setVisable(true);
                 } else if (CollisionManager.isCollidingWith(this, entity)) {

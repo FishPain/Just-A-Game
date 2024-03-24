@@ -1,69 +1,73 @@
 package com.mygdx.game.scenes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
-import com.mygdx.engine.Utils;
+
+import com.mygdx.engine.io.button.Button;
+import com.mygdx.engine.io.button.ToggleButton;
+import com.mygdx.engine.io.button.ButtonClickListener;
+import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.GameConfig.Assets;
+import com.mygdx.game.GameConfig.GameButtonType;
 
 public class Settings extends Scene {
-
-    private Texture background;
-    private Texture backButton;
     private SceneManager sceneManager;
-    private BitmapFont font;
+    private ButtonManager buttonManager;
+    private ToggleButton soundBtn;
+    private Button backBtn;
 
     public Settings(SceneManager sceneManager) {
         super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        font = new BitmapFont();
+
+        float buttonSpacing = 50;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+        float totalButtonHeight = 2 * buttonHeight + buttonSpacing;
+
+        float X = (GameConfig.SCREEN_WIDTH - buttonWidth) / 2;
+        float backButtonY = (GameConfig.SCREEN_HEIGHT - totalButtonHeight) / 2;
+        float soundButtonY = backButtonY + buttonHeight + buttonSpacing;
+
+        this.soundBtn = createSoundButton(X, soundButtonY);
+        this.backBtn = createBackButton(X, backButtonY);
     }
+
+    private ButtonClickListener clickListener = new ButtonClickListener() {
+        @Override
+        public void onClick(Button button) {
+            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
+
+            if (btnType.equals(GameButtonType.SOUND_TOGGLE)) {
+                GameConfig.IS_MUSIC_ENABLED = !GameConfig.IS_MUSIC_ENABLED;
+                if (GameConfig.IS_MUSIC_ENABLED) {
+                    playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+                } else {
+                    stopBackgroundMusic();
+                }
+                soundBtn.toggleTexture();
+            } else if (btnType.equals(GameButtonType.BACK)) {
+                sceneManager.setScene(GameSceneType.MAIN_MENU);
+            }
+        }
+    };
 
     @Override
     public void show() {
-        backButton = new Texture(Utils.getInternalFilePath(Assets.BACK_BTN.getFileName()));
+        // Register the buttons
+        buttonManager = new ButtonManager(clickListener);
+        buttonManager.addButton(soundBtn);
+        buttonManager.addButton(backBtn);
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                int worldX = screenX;
-                int worldY = GameConfig.SCREEN_HEIGHT - screenY;
+        // Set input processor for buttons
+        buttonManager.setButtonsInputProcessor();
 
-                // Calculate button positions based on screen size
-                float backButtonX = GameConfig.SCREEN_WIDTH * 0.05f;
-                float backButtonY = GameConfig.SCREEN_HEIGHT - backButton.getHeight()
-                        - (GameConfig.SCREEN_HEIGHT * 0.05f);
-                float toggleButtonX = GameConfig.SCREEN_WIDTH * 0.2f;
-                float toggleButtonY = GameConfig.SCREEN_HEIGHT * 0.6f;
-
-                if (worldX >= backButtonX && worldX <= backButtonX + backButton.getWidth() &&
-                        worldY >= backButtonY && worldY <= backButtonY + backButton.getHeight()) {
-
-                    // Go back to the main menu
-                    sceneManager.setScene(GameSceneType.MAIN_MENU);
-                } else if (worldX >= toggleButtonX && worldX <= toggleButtonX + 200 &&
-                        worldY >= toggleButtonY && worldY <= toggleButtonY + 50) {
-
-                    // Toggle music on/off
-                    GameConfig.IS_MUSIC_ENABLED = !GameConfig.IS_MUSIC_ENABLED;
-
-                    // Play or stop music based on the toggle
-                    if (GameConfig.IS_MUSIC_ENABLED) {
-                        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
-                    } else {
-                        stopBackgroundMusic();
-                    }
-                }
-                return super.touchUp(screenX, screenY, pointer, button);
-            }
-        });
-        if (GameConfig.IS_MUSIC_ENABLED)
-            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+        if (!GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override
@@ -76,29 +80,35 @@ public class Settings extends Scene {
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-
-        // Calculate button positions based on screen size
-        float backButtonX = GameConfig.SCREEN_WIDTH * 0.05f;
-        float backButtonY = GameConfig.SCREEN_HEIGHT - backButton.getHeight() - (GameConfig.SCREEN_HEIGHT * 0.05f);
-        float soundLabelX = GameConfig.SCREEN_WIDTH * 0.2f;
-        float soundLabelY = GameConfig.SCREEN_HEIGHT * 0.7f;
-        float toggleButtonX = GameConfig.SCREEN_WIDTH * 0.2f;
-        float toggleButtonY = GameConfig.SCREEN_HEIGHT * 0.6f;
-
-        // Draw buttons
-        batch.draw(backButton, backButtonX, backButtonY);
-        font.draw(batch, "Sound " + (GameConfig.IS_MUSIC_ENABLED ? "On" : "Off"), soundLabelX, soundLabelY);
-        batch.draw(
-                new Texture(Utils.getInternalFilePath(
-                        GameConfig.IS_MUSIC_ENABLED ? Assets.SOUND_ON_BTN.getFileName()
-                                : Assets.SOUND_OFF_BTN.getFileName())),
-                toggleButtonX, toggleButtonY, 200, 50);
+        buttonManager.drawButtons(batch);
     }
 
     @Override
     public void dispose() {
-        background.dispose();
-        backButton.dispose();
-        font.dispose();
+        super.dispose();
+        buttonManager.dispose();
+    }
+
+    private ToggleButton createSoundButton(float X, float Y) {
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+
+        // Create the sound button
+        return new ToggleButton(X, Y, buttonWidth, buttonHeight,
+                GameButtonType.SOUND_TOGGLE.getValue(),
+                new String[] { Assets.SOUND_ON_BTN.getFileName(), Assets.SOUND_OFF_BTN.getFileName() },
+                "", GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+    }
+
+    private Button createBackButton(float X, float Y) {
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+
+        // Create the back button
+        return new Button(X, Y, buttonWidth, buttonHeight,
+                GameButtonType.BACK.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.BACK_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
     }
 }

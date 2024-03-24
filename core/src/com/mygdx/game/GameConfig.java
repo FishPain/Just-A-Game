@@ -1,9 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
-import com.mygdx.engine.io.ButtonType;
 
 import java.awt.Point;
 import java.awt.Dimension;
@@ -23,28 +20,36 @@ public class GameConfig {
     public static int TIME_LIMIT = 5;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
+    public static final int APPLE_EFFECT_TIME = 2;
+    public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
     public static final int NUM_OF_BURGERS = 6;
-    public static final int NUM_OF_CARROT = 3;
+    public static final int BURGER_EFFECT_TIME = 1;
+    public static final float BURGER_SPEED_MULTIPLIER = 2f;
+    public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
     public static final int PLAYER_STAMINA = 100;
     public static int PLAYER_SPEED = 200;
+    public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
-    public static boolean IS_MUSIC_ENABLED = false;
     public static final int BUTTON_FONT_SIZE = 20;
+    public static final String SETTINGS_FILE_PATH = "settings.json";
+    public static final String SETTINGS_SOUND_KEY = "SoundEffects";
+    public static final String SETTINGS_KEYSTROKES_KEY = "KeyStrokes";
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Operating System Name: " + osName);
+
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int width = screenSize.width;
             int height = screenSize.height;
 
-            if (Math.abs(width - 1920) < Math.abs(width - 800) && // Resolution set based on screen size
-                    Math.abs(height - 800) < Math.abs(height - 600)) {
+            if (Math.abs(width - 1920) < Math.abs(width - 800) &&
+                    Math.abs(height - 1080) < Math.abs(height - 600)) { // Adjusted resolution check
                 SCREEN_WIDTH = 1920;
                 SCREEN_HEIGHT = 1080;
             } else {
@@ -54,6 +59,8 @@ public class GameConfig {
 
             System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
             System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
+
+            // Adjust TIME_LIMIT based on screen size
             float widthScaleFactor = (float) SCREEN_WIDTH / 800;
             float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
             TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
@@ -64,11 +71,11 @@ public class GameConfig {
             SCREEN_HEIGHT = 600;
         }
     }
+
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
     public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;
-
     public static final ArrayList<Point> BLOCK_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
@@ -102,8 +109,35 @@ public class GameConfig {
     };
 
 
-    public static enum GameEntityType implements EntityType {
-        PLAYER_HEAD, PLAYER_BODY, BLOCK, APPLE, BURGER, RAIN, EXIT_PORTAL, CARROT
+    public enum GameEntityType {
+        PLAYER_HEAD("PLAYER_HEAD"),
+        PLAYER_BODY("PLAYER_BODY"),
+        BLOCK("BLOCK"),
+        APPLE("APPLE"),
+        BURGER("BURGER"),
+        RAIN("RAIN"),
+        EXIT_PORTAL("EXIT_PORTAL"),
+        CARROT("CARROT");
+
+        private final String value;
+
+        GameEntityType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameEntityType fromValue(String value) {
+            for (GameEntityType type : GameEntityType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum GameSceneType implements SceneType {
@@ -124,7 +158,7 @@ public class GameConfig {
         JUMP("JUMP"),
         SHOOT("SHOOT"),
         PAUSE_RESUME("PAUSE_RESUME"),
-        FILE_PATH("Settings.json");
+        FILE_PATH(SETTINGS_FILE_PATH);
 
         private String keyStrokeName;
 
@@ -137,8 +171,34 @@ public class GameConfig {
         }
     }
 
-    public static enum GameButtonType implements ButtonType {
-        PLAY, SETTINGS, QUIT, START, RESTART, BACK, SOUND_ON, SOUND_OFF
+    public enum GameButtonType {
+        PLAY("PLAY_BTN"),
+        SETTINGS("SETTINGS_BTN"),
+        QUIT("QUIT_BTN"),
+        START("START_BTN"),
+        RESTART("RESTART_BTN"),
+        BACK("BACK_BTN"),
+        SOUND_TOGGLE("SOUND_TOGGLE");
+
+        private final String value;
+
+        GameButtonType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameButtonType fromValue(String value) {
+            for (GameButtonType type : GameButtonType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum GameButtonText {
@@ -214,16 +274,4 @@ public class GameConfig {
         }
     }
 
-    public static int Xscale() {
-        return Gdx.graphics.getWidth() / 16;
-    }
-
-    public static int Yscale() {
-        return Gdx.graphics.getHeight() / 9;
-    }
-
-    public static float PLAYER_SPEED() {
-        PLAYER_SPEED = 200;
-        throw new UnsupportedOperationException("Unimplemented method 'PLAYER_SPEED'");
-    }
 }
