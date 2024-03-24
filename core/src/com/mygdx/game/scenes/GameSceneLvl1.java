@@ -11,7 +11,6 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.game.collision.Collision;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
 import java.util.ArrayList;
@@ -22,6 +21,8 @@ public class GameSceneLvl1 extends Scene {
     private KeyStrokeManager keyStrokeManager;
     private BlockManager blockManager;
     private Timer timer;
+    private Player player;
+    private GameSceneType nextScene;
     private Player player;
     private GameSceneType nextScene;
     private boolean isPaused;
@@ -38,6 +39,7 @@ public class GameSceneLvl1 extends Scene {
         this.isPaused = false;
         this.pauseKeyIsPressed = false;
         this.nextScene = null;
+        this.nextScene = null;
     }
 
     @Override
@@ -45,11 +47,15 @@ public class GameSceneLvl1 extends Scene {
         // spawn the player
 
         this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
+        this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
                 GameConfig.PLAYER_SIZE,
                 GameConfig.PLAYER_SIZE,
                 GameConfig.PLAYER_SPEED, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
                 GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
+                GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
         System.out.println("GameConfig.PLAYER_SPEED: " + GameConfig.PLAYER_SPEED);
+
+        entityManager.addEntity(player);
 
         entityManager.addEntity(player);
         // spawn the block borders
@@ -61,13 +67,16 @@ public class GameSceneLvl1 extends Scene {
         // randomly spawn the blocks obstacles
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_OBSTACLES,
                 entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK.getValue()));
+                entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK.getValue()));
 
         // randomly spawn the apples
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
                 entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
+                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
 
         // randomly spawn the burgers
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
+                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
 
         timer.startTimer();
@@ -87,13 +96,19 @@ public class GameSceneLvl1 extends Scene {
     @Override
     public void render(float delta) {
 
+
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        // update timer
         // update timer
         timer.updateAndRender(batch);
         if (timer.isTimerEnded()) {
             nextScene = GameSceneType.GAME_OVER_LOSE;
         }
+        if (timer.getRemainingTime() <= 0) {
+            nextScene = GameSceneType.GAME_OVER_LOSE;
+        }
 
+        // press esc key to pause the game and resume the game
         // press esc key to pause the game and resume the game
         if (keyStrokeManager.isKeyPressed(GameConfig.Keystroke.PAUSE_RESUME.getKeystrokeName())) {
             if (!pauseKeyIsPressed) {
@@ -105,23 +120,21 @@ public class GameSceneLvl1 extends Scene {
         }
 
         // draw and move the entities
+        // draw and move the entities
         ArrayList<Entity> entities = entityManager.getEntities();
         for (Entity entity : entities) {
             entity.draw(batch);
-            GameEntityType collision = Collision.willCollide(entity, new Vector2(entity.getX(), entity.getY()),
-                    entities);
-            if (collision != null) {
-                if (entity.getEntityType() == GameEntityType.PLAYER_HEAD) {
-                    System.out.println("entity.getEntityType(): " + entity.getEntityType());
-                    Collision.collideEffect(collision, (Player) entity);
-                }
-                if (entity.getEntityType() == GameEntityType.BURGER) {
-                    Player snake = (Player) entity; 
-                    System.out.println(snake.getSpeed());
-                }
-            }
-
             entity.move(entityManager.getAllCollidableEntity(), delta);
+
+            // If the player has eaten all the apples, the game ends
+            if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
+                for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
+                    if (!exitPortal.isVisable()) {
+                        exitPortal.setVisable(true);
+                    } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
+                        nextScene = GameSceneType.GAME_SCENE_LVL2;
+                    }
+                }
 
             // If the player has eaten all the apples, the game ends
             if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
@@ -136,7 +149,11 @@ public class GameSceneLvl1 extends Scene {
         }
 
         // bulk remove entity to prevent concurrent modification
+
+        // bulk remove entity to prevent concurrent modification
         entityManager.removeEntities();
+
+        // set the next scene
 
         // set the next scene
         if (nextScene != null)
@@ -148,8 +165,10 @@ public class GameSceneLvl1 extends Scene {
         if (isPaused) {
             timer.pauseTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), false);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), false);
         } else {
             timer.resumeTimer();
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), true);
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), true);
         }
     }

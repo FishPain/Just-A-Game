@@ -1,23 +1,24 @@
-package com.mygdx.engine.io.button;
+package com.mygdx.engine.io;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.mygdx.engine.Utils;
 import com.mygdx.engine.fonts.Font;
 import com.badlogic.gdx.graphics.Texture;
+
+import com.badlogic.gdx.Gdx;
 
 public class Button extends Font {
     private float x;
     private float y;
     private float width;
     private float height;
-    private String buttonType;
+    private ButtonType buttonType;
     private Texture texture;
     private String text;
     private BitmapFont font;
 
-    public Button(float x, float y, float width, float height, String buttonType, String texturePath, String text,
+    public Button(float x, float y, float width, float height, ButtonType buttonType, String texturePath, String text,
             String fontPath, int fontSize) {
         super(fontPath, fontSize);
         this.x = x;
@@ -25,7 +26,7 @@ public class Button extends Font {
         this.width = width;
         this.height = height;
         this.buttonType = buttonType;
-        this.texture = new Texture(Utils.getInternalFilePath(texturePath));
+        this.texture = new Texture(Gdx.files.internal(texturePath));
         this.text = text;
         this.font = createFont();
     }
@@ -69,7 +70,7 @@ public class Button extends Font {
         return height;
     }
 
-    public String getButtonType() {
+    public ButtonType getButtonType() {
         return buttonType;
     }
 
