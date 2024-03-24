@@ -40,6 +40,12 @@ public class Timer implements Disposable {
         }
     }
 
+    public void addTime(int additionalSeconds) {
+        if (isRunning && !isPaused) {
+            countdownTime += additionalSeconds * 1000; // Convert seconds to milliseconds and add to countdown time
+        }
+    }
+
     public void pauseTimer() {
         if (isRunning && !isPaused) {
             isPaused = true;
@@ -81,6 +87,18 @@ public class Timer implements Disposable {
                 }
                 String timeString = "Time: " + (remainingTime / 1000) + " seconds";
                 font.draw(batch, timeString, x, y);
+            }
+        }
+    }
+
+    public void updateEffect() {
+        if (isRunning) {
+            long currentTime = TimeUtils.millis();
+            long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
+            long remainingTime = countdownTime - elapsedTime;
+            if (remainingTime < 0) {
+                remainingTime = 0;
+                stopTimer(); // Optionally stop the timer when it reaches 0
             }
         }
     }

@@ -18,7 +18,7 @@ public class BlockManager {
         for (Point position : blockPositions) {
             Block block = new Block(position.x, position.y, GameConfig.BLOCK_SIZE, GameConfig.BLOCK_SIZE,
                     Assets.BLOCK.getFileName(),
-                    GameEntityType.BLOCK, true);
+                    GameEntityType.BLOCK.getValue(), true, false);
             blocks.add(block);
         }
         return blocks;
@@ -27,13 +27,13 @@ public class BlockManager {
     public Block createExitPortal(Point position) {
         Block portal = new Block(position.x, position.y, GameConfig.BLOCK_SIZE, GameConfig.BLOCK_SIZE,
                 Assets.EXIT_PORTAL.getFileName(),
-                GameEntityType.EXIT_PORTAL, false);
+                GameEntityType.EXIT_PORTAL.getValue(), false, true);
         portal.setCollidable(false);
         return portal;
     }
 
     public ArrayList<Block> createRandomBlocks(int numOfBlocks, ArrayList<Point> allEntityPosition,
-            String assetFilePath, GameEntityType entityType) {
+            String assetFilePath, String entityType) {
         ArrayList<Block> obstacles = new ArrayList<>();
         Random rand = new Random();
         int attempts;
@@ -66,9 +66,11 @@ public class BlockManager {
             }
 
             if (attempts < MAX_ATTEMPTS && potentialPosition != null) {
+                boolean isInteractable = entityType.equals(GameEntityType.BLOCK.getValue()) ? false : true;
+
                 Block block = new Block(potentialPosition.x, potentialPosition.y, GameConfig.BLOCK_SIZE,
                         GameConfig.BLOCK_SIZE,
-                        assetFilePath, entityType, true);
+                        assetFilePath, entityType, true, isInteractable);
                 obstacles.add(block);
             }
         }

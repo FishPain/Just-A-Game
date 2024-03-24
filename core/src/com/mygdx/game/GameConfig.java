@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.engine.entity.EntityType;
 import com.mygdx.engine.scene.SceneType;
 import com.mygdx.engine.io.ButtonType;
 
@@ -16,16 +15,20 @@ public class GameConfig {
     public static final boolean RESIZABLE = false;
     public static final boolean FULLSCREEN = false;
     public static final int FPS = 60;
-    public static final String TITLE = "My GDX Game";
+    public static final String TITLE = "My Goopy Foody Game";
     public static final float GRAVITY = -100f;
     public static float MUSIC_VOLUME = 0.2f;
     public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 5;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
-    public static final int NUM_OF_BURGERS = 10;
+    public static final int NUM_OF_BURGERS = 6;
+    public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
+    public static final int PLAYER_STAMINA = 100;
+    public static int PLAYER_SPEED = 200;
+
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
     public static boolean IS_MUSIC_ENABLED = false;
@@ -97,8 +100,35 @@ public class GameConfig {
         }
     };
 
-    public static enum GameEntityType implements EntityType {
-        PLAYER_HEAD, PLAYER_BODY, BLOCK, APPLE, BURGER, RAIN, EXIT_PORTAL
+    public enum GameEntityType {
+        PLAYER_HEAD("PLAYER_HEAD"),
+        PLAYER_BODY("PLAYER_BODY"),
+        BLOCK("BLOCK"),
+        APPLE("APPLE"),
+        BURGER("BURGER"),
+        RAIN("RAIN"),
+        EXIT_PORTAL("EXIT_PORTAL"),
+        CARROT("CARROT");
+
+        private final String value;
+
+        GameEntityType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameEntityType fromValue(String value) {
+            for (GameEntityType type : GameEntityType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum GameSceneType implements SceneType {
@@ -171,6 +201,7 @@ public class GameConfig {
         PLAYER_BODY("player_body.jpg"),
         PLAYER_HEAD("player.png"),
         APPLE("apple.png"),
+        CARROT("droplet.png"),
         BURGER("burger.png"),
         RAIN("droplet.png"),
         LOGO("logo.png"),
@@ -214,5 +245,10 @@ public class GameConfig {
 
     public static int Yscale() {
         return Gdx.graphics.getHeight() / 9;
+    }
+
+    public static float PLAYER_SPEED() {
+        PLAYER_SPEED = 200;
+        throw new UnsupportedOperationException("Unimplemented method 'PLAYER_SPEED'");
     }
 }

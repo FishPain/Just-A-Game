@@ -44,7 +44,7 @@ public class Tutorial extends Scene {
             }
         }
     };
-    
+
     private void setPositionCentered(Label label, float additionalYOffset) {
         float x = Gdx.graphics.getWidth() / 2 - GameConfig.Xscale();
         float y = Gdx.graphics.getHeight() / 2 - label.getHeight() / 2 - 20 - additionalYOffset;
@@ -67,7 +67,6 @@ public class Tutorial extends Scene {
         Label blockLabel = new Label("block: Refreshing soda with ice cubes", labelStyle);
 
         // Position labels below their respective textures
-
 
         setPositionCentered(burgerLabel, 0);
         setPositionCentered(rainLabel, rain.getHeight());
@@ -141,11 +140,5 @@ public class Tutorial extends Scene {
     @Override
     public void dispose() {
         super.dispose();
-        /*
-         * stage.dispose();
-         * burger.dispose();
-         * rain.dispose();
-         * block.dispose();
-         */
     }
 }

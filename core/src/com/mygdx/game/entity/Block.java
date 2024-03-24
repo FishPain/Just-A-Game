@@ -1,14 +1,13 @@
 package com.mygdx.game.entity;
 
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.game.GameConfig.GameEntityType;
 
 import java.util.ArrayList;
 
 public class Block extends Entity {
-    public Block(float x, float y, float width, float height, String texturePath, GameEntityType entityType,
-            boolean isVisable) {
-        super(x, y, width, height, texturePath, 0, false, entityType, isVisable);
+    public Block(float x, float y, float width, float height, String texturePath, String entityType,
+            boolean isVisable, boolean isInteractable) {
+        super(x, y, width, height, texturePath, 0, false, entityType, isVisable, isInteractable);
     }
 
     @Override
