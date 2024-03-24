@@ -57,6 +57,15 @@ public class EntityManager {
     }
 
     // get all entities by type
+    public ArrayList<Point> getAllEntityPosition(String entityType) {
+        ArrayList<Point> positions = new ArrayList<Point>();
+        for (Entity entity : getEntities(entityType)) {
+            positions.add(new Point((int) entity.x, (int) entity.y));
+        }
+        return positions;
+    }
+
+    // get all entities by type
     public ArrayList<Entity> getEntities(String entityType) {
         ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
         for (Entity entity : entities) {
