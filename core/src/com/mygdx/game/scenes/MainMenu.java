@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.Utils;
-import com.mygdx.engine.io.Button;
-import com.mygdx.engine.io.ButtonClickListener;
-import com.mygdx.engine.io.ButtonManager;
-import com.mygdx.engine.io.ButtonType;
+import com.mygdx.engine.io.button.Button;
+import com.mygdx.engine.io.button.ButtonClickListener;
+import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameSceneType;
@@ -36,7 +35,8 @@ public class MainMenu extends Scene {
 
     private ButtonClickListener clickListener = new ButtonClickListener() {
         @Override
-        public void onClick(ButtonType btnType) {
+        public void onClick(Button button) {
+            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
             if (btnType.equals(GameButtonType.PLAY)) {
                 sceneManager.setScene(GameSceneType.TUTORIAL);
             } else if (btnType.equals(GameButtonType.SETTINGS)) {
@@ -63,17 +63,17 @@ public class MainMenu extends Scene {
         float quitButtonX = settingButtonX + buttonWidth + buttonSpacing;
 
         // Create buttons
-        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY,
+        tutorialBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.PLAY.getValue(),
                 Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.PLAY_BTN.getText(),
                 GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
 
         settingsBtn = new Button(settingButtonX, buttonY, buttonWidth, buttonHeight,
-                GameButtonType.SETTINGS, Assets.BUTTON_BG.getFileName(),
+                GameButtonType.SETTINGS.getValue(), Assets.BUTTON_BG.getFileName(),
                 GameConfig.GameButtonText.SETTINGS_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
                 GameConfig.BUTTON_FONT_SIZE);
 
         quitBtn = new Button(quitButtonX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.QUIT, Assets.BUTTON_BG.getFileName(),
+                buttonHeight, GameButtonType.QUIT.getValue(), Assets.BUTTON_BG.getFileName(),
                 GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
                 GameConfig.BUTTON_FONT_SIZE);
 
