@@ -12,13 +12,16 @@ import java.util.ArrayList;
 public abstract class Entity {
     protected Texture texture;
     protected Rectangle rectangle;
-    public float x, y, width, height, speed;
-    protected EntityType entityType;
+    protected float x, y, width, height, speed;
+    protected String entityType;
     protected boolean isMovable;
+    protected boolean isCollidable;
     protected boolean toRemove;
+    protected boolean isVisable;
+    protected boolean isInteractable;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
-            EntityType entityType) {
+            String entityType, boolean isVisable, boolean isInteractable) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -26,19 +29,20 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
+        this.isVisable = isVisable;
+        this.isInteractable = false;
         this.toRemove = false;
-
+        this.isCollidable = true;
         this.texture = new Texture(Utils.getInternalFilePath(texturePath));
         this.rectangle = new Rectangle(x, y, width, height);
     }
 
-    public abstract void move(ArrayList<Entity> allEntities);
+    public abstract void move(ArrayList<Entity> allEntities, float deltaTime);
 
     public abstract boolean isGameEnd();
 
-    
     public void draw(SpriteBatch batch) {
-        if (batch == null || texture == null)
+        if (batch == null || texture == null || !isVisable)
             return;
         batch.draw(texture, x, y, width, height);
     }
@@ -55,6 +59,22 @@ public abstract class Entity {
         return rectangle.getPosition(new Vector2());
     }
 
+    public void setInteractable(boolean isInteractable) {
+        this.isInteractable = isInteractable;
+    }
+
+    public boolean isInteractable() {
+        return isInteractable;
+    }
+
+    public void setCollidable(boolean isCollidable) {
+        this.isCollidable = isCollidable;
+    }
+
+    public boolean isCollidable() {
+        return isCollidable;
+    }
+
     public boolean isToRemove() {
         return toRemove;
     }
@@ -63,24 +83,32 @@ public abstract class Entity {
         this.toRemove = toRemove;
     }
 
+    public boolean isVisable() {
+        return isVisable;
+    }
+
+    public void setVisable(boolean isVisable) {
+        this.isVisable = isVisable;
+    }
+
     public void dispose() {
         texture.dispose();
     }
 
     public float getX() {
-        return rectangle.x;
+        return this.x;
     }
 
     public void setX(float x) {
-        rectangle.x = x;
+        this.x = x;
     }
 
     public float getY() {
-        return rectangle.y;
+        return this.y;
     }
 
     public void setY(float y) {
-        rectangle.y = y;
+        this.y = y;
     }
 
     public float getWidth() {
@@ -107,11 +135,11 @@ public abstract class Entity {
         this.speed = speed;
     }
 
-    public EntityType getEntityType() {
+    public String getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(EntityType entityType) {
+    public void setEntityType(String entityType) {
         this.entityType = entityType;
     }
 
