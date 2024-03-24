@@ -22,7 +22,11 @@ public class GameConfig {
     public static int TIME_LIMIT = 5;
     public static final int NUM_OF_OBSTACLES = 100;
     public static final int NUM_OF_APPLES = 3;
+    public static final int APPLE_EFFECT_TIME = 2;
+    public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
     public static final int NUM_OF_BURGERS = 6;
+    public static final int BURGER_EFFECT_TIME = 1;
+    public static final float BURGER_SPEED_MULTIPLIER = 2f;
     public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;

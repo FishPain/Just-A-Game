@@ -23,6 +23,7 @@ public class Player extends Entity {
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
+    private boolean isBurgerEffectActive;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
@@ -61,6 +62,14 @@ public class Player extends Entity {
 
     public void setCarrotEffectActive(boolean active) {
         isCarrotEffectActive = active;
+    }
+
+    public boolean isBurgerEffectActive() {
+        return isBurgerEffectActive;
+    }
+
+    public void setBurgerEffectActive(boolean active) {
+        isBurgerEffectActive = active;
     }
     // END OF EFFECT FLAG
 

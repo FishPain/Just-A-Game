@@ -89,7 +89,7 @@ public class GameSceneLvl1 extends Scene {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         // update timer
         timer.updateAndRender(batch);
-        if (timer.getRemainingTime() <= 0) {
+        if (timer.isTimerEnded()) {
             nextScene = GameSceneType.GAME_OVER_LOSE;
         }
 

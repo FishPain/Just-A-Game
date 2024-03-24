@@ -119,6 +119,12 @@ public class Timer implements Disposable {
         return elapsedTime / 1000;
     }
 
+    public boolean isTimerEnded() {
+        long currentTime = TimeUtils.millis();
+        long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
+        return elapsedTime >= countdownTime;
+    }
+
     @Override
     public void dispose() {
         font.dispose();
