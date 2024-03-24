@@ -19,13 +19,6 @@ public class CollisionManager {
         return null;
     }
 
-    public static boolean isCollidingWith(Entity entity, Entity other) {
-        if (other != entity && entity.getRectangle().overlaps(other.getRectangle())) {
-            return true; // Collision detected
-        }
-        return false; // No collision detected
-    }
-
     public static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
         Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
         slightlyBelow.y -= 1; // Check just below the entity

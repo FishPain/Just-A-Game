@@ -30,6 +30,7 @@ public class GameConfig {
     public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_SIZE = 25;
+    public static final int AI_PLAYER_SIZE = 30;
     public static final int PLAYER_STAMINA = 100;
     public static int PLAYER_SPEED = 200;
 
@@ -68,6 +69,7 @@ public class GameConfig {
         }
     }
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final Point AI_PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 3, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
     public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;

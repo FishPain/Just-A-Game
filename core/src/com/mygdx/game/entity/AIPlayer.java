@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.entity.EntityType;
+
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.ai.MovementAI;
 import com.mygdx.engine.collision.CollisionManager;
@@ -25,9 +25,9 @@ public class AIPlayer extends Entity {
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
 
     public AIPlayer(float x, float y, float width, float height, float speed, String headTexturePath,
-            String bodyTexturePath, EntityType entityType, KeyStrokeManager keyStrokeManager,
+            String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
-        super(x, y, width, height, headTexturePath, speed, true, entityType, true);
+        super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
         this.entityManager = entityManager;
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
@@ -104,8 +104,9 @@ public class AIPlayer extends Entity {
     @Override
     public boolean isGameEnd() {
         // If the player has eaten all the apples, the game ends
-        if (entityManager.getEntities(GameEntityType.APPLE).size() == 0) {
-            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL)) {
+        if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0
+                || entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
+            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
                 if (!entity.isVisable()) {
                     entity.setVisable(true);
                 } else if (CollisionManager.isCollidingWith(this, entity)) {
