@@ -14,6 +14,8 @@ import com.mygdx.game.GameConfig.GameSceneType;
 import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
+
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class GameSceneLvl2 extends Scene {
@@ -32,7 +34,7 @@ public class GameSceneLvl2 extends Scene {
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
-        this.aiManager = aiManager;
+        this.aiManager = new AIManager();
         this.blockManager = new BlockManager();
         this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
                 GameConfig.TIME_LIMIT);
@@ -57,6 +59,7 @@ public class GameSceneLvl2 extends Scene {
                         GameConfig.PLAYER_SIZE,
                         200, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
                         GameEntityType.PLAYER_HEAD, keyStrokeManager, entityManager));
+
         // spawn the block borders
         entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 
@@ -75,9 +78,16 @@ public class GameSceneLvl2 extends Scene {
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER));
 
+        // ArrayList<Point> applePositions =
+        // aiManager.getEntityPositionsByType(GameEntityType.APPLE);
+        ArrayList<Point> positions = entityManager.getAllEntityPosition();
+        System.out.println("apple: " + positions.size());
+        System.out.println("All pos: " + positions);
+
         timer.startTimer();
         if (GameConfig.IS_MUSIC_ENABLED)
             playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+
     }
 
     @Override

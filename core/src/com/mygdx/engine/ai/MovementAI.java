@@ -1,16 +1,33 @@
 package com.mygdx.engine.ai;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.game.GameConfig.Keystroke;
+import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.entity.EntityType;
 import com.mygdx.game.collision.Collision;
+import com.mygdx.game.GameConfig;
+import com.mygdx.game.GameConfig.GameEntityType;
 
 public class MovementAI extends Collision {
+    private AIManager aiManager = new AIManager();
+    // Call getEntityPositionsByType with the desired entityType
 
-    // here is where u do AI movements then link this to aiplayer this.movement
+    // get all the apple position
+    // ArrayList<Point> applePositions =
+    // aiManager.getEntityPositionsByType(GameConfig.GameEntityType.APPLE);
+    public ArrayList<Point> Apples() {
+        ArrayList<Point> applePositions = aiManager.getEntityPositionsByType(GameConfig.GameEntityType.APPLE);
+        // System.out.println("Number of apple positions: " + applePositions.size());
+        for (Point position : applePositions) {
+            System.out.println("Apple position: (" + position.getX() + ", " +
+                    position.getY() + ")");
+        }
+        return applePositions;
+    }
 
     public void AIMovement(float x, float speed, boolean isJumping, float jumpSpeed,
             float gravity) {

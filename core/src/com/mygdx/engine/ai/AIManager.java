@@ -2,13 +2,15 @@ package com.mygdx.engine.ai;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.entity.Entity;
+import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.entity.EntityType;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.entity.AIPlayer;
 
 import java.util.ArrayList;
 import java.awt.Point;
 
-public class AIManager {
+public class AIManager extends EntityManager {
     // Create new AI entity
 
     // set movement like raindrops
@@ -17,14 +19,31 @@ public class AIManager {
 
     // condition statement to move left, right, top, bottom
     private ArrayList<Entity> aiEntities;
+    ArrayList<Point> positions = new ArrayList<Point>();
 
     public AIManager() {
-        aiEntities = new ArrayList<>();
+        aiEntities = new ArrayList<Entity>();
     }
 
-    public void addAiPlayer(Entity aiPlayer) {
-        System.out.println("Entity entity: " + aiPlayer);
-        aiEntities.add(aiPlayer);
+    public ArrayList<Point> getEntityPositionsByType(EntityType entityType) {
+
+        ArrayList<Entity> entitiesByType = getEntities(entityType);
+        for (Entity entity : entitiesByType) {
+            positions.add(new Point((int) entity.getX(), (int) entity.getY()));
+            System.out.println("apple: " + entity.getX() + entity.getY());
+        }
+
+        return positions;
+    }
+
+    public ArrayList<Entity> getEntities(EntityType entityType) {
+        ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
+        for (Entity entity : aiEntities) {
+            if (entity.getEntityType() == entityType) {
+                entitiesByType.add(entity);
+            }
+        }
+        return entitiesByType;
     }
 
     // public void setMovability(ArrayList<? extends Entity> entities, boolean
