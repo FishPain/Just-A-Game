@@ -23,6 +23,7 @@ public class Player extends Entity {
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
+    private boolean isBurgerEffectActive;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
@@ -35,6 +36,7 @@ public class Player extends Entity {
         this.bodyPositions = new ArrayList<Vector2>();
         this.isAppleEffectActive = false;
         this.isCarrotEffectActive = false;
+        this.isBurgerEffectActive = false;
         initializeBodyPositions(x, y);
     }
 
@@ -62,7 +64,15 @@ public class Player extends Entity {
     public void setCarrotEffectActive(boolean active) {
         isCarrotEffectActive = active;
     }
-    // END OF EFFECT FLAG
+
+    public boolean isBurgerEffectActive() {
+        return isBurgerEffectActive;
+    }
+
+    public void setBurgerEffectActive(boolean active) {
+        isBurgerEffectActive = active;
+    }
+    
 
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
         if (this.isMovable) {
