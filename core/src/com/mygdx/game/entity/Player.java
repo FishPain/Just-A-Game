@@ -24,10 +24,15 @@ public class Player extends Entity {
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
     private boolean isBurgerEffectActive;
+    private boolean isAppleEffectActive;
+    private boolean isCarrotEffectActive;
+    private boolean isBurgerEffectActive;
 
     public Player(float x, float y, float width, float height, float speed, String headTexturePath,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
+            String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
+        super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
         super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
         this.entityManager = entityManager;
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
@@ -77,6 +82,8 @@ public class Player extends Entity {
         if (this.isMovable) {
             movement.applyHorizontalMovement(this, allEntities, deltaTime);
             movement.applyVerticalMovement(this, allEntities, deltaTime);
+            movement.applyHorizontalMovement(this, allEntities, deltaTime);
+            movement.applyVerticalMovement(this, allEntities, deltaTime);
             // movement.applyMovement(this, allEntities, bodyPositions, deltaTime);
         }
         updatePosition();
@@ -85,6 +92,9 @@ public class Player extends Entity {
     @Override
     public boolean isGameEnd() {
         // If the player has eaten all the apples, the game ends
+        if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0
+                || entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
+            for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
         if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0
                 || entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
             for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {

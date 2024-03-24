@@ -1,7 +1,6 @@
 package com.mygdx.engine.entity;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.GameConfig.GameEntityType;
 
 import java.util.ArrayList;
 import java.awt.Point;
@@ -52,15 +51,6 @@ public class EntityManager {
     public ArrayList<Point> getAllEntityPosition() {
         ArrayList<Point> positions = new ArrayList<Point>();
         for (Entity entity : entities) {
-            positions.add(new Point((int) entity.x, (int) entity.y));
-        }
-        return positions;
-    }
-
-    // get all entities by type
-    public ArrayList<Point> getAllEntityPosition(String entityType) {
-        ArrayList<Point> positions = new ArrayList<Point>();
-        for (Entity entity : getEntities(entityType)) {
             positions.add(new Point((int) entity.x, (int) entity.y));
         }
         return positions;

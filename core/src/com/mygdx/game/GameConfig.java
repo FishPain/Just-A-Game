@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.engine.scene.SceneType;
 
 import java.awt.Point;
@@ -23,6 +24,7 @@ public class GameConfig {
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
     public static final int NUM_OF_BURGERS = 6;
+    public static final int NUM_OF_CARROTS = 3;
     public static final int BURGER_EFFECT_TIME = 1;
     public static final float BURGER_SPEED_MULTIPLIER = 2f;
     public static final int NUM_OF_CARROTS = 3;
@@ -108,6 +110,35 @@ public class GameConfig {
         }
     };
 
+    public enum GameEntityType {
+        PLAYER_HEAD("PLAYER_HEAD"),
+        PLAYER_BODY("PLAYER_BODY"),
+        BLOCK("BLOCK"),
+        APPLE("APPLE"),
+        BURGER("BURGER"),
+        RAIN("RAIN"),
+        EXIT_PORTAL("EXIT_PORTAL"),
+        CARROT("CARROT");
+
+        private final String value;
+
+        GameEntityType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameEntityType fromValue(String value) {
+            for (GameEntityType type : GameEntityType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
 
     public enum GameEntityType {
         PLAYER_HEAD("PLAYER_HEAD"),
