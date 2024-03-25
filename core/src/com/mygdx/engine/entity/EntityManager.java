@@ -1,7 +1,5 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 import java.awt.Point;
 
