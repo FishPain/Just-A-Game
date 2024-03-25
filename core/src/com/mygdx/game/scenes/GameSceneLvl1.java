@@ -41,14 +41,11 @@ public class GameSceneLvl1 extends Scene {
 
     @Override
     public void show() {
-        // spawn the player
-
         this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
                 GameConfig.PLAYER_SIZE,
                 GameConfig.PLAYER_SIZE,
                 GameConfig.PLAYER_SPEED, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
                 GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
-        System.out.println("GameConfig.PLAYER_SPEED: " + GameConfig.PLAYER_SPEED);
 
         entityManager.addEntity(player);
         // spawn the block borders
@@ -76,16 +73,16 @@ public class GameSceneLvl1 extends Scene {
 
     @Override
     public void hide() {
+        this.nextScene = null;
         timer.resetTimer();
+        entityManager.dispose(batch);
         if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
-        entityManager.dispose(batch);
     }
 
     @Override
     public void render(float delta) {
-
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
         // update timer
         timer.updateAndRender(batch);
@@ -115,6 +112,8 @@ public class GameSceneLvl1 extends Scene {
                     if (!exitPortal.isVisable()) {
                         exitPortal.setVisable(true);
                     } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
+                        System.out
+                                .println("apple: " + entityManager.getEntities(GameEntityType.APPLE.getValue()).size());
                         nextScene = GameSceneType.GAME_SCENE_LVL2;
                     }
                 }

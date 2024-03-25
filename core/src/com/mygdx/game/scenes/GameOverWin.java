@@ -5,51 +5,74 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.Utils;
 import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.io.button.Button;
+import com.mygdx.engine.io.button.ButtonClickListener;
+import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
+import com.mygdx.game.GameConfig.GameButtonType;
 import com.mygdx.game.GameConfig.GameSceneType;
 
 public class GameOverWin extends Scene {
     // this class will load all the required entityies using entity manager
     SceneManager sceneManager;
-    private Texture restartButton;
-    private Texture background;
-    private EntityManager entityManager;
+    private ButtonManager buttonManager;
 
     public GameOverWin(SceneManager sceneManager, EntityManager entityManager) {
         super(Assets.GAME_OVER_WIN.getFileName(), Assets.GAME_OVER_WIN_SOUND.getFileName());
         this.sceneManager = sceneManager;
-        this.entityManager = entityManager;
     }
+
+    private ButtonClickListener clickListener = new ButtonClickListener() {
+        @Override
+        public void onClick(Button button) {
+            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
+            if (btnType.equals(GameButtonType.START)) {
+                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1);
+            } else if (btnType.equals(GameButtonType.BACK)) {
+                sceneManager.setScene(GameSceneType.MAIN_MENU);
+            }
+        }
+    };
 
     @Override
     public void show() {
-        System.out.println("YOU WIN!");
-        background = new Texture(Utils.getInternalFilePath(Assets.GAME_OVER_WIN.getFileName()));
-        restartButton = new Texture(Utils.getInternalFilePath(Assets.RESTART_BTN.getFileName()));
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+        float buttonSpacing = 50;
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                int worldX = screenX;
-                int worldY = Gdx.graphics.getHeight() - screenY;
+        // Calculate the total width occupied by the buttons
+        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
 
-                // Check if the restart button is pressed
-                if (worldX >= Gdx.graphics.getWidth() / 2 - restartButton.getWidth() / 2 &&
-                        worldX <= Gdx.graphics.getWidth() / 2 + restartButton.getWidth() / 2 &&
-                        worldY >= 50 && worldY <= 50 + restartButton.getHeight()) {
+        // Calculate the starting position for the buttons to center them horizontally
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
 
-                    // Go back to the main menu
-                    sceneManager.setScene(GameSceneType.MAIN_MENU);
-                }
-                return super.touchUp(screenX, screenY, pointer, button);
-            }
-        });
+        // Calculate the starting position for the buttons to place it at the bottom
+        // center vertically
+        float startY = 50; // Adjust this value to position the button higher or lower
 
-        if (GameConfig.IS_MUSIC_ENABLED)
-            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+        // Calculate the starting position for the back button
+        float backButtonX = startX + buttonWidth + buttonSpacing;
+
+        // Create the back button
+        Button backBtn = new Button(backButtonX, startY, buttonWidth, buttonHeight,
+                GameButtonType.BACK.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.BACK_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+
+        // Register the buttons
+        buttonManager = new ButtonManager(clickListener);
+        buttonManager.addButton(backBtn);
+
+        // Set input processor for buttons
+        buttonManager.setButtonsInputProcessor();
+
+        playBackgroundMusic(GameConfig.MUSIC_VOLUME);
+        if (!GameConfig.IS_MUSIC_ENABLED) {
+            stopBackgroundMusic();
+        }
     }
 
     @Override
@@ -57,18 +80,17 @@ public class GameOverWin extends Scene {
         if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
-        entityManager.dispose(batch);
     }
 
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        batch.draw(restartButton, GameConfig.SCREEN_WIDTH / 2 - restartButton.getWidth() / 2, 50);
+        buttonManager.drawButtons(batch);
     }
 
     @Override
     public void dispose() {
-        background.dispose();
-        restartButton.dispose();
+        super.dispose();
+        buttonManager.dispose();
     }
 }
