@@ -9,7 +9,6 @@ import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.game.GameConfig.Keystroke;
 import com.mygdx.game.collision.GameCollision;
-import com.mygdx.game.collision.GameCollision;
 import com.mygdx.game.entity.Player;
 
 public class Movement extends CollisionManager {
@@ -21,13 +20,10 @@ public class Movement extends CollisionManager {
     }
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
-    public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(),
                 deltaTime);
 
         // Use the CollisionManager for collision checks
-        Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
-                allEntities);
         Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
                 allEntities);
 
@@ -36,10 +32,6 @@ public class Movement extends CollisionManager {
             entity.setX(entity.getX() + horizontalMovementDelta.x);
         } else {
             GameCollision.collideEffect(horizontalCollision, (Player) entity);
-        }
-        else
-        {
-            Collision.collideEffect(horizontalCollision, (Player) entity);
         }
     }
 
@@ -56,10 +48,7 @@ public class Movement extends CollisionManager {
     }
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
-    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
-        boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
-        Entity collidedEntity = CollisionManager.willCollide(entity,
         boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
         Entity collidedEntity = CollisionManager.willCollide(entity,
                 new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
@@ -67,11 +56,7 @@ public class Movement extends CollisionManager {
 
         if (collidedEntity == null
                 || (isOnBlock && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
-        if (collidedEntity == null
-                || (isOnBlock && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
             entity.setY(entity.getY() + verticalMovementDelta.y);
-        } else {
-            GameCollision.collideEffect(collidedEntity, (Player) entity);
         } else {
             GameCollision.collideEffect(collidedEntity, (Player) entity);
         }
