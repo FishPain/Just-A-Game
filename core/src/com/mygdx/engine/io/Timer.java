@@ -120,9 +120,19 @@ public class Timer implements Disposable {
     }
 
     public boolean isTimerEnded() {
+        if (isPaused)
+            return false;
         long currentTime = TimeUtils.millis();
         long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
         return elapsedTime >= countdownTime;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     @Override
