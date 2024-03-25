@@ -24,7 +24,6 @@ public class Timer implements Disposable {
         this.pausedTime = 0;
         this.font = new BitmapFont();
         this.countdownSeconds = countdownSeconds * 1000;
-        this.countdownTime = countdownSeconds; // Convert seconds to milliseconds
         resetTimer();
     }
 
