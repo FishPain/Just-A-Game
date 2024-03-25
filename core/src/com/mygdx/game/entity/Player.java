@@ -75,32 +75,6 @@ public class Player extends Entity {
     }
     // END OF EFFECT FLAG
 
-    // EFFECT FLAGS
-    public boolean isAppleEffectActive() {
-        return isAppleEffectActive;
-    }
-
-    public void setAppleEffectActive(boolean active) {
-        isAppleEffectActive = active;
-    }
-
-    public boolean isCarrotEffectActive() {
-        return isCarrotEffectActive;
-    }
-
-    public void setCarrotEffectActive(boolean active) {
-        isCarrotEffectActive = active;
-    }
-
-    public boolean isBurgerEffectActive() {
-        return isBurgerEffectActive;
-    }
-
-    public void setBurgerEffectActive(boolean active) {
-        isBurgerEffectActive = active;
-    }
-    // END OF EFFECT FLAG
-
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
         if (this.isMovable) {
             movement.applyHorizontalMovement(this, allEntities, deltaTime);
