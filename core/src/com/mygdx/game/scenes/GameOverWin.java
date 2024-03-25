@@ -1,10 +1,5 @@
 package com.mygdx.game.scenes;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.engine.Utils;
-import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.button.Button;
 import com.mygdx.engine.io.button.ButtonClickListener;
 import com.mygdx.engine.io.button.ButtonManager;
@@ -20,7 +15,7 @@ public class GameOverWin extends Scene {
     SceneManager sceneManager;
     private ButtonManager buttonManager;
 
-    public GameOverWin(SceneManager sceneManager, EntityManager entityManager) {
+    public GameOverWin(SceneManager sceneManager) {
         super(Assets.GAME_OVER_WIN.getFileName(), Assets.GAME_OVER_WIN_SOUND.getFileName());
         this.sceneManager = sceneManager;
     }
@@ -29,9 +24,7 @@ public class GameOverWin extends Scene {
         @Override
         public void onClick(Button button) {
             GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
-            if (btnType.equals(GameButtonType.START)) {
-                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1);
-            } else if (btnType.equals(GameButtonType.BACK)) {
+            if (btnType.equals(GameButtonType.BACK)) {
                 sceneManager.setScene(GameSceneType.MAIN_MENU);
             }
         }
@@ -41,23 +34,12 @@ public class GameOverWin extends Scene {
     public void show() {
         float buttonWidth = GameConfig.BUTTON_WIDTH;
         float buttonHeight = GameConfig.BUTTON_HEIGHT;
-        float buttonSpacing = 50;
 
-        // Calculate the total width occupied by the buttons
-        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
-
-        // Calculate the starting position for the buttons to center them horizontally
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-
-        // Calculate the starting position for the buttons to place it at the bottom
-        // center vertically
-        float startY = 50; // Adjust this value to position the button higher or lower
-
-        // Calculate the starting position for the back button
-        float backButtonX = startX + buttonWidth + buttonSpacing;
+        float backButtonX = (GameConfig.SCREEN_WIDTH - buttonWidth) / 2;
+        float backButtonY = 50;
 
         // Create the back button
-        Button backBtn = new Button(backButtonX, startY, buttonWidth, buttonHeight,
+        Button backBtn = new Button(backButtonX, backButtonY, buttonWidth, buttonHeight,
                 GameButtonType.BACK.getValue(), Assets.BUTTON_BG.getFileName(),
                 GameConfig.GameButtonText.BACK_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
                 GameConfig.BUTTON_FONT_SIZE);

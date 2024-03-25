@@ -24,7 +24,7 @@ public class Game extends SimulationManager {
 
     EntityManager EntityManager;
     SceneManager SceneManager;
-    KeyStrokeManager keyStrokeManager;
+    KeyStrokeManager KeyStrokeManager;
     SpriteBatch batch;
 
     @Override
@@ -33,7 +33,7 @@ public class Game extends SimulationManager {
         SceneManager = new SceneManager();
 
         // Load the default key strokes from the file
-        keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
+        KeyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
         batch = new SpriteBatch();
 
         // <game entry point> main menu screen
@@ -48,15 +48,15 @@ public class Game extends SimulationManager {
 
         // the game scene level 1
         SceneManager.addScene(GameSceneType.GAME_SCENE_LVL1,
-                new GameSceneLvl1(SceneManager, EntityManager, keyStrokeManager));
+                new GameSceneLvl1(SceneManager, EntityManager, KeyStrokeManager));
 
         // the game scene level 2
         SceneManager.addScene(GameSceneType.GAME_SCENE_LVL2,
-                new GameSceneLvl2(SceneManager, EntityManager, keyStrokeManager));
+                new GameSceneLvl2(SceneManager, EntityManager, KeyStrokeManager));
 
         // end scene
-        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
-        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager, EntityManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager));
+        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager));
     }
 
     @Override
@@ -83,7 +83,9 @@ public class Game extends SimulationManager {
 
     @Override
     public void dispose() {
-        EntityManager.dispose(batch);
+        EntityManager.dispose();
+        SceneManager.dispose();
+        KeyStrokeManager.dispose();
         batch.dispose();
     }
 }

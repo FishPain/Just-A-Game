@@ -75,7 +75,7 @@ public class GameSceneLvl1 extends Scene {
     public void hide() {
         this.nextScene = null;
         timer.resetTimer();
-        entityManager.dispose(batch);
+        entityManager.dispose();
         if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }
@@ -112,8 +112,6 @@ public class GameSceneLvl1 extends Scene {
                     if (!exitPortal.isVisable()) {
                         exitPortal.setVisable(true);
                     } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
-                        System.out
-                                .println("apple: " + entityManager.getEntities(GameEntityType.APPLE.getValue()).size());
                         nextScene = GameSceneType.GAME_SCENE_LVL2;
                     }
                 }

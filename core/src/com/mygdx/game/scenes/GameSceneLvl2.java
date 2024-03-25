@@ -80,7 +80,7 @@ public class GameSceneLvl2 extends Scene {
     public void hide() {
         this.nextScene = null;
         timer.resetTimer();
-        entityManager.dispose(batch);
+        entityManager.dispose();
         if (GameConfig.IS_MUSIC_ENABLED) {
             stopBackgroundMusic();
         }

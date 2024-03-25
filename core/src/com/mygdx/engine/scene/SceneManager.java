@@ -59,4 +59,10 @@ public class SceneManager extends InputAdapter {
             this.currentScene.show();
         }
     }
+
+    public void dispose() {
+        for (Scene screen : scenes.values()) {
+            screen.dispose();
+        }
+    }
 }
