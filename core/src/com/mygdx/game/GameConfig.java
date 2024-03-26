@@ -19,7 +19,7 @@ public class GameConfig {
     public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 5;
     public static final int NUM_OF_OBSTACLES = 5;
-    public static final int NUM_OF_APPLES = 3;
+    public static final int NUM_OF_APPLES = 2;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
     public static final int NUM_OF_BURGERS = 6;
@@ -113,6 +113,7 @@ public class GameConfig {
     public enum GameEntityType {
         PLAYER_HEAD("PLAYER_HEAD"),
         PLAYER_BODY("PLAYER_BODY"),
+        AI_PLAYER_HEAD("AI_PLAYER_HEAD"),
         BLOCK("BLOCK"),
         APPLE("APPLE"),
         BURGER("BURGER"),

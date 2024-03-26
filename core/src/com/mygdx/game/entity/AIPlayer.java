@@ -1,5 +1,6 @@
 package com.mygdx.game.entity;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
+import com.mygdx.engine.ai.AIManager;
 
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.ai.MovementAI;
@@ -23,6 +25,8 @@ public class AIPlayer extends Entity {
     private MovementAI movementAI;
     private Movement movement;
     private EntityManager entityManager;
+    private CollisionManager collisionManager;
+    private AIManager aiManager;
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
@@ -34,8 +38,9 @@ public class AIPlayer extends Entity {
 
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.movementAI = new MovementAI();
-        //this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
+        this.movementAI = new MovementAI(entityManager);
+        // this.movement = new Movement(keyStrokeManager, x, speed, false, 0,
+        // GameConfig.GRAVITY);
         this.bodyPositions = new ArrayList<Vector2>();
         //
         //
@@ -69,25 +74,25 @@ public class AIPlayer extends Entity {
     }
 
     private void moveHorizontally(float deltaX) {
-        System.out.println("Move Horizontally works!");
+        // System.out.println("Move Horizontally works!");
         Vector2 newHorizontalPosition = new Vector2(this.x + deltaX, this.y);
-        System.out.println("newHorizontalPosition = " + newHorizontalPosition);
+        // System.out.println("newHorizontalPosition = " + newHorizontalPosition);
         // Check collision
         // Apply movement if no collision
         this.x = newHorizontalPosition.x;
-        System.out.println("Snake Coords = " + this.x + "," + this.y);
+        // System.out.println("Snake Coords = " + this.x + "," + this.y);
         // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN
         updatePosition();
     }
 
     private void moveVertically(float deltaY) {
-        System.out.println("Move Vertically works!");
+        // System.out.println("Move Vertically works!");
         Vector2 newVerticalPosition = new Vector2(this.x, this.y + deltaY);
-        System.out.println("newVerticalPosition = " + newVerticalPosition);
+        // System.out.println("newVerticalPosition = " + newVerticalPosition);
         // Check collision
         // Apply movement if no collision
         this.y = newVerticalPosition.y;
-        System.out.println("Snake Coords = " + this.x + "," + this.y);
+        // System.out.println("Snake Coords = " + this.x + "," + this.y);
         // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN
         updatePosition();
     }

@@ -1,5 +1,6 @@
 package com.mygdx.game.collision;
 
+import com.mygdx.engine.ai.MovementAI;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
@@ -66,8 +67,16 @@ public class GameCollision extends CollisionManager {
 
     // collision for AI
     public static void collideEffectAI(Entity collidedEntity, AIPlayer aiPlayer) {
-        // String entityType = collidedEntity.getEntityType();
+        String entityType = collidedEntity.getEntityType();
+        if (GameEntityType.fromValue(entityType) == GameEntityType.BLOCK) {
+            // aiPlayer.setSpeed(aiPlayer.getSpeed() / 1.5f);
+            // aiPlayer.moveRight();
+            // aiPlayer.moveDown();
 
+        }
+        if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
+            collidedEntity.setToRemove(true);
+        }
     }
 
 }

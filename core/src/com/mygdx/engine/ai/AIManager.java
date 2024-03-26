@@ -20,6 +20,7 @@ public class AIManager extends EntityManager {
     // condition statement to move left, right, top, bottom
     private ArrayList<Entity> aiEntities;
     ArrayList<Point> positions = new ArrayList<Point>();
+    private ArrayList<Point> aiSnakePositionArrayList;
 
     public AIManager() {
         aiEntities = new ArrayList<Entity>();
@@ -44,6 +45,23 @@ public class AIManager extends EntityManager {
             }
         }
         return entitiesByType;
+    }
+
+    public static Point getAISnakePosition() {
+        // initialize EntityManager
+
+        // get all the entity positions of type APPLE by passing in the entityType
+        // aiSnakePositionArrayList =
+        Point aiSnakePos = GameConfig.AI_PLAYER_START_POSITION;
+        // aiSnakePositionArrayList = this.getAllEntityPosition();
+
+        // System.out.println("GAME CONFIG AI START POS : " +
+        // GameConfig.AI_PLAYER_START_POSITION);
+
+        // (aiSnakePositionArrayList.get(0).y));
+
+        // return the list of all apple positions
+        return aiSnakePos;
     }
 
     // public void setMovability(ArrayList<? extends Entity> entities, boolean

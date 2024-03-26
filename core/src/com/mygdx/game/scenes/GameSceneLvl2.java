@@ -31,6 +31,7 @@ public class GameSceneLvl2 extends Scene {
         private GameSceneType nextScene;
         private boolean isPaused;
         private boolean pauseKeyIsPressed;
+        public ArrayList<Point> positions;
 
         public GameSceneLvl2(SceneManager sceneManager, EntityManager entityManager,
                         KeyStrokeManager keyStrokeManager) {
@@ -48,6 +49,7 @@ public class GameSceneLvl2 extends Scene {
 
         @Override
         public void show() {
+
                 // spawn the player
 
                 this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
@@ -63,7 +65,7 @@ public class GameSceneLvl2 extends Scene {
                                 GameConfig.AI_PLAYER_SIZE,
                                 Assets.PLAYER_HEAD.getFileName(), GameConfig.PLAYER_SPEED,
                                 Assets.PLAYER_BODY.getFileName(),
-                                GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
+                                GameEntityType.AI_PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
 
                 System.out.println("GameConfig.PLAYER_SPEED: " + GameConfig.PLAYER_SPEED);
 
@@ -85,7 +87,6 @@ public class GameSceneLvl2 extends Scene {
                 entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
                                 entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(),
                                 GameEntityType.APPLE.getValue()));
-
                 // randomly spawn the carrots
                 entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_CARROTS,
                                 entityManager.getAllEntityPosition(), Assets.CARROT.getFileName(),
@@ -98,9 +99,12 @@ public class GameSceneLvl2 extends Scene {
 
                 // ArrayList<Point> applePositions =
                 // aiManager.getEntityPositionsByType(GameEntityType.APPLE);
-                ArrayList<Point> positions = entityManager.getAllEntityPosition();
+                positions = entityManager.getAllApplePosition();
                 System.out.println("apple: " + positions.size());
-                System.out.println("All pos: " + positions);
+                System.out.println("All pos: " + positions.get(0).x);
+
+                Point aiSnakepositions = aiManager.getAISnakePosition();
+                System.out.println("snake pos: " + aiSnakepositions.getX() + "," + aiSnakepositions.getY());
 
                 timer.startTimer();
                 if (GameConfig.IS_MUSIC_ENABLED)
