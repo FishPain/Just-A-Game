@@ -2,8 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.engine.SimulationManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
@@ -61,7 +61,7 @@ public class Game extends SimulationManager {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0, 0, 1, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         SceneManager.getCurrentScene().setBatch(batch);

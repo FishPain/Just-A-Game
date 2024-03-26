@@ -257,9 +257,7 @@ public class GameConfig {
         APPLE("apple.png"),
         CARROT("droplet.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png"),
-        LOGO("logo.png"),
-        EXIT_PORTAL("droplet.png"),
+        EXIT_PORTAL("exit_portal.png"),
 
         // Buttons
         BACK_BTN("back_btn.png"),
@@ -269,7 +267,7 @@ public class GameConfig {
         SETTINGS_BTN("settings_btn.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        BUTTON_BG("ui_pack/PNG/buttonLong_beige.png"),
+        BUTTON_BG("buttonLong_beige.png"),
 
         // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.ogg"),

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
-import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.button.Button;
 import com.mygdx.engine.io.button.ButtonClickListener;
 import com.mygdx.engine.io.button.ButtonManager;
@@ -52,9 +51,6 @@ public class MainMenu extends Scene {
 
     @Override
     public void show() {
-        background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
-        logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
-
         float buttonSpacing = 50;
         float buttonWidth = GameConfig.BUTTON_WIDTH;
         float buttonHeight = GameConfig.BUTTON_HEIGHT;
