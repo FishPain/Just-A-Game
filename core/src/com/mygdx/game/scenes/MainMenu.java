@@ -25,7 +25,10 @@ public class MainMenu extends Scene {
     private ButtonManager buttonManager;
 
     public MainMenu(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(),
+                Assets.MAIN_MENU_SOUND.getFileName(),
+                GameSceneType.MAIN_MENU.getValue());
+
         this.sceneManager = sceneManager;
     }
 
@@ -38,9 +41,9 @@ public class MainMenu extends Scene {
         public void onClick(Button button) {
             GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
             if (btnType.equals(GameButtonType.PLAY)) {
-                sceneManager.setScene(GameSceneType.TUTORIAL);
+                sceneManager.setScene(GameSceneType.TUTORIAL.getValue());
             } else if (btnType.equals(GameButtonType.SETTINGS)) {
-                sceneManager.setScene(GameSceneType.SETTINGS);
+                sceneManager.setScene(GameSceneType.SETTINGS.getValue());
             } else if (btnType.equals(GameButtonType.QUIT)) {
                 Gdx.app.exit();
             }

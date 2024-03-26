@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import com.mygdx.engine.scene.SceneType;
-
 import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -139,14 +137,34 @@ public class GameConfig {
         }
     }
 
-    public static enum GameSceneType implements SceneType {
-        MAIN_MENU,
-        GAME_SCENE_LVL1,
-        GAME_SCENE_LVL2,
-        GAME_OVER_WIN,
-        GAME_OVER_LOSE,
-        SETTINGS,
-        TUTORIAL
+    public static enum GameSceneType {
+        MAIN_MENU("MAIN_MENU"),
+        GAME_SCENE_LVL1("GAME_SCENE_LVL1"),
+        GAME_SCENE_LVL2("GAME_SCENE_LVL2"),
+        GAME_OVER_WIN("GAME_OVER_WIN"),
+        GAME_OVER_LOSE("GAME_OVER_LOSE"),
+        SETTINGS("SETTINGS"),
+        TUTORIAL("TUTORIAL");
+
+        private String value;
+
+        private GameSceneType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameSceneType fromValue(String value) {
+            for (GameSceneType type : GameSceneType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum Keystroke {
@@ -177,6 +195,7 @@ public class GameConfig {
         START("START_BTN"),
         RESTART("RESTART_BTN"),
         BACK("BACK_BTN"),
+        NEXT_LEVEL("NEXT_LEVEL"),
         SOUND_TOGGLE("SOUND_TOGGLE");
 
         private final String value;
@@ -206,6 +225,7 @@ public class GameConfig {
         START_BTN("START"),
         RESTART_BTN("RESTART"),
         SETTINGS_BTN("SETTINGS"),
+        NEXT_LEVEL_BTN("NEXT LEVEL"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
         QUIT_BTN("QUIT");

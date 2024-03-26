@@ -22,12 +22,14 @@ public class GameSceneLvl1 extends Scene {
     private BlockManager blockManager;
     private Timer timer;
     private Player player;
-    private GameSceneType nextScene;
+    private String nextScene;
     private boolean isPaused;
     private boolean pauseKeyIsPressed;
 
     public GameSceneLvl1(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-        super(Assets.GAME_SCENE_BG.getFileName(), Assets.GAME_SCENE_SOUND.getFileName());
+        super(Assets.GAME_SCENE_BG.getFileName(),
+                Assets.GAME_SCENE_SOUND.getFileName(),
+                GameSceneType.GAME_SCENE_LVL1.getValue());
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
@@ -87,7 +89,7 @@ public class GameSceneLvl1 extends Scene {
         // update timer
         timer.updateAndRender(batch);
         if (timer.isTimerEnded()) {
-            nextScene = GameSceneType.GAME_OVER_LOSE;
+            nextScene = GameSceneType.GAME_OVER_LOSE.getValue();
         }
 
         // press esc key to pause the game and resume the game
@@ -112,7 +114,7 @@ public class GameSceneLvl1 extends Scene {
                     if (!exitPortal.isVisable()) {
                         exitPortal.setVisable(true);
                     } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
-                        nextScene = GameSceneType.GAME_SCENE_LVL2;
+                        nextScene = GameSceneType.GAME_OVER_WIN.getValue();
                     }
                 }
             }

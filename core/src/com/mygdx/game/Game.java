@@ -37,26 +37,26 @@ public class Game extends SimulationManager {
         batch = new SpriteBatch();
 
         // <game entry point> main menu screen
-        SceneManager.addScene(GameSceneType.MAIN_MENU, new MainMenu(SceneManager));
-        SceneManager.setScene(GameSceneType.MAIN_MENU);
+        SceneManager.addScene(new MainMenu(SceneManager));
+        SceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
 
         // settings scene
-        SceneManager.addScene(GameSceneType.SETTINGS, new Settings(SceneManager));
+        SceneManager.addScene(new Settings(SceneManager));
 
         // tutorial scene
-        SceneManager.addScene(GameSceneType.TUTORIAL, new Tutorial(SceneManager));
+        SceneManager.addScene(new Tutorial(SceneManager));
 
         // the game scene level 1
-        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL1,
+        SceneManager.addScene(
                 new GameSceneLvl1(SceneManager, EntityManager, KeyStrokeManager));
 
         // the game scene level 2
-        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL2,
+        SceneManager.addScene(
                 new GameSceneLvl2(SceneManager, EntityManager, KeyStrokeManager));
 
         // end scene
-        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager));
-        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager));
+        SceneManager.addScene(new GameOverWin(SceneManager));
+        SceneManager.addScene(new GameOverLose(SceneManager));
     }
 
     @Override

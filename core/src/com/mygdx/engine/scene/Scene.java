@@ -11,14 +11,24 @@ public abstract class Scene extends ScreenAdapter {
     protected SpriteBatch batch;
     private Texture background;
     private SoundEffects backgroundMusic;
+    private String sceneType;
 
-    public Scene(String backgroundFileName, String backgroundMusicFileName) {
+    public Scene(String backgroundFileName, String backgroundMusicFileName, String sceneType) {
         this.background = new Texture(Utils.getInternalFilePath(backgroundFileName));
         this.backgroundMusic = new SoundEffects(backgroundMusicFileName);
+        this.sceneType = sceneType;
     }
 
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
+    }
+
+    public String getSceneType() {
+        return sceneType;
+    }
+
+    public void setSceneType(String sceneType) {
+        this.sceneType = sceneType;
     }
 
     public abstract void show();
