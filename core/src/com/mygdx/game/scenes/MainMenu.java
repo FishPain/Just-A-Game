@@ -106,8 +106,12 @@ public class MainMenu extends Scene {
 
     @Override
     public void dispose() {
-        background.dispose();
-        logoTexture.dispose();
-        buttonManager.dispose();
+        super.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
+        if (background != null)
+            background.dispose();
+        if (logoTexture != null)
+            logoTexture.dispose();
     }
 }

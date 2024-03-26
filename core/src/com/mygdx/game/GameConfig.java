@@ -21,6 +21,7 @@ public class GameConfig {
     public static final int BURGER_EFFECT_TIME = 1;
     public static final float BURGER_SPEED_MULTIPLIER = 2f;
     public static final int NUM_OF_CARROTS = 3;
+    public static final int CARROT_EFFECT_TIME = 10;
     public static final int BLOCK_SIZE = 50;
     public static final int PLAYER_WIDTH = 25;
     public static final int PLAYER_HEIGHT = 40;

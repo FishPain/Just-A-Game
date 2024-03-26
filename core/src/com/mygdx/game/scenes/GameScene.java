@@ -76,7 +76,7 @@ public abstract class GameScene extends Scene {
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        // update timer
+
         timer.updateAndRender(batch);
         if (timer.isTimerEnded()) {
             nextScene = GameSceneType.GAME_OVER_LOSE.getValue();
@@ -97,6 +97,8 @@ public abstract class GameScene extends Scene {
             buttonManager.drawButtons(batch);
         }
 
+        applyEffects();
+
         drawEntitiesAndCheckWinCondition(delta);
 
         // bulk remove entity to prevent concurrent modification
@@ -109,12 +111,22 @@ public abstract class GameScene extends Scene {
 
     @Override
     public void dispose() {
-        pauseOverlay.dispose();
+        super.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
+        if (pauseOverlay != null)
+            pauseOverlay.dispose();
     }
 
     protected abstract void createEntities();
 
     protected abstract void checkWinCondition(Entity entity);
+
+    protected abstract void applyEffects();
+
+    protected Timer getTimer() {
+        return timer;
+    }
 
     private void createPauseGameOverlay() {
         // Initialize pause overlay texture

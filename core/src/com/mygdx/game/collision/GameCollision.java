@@ -17,7 +17,7 @@ public class GameCollision extends CollisionManager {
     public static void collideEffect(Entity collidedEntity, Player player) {
         String entityType = collidedEntity.getEntityType();
 
-        // Update timers
+        // reset the speed if the effect is over
         if (player.isAppleEffectActive()) {
             timerApple.updateEffect();
             if (timerApple.isTimerEnded()) {
@@ -26,7 +26,8 @@ public class GameCollision extends CollisionManager {
                 timerApple.resetTimer();
             }
         }
-        // Update timers
+
+        // reset the speed if the effect is over
         if (player.isBurgerEffectActive()) {
             timerBurger.updateEffect();
             if (timerBurger.isTimerEnded()) {

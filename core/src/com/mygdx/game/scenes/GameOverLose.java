@@ -73,6 +73,7 @@ public class GameOverLose extends Scene {
     @Override
     public void dispose() {
         super.dispose();
-        buttonManager.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
     }
 }

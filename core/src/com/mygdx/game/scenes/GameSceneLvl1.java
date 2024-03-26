@@ -70,4 +70,10 @@ public class GameSceneLvl1 extends GameScene {
             }
         }
     }
+
+    @Override
+    protected void applyEffects() {
+        // no extra effects at level 1.
+        // speed effect handled in GameCollision.java
+    }
 }

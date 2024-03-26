@@ -75,4 +75,12 @@ public class GameSceneLvl2 extends GameScene {
         }
     }
 
+    @Override
+    protected void applyEffects() {
+        if (player.isCarrotEffectActive()) {
+            getTimer().addTime(GameConfig.CARROT_EFFECT_TIME);
+            player.setCarrotEffectActive(false);
+        }
+    }
+
 }

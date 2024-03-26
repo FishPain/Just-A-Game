@@ -88,7 +88,8 @@ public class Settings extends Scene {
     @Override
     public void dispose() {
         super.dispose();
-        buttonManager.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
     }
 
     private ToggleButton createSoundButton(float X, float Y) {
