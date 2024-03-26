@@ -184,6 +184,10 @@ public class GameSceneLvl2 extends Scene {
             for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
                 entity.setVisable(false);
             }
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.CARROT.getValue())) {
+                entity.setVisable(false);
+            }
         } else {
 
             for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
@@ -191,6 +195,10 @@ public class GameSceneLvl2 extends Scene {
             }
 
             for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
+                entity.setVisable(true);
+            }
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.CARROT.getValue())) {
                 entity.setVisable(true);
             }
         }
