@@ -15,7 +15,8 @@ public class GameOverLose extends Scene {
     private ButtonManager buttonManager;
 
     public GameOverLose(SceneManager sceneManager) {
-        super(Assets.GAME_OVER_LOSE.getFileName(), Assets.GAME_OVER_LOSE_SOUND.getFileName(), GameSceneType.GAME_OVER_LOSE.getValue());
+        super(Assets.GAME_OVER_LOSE.getFileName(), Assets.GAME_OVER_LOSE_SOUND.getFileName(),
+                GameSceneType.GAME_OVER_LOSE.getValue());
         this.sceneManager = sceneManager;
     }
 
