@@ -13,9 +13,12 @@ public class GameCollision extends CollisionManager {
             GameConfig.APPLE_EFFECT_TIME);
     static private Timer timerBurger = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50,
             GameConfig.BURGER_EFFECT_TIME);
+    static private String entityType;
 
     public static void collideEffect(Entity collidedEntity, Player player) {
-        String entityType = collidedEntity.getEntityType();
+        if (collidedEntity != null) {
+            entityType = collidedEntity.getEntityType();
+        }
 
         // reset the speed if the effect is over
         if (player.isAppleEffectActive()) {
@@ -37,8 +40,11 @@ public class GameCollision extends CollisionManager {
             }
         }
 
+        if (collidedEntity == null) {
+            return;
+        }
         // Apple increase speed by 1.5 times
-        if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
+        else if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
             collidedEntity.setToRemove(true);
             player.setSpeed(player.getSpeed() * GameConfig.APPLE_SPEED_MULTIPLIER);
             player.setAppleEffectActive(true);
