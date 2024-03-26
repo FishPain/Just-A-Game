@@ -21,6 +21,7 @@ public class MovementAI extends CollisionManager {
     private CollisionManager collisionManager;
     private EntityManager entityManager;
     private GameSceneLvl2 gameSceneLvl2;
+    private AIPlayer aiPlayer;
 
     // private AIManager aiManager = new AIManager();
     // Call getEntityPositionsByType with the desired entityType
@@ -44,8 +45,9 @@ public class MovementAI extends CollisionManager {
     // float gravity) {
 
     // }
-    public MovementAI(EntityManager entityManager) {
+    public MovementAI(EntityManager entityManager, AIPlayer aiPlayer) {
         this.entityManager = entityManager;
+        this.aiPlayer = aiPlayer;
 
     }
 
@@ -54,21 +56,27 @@ public class MovementAI extends CollisionManager {
 
         Vector2 horizontalMovementDelta;
 
-        Point snakePos;
+        ArrayList<Point> snakePos;
         ArrayList<Point> applePos;
-        snakePos = AIManager.getAISnakePosition();
+        snakePos = entityManager.getAllAISnakePosition();
         applePos = entityManager.getAllApplePosition();
+        // System.out.println("AI SNAKE POINT : " + aiPlayer.getX() + "," +
+        // aiPlayer.getY());
 
         if (applePos.size() == 0) {
 
         } else {
             Point apple = applePos.get(0);
+            Point snake = snakePos.get(0);
 
             System.out.println("SNAKE POINT : " + snakePos);
             System.out.println("APPLE POINT : " + applePos);
 
-            if (snakePos.x > apple.x) { // MOVE RIGHt
+            if (snake.x > apple.x) { // MOVE RIGHt
                 horizontalMovementDelta = calculateHorizontalMovement(-entity.getSpeed(), deltaTime);
+            } else if (snake.x == apple.x) {
+                horizontalMovementDelta = calculateHorizontalMovement(0, deltaTime);
+                System.out.println("SNAKE POINT X = APPLE POINT X");
             } else {
                 horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(), deltaTime);
             }
@@ -114,20 +122,24 @@ public class MovementAI extends CollisionManager {
 
         Vector2 verticalMovementDelta;
 
-        Point snakePos;
+        ArrayList<Point> snakePos;
         ArrayList<Point> applePos;
-        snakePos = AIManager.getAISnakePosition();
+        snakePos = entityManager.getAllAISnakePosition();
         applePos = entityManager.getAllApplePosition();
         if (applePos.size() == 0) {
 
         } else {
             Point apple = applePos.get(0);
+            Point snake = snakePos.get(0);
 
             System.out.println("SNAKE POINT : " + snakePos);
             System.out.println("APPLE POINT : " + applePos);
 
-            if (snakePos.y > apple.y) { // MOVE RIGHT
+            if (snake.y > apple.y) { // MOVE RIGHT
                 verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
+            } else if (snake.y == apple.y) {
+                verticalMovementDelta = calculateHorizontalMovement(0, deltaTime);
+                System.out.println("SNAKE POINT Y = APPLE POINT Y");
             } else {
                 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
             }

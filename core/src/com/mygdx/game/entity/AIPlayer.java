@@ -30,6 +30,7 @@ public class AIPlayer extends Entity {
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
     private final float segmentSpacing = GameConfig.BLOCK_SIZE;
+    private AIPlayer aiPlayer;
 
     public AIPlayer(float x, float y, float width, float height, String headTexturePath, float speed,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
@@ -38,7 +39,8 @@ public class AIPlayer extends Entity {
 
         this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
         this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.movementAI = new MovementAI(entityManager);
+        this.movementAI = new MovementAI(entityManager, aiPlayer);
+        this.entityManager = entityManager;
         // this.movement = new Movement(keyStrokeManager, x, speed, false, 0,
         // GameConfig.GRAVITY);
         this.bodyPositions = new ArrayList<Vector2>();
@@ -107,11 +109,56 @@ public class AIPlayer extends Entity {
 
     @Override
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
-        if (this.isMovable) {
-            movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
-            movementAI.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+        ArrayList<Point> applePos;
+        applePos = entityManager.getAllApplePosition();
+
+        // long lastLoopTime = System.currentTimeMillis();
+        // long loopInterval = 5000; // 5 seconds
+
+        // while (!applePos.isEmpty()) {
+        // if (this.isMovable) {
+        // movementAI.applyHorizontalMovement(this, allEntities, bodyPositions,
+        // deltaTime);
+        // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
+        // deltaTime);
+
+        // updatePosition();
+        // long currentTime = System.currentTimeMillis();
+        // if (currentTime - lastRouteChangeTime >= routeChangeInterval) {
+        // movementAI.applyHorizontalMovement(this, allEntities, bodyPositions,
+        // deltaTime);
+        // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
+        // deltaTime);
+        // lastRouteChangeTime = currentTime;
+        // }
+
+        // } else {
+        // break;
+        // }
+        long lastLoopTime = System.currentTimeMillis();
+        long loopInterval = 5000; // 5 seconds
+
+        System.out.println("Apple pos: " + (applePos));
+
+        if (!applePos.isEmpty()) { // Keep moving as long as there are apples
+            System.out.println("Apple pos not empty");
+
+            if (this.isMovable) {
+                // Apply movements
+                System.out.println("this.isMovable");
+
+                movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
+                movementAI.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+
+                // Update position
+
+            } else {
+
+            }
+            updatePosition();
+
         }
-        updatePosition();
+
     }
 
     @Override

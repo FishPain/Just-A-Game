@@ -72,6 +72,7 @@ public class GameSceneLvl2 extends Scene {
                 entityManager.addEntity(player);
 
                 entityManager.addAiPlayer(aiPlayer);
+
                 // spawn the block borders
                 entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 

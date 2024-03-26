@@ -9,6 +9,8 @@ import java.awt.Point;
 public class EntityManager {
     private ArrayList<Entity> entities;
     private ArrayList<Point> allApplePositionArrayList;
+    private ArrayList<Point> allSnakePositionArrayList;
+    // private ArrayList<Entity> allSnakePositionArrayList;
 
     public EntityManager() {
         entities = new ArrayList<Entity>();
@@ -93,8 +95,22 @@ public class EntityManager {
         return entitiesByType;
     }
 
+    public ArrayList<Point> getAllAISnakePosition() {
+        allSnakePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER_HEAD.toString());
+
+        // System.out.println("AI Snake: " + (allSnakePositionArrayList.get(0).x) + " ,
+        // "
+        // + (allSnakePositionArrayList.get(0).y));
+        return allSnakePositionArrayList;
+    }
+
     public ArrayList<Point> getAllApplePosition() {
         // initialize EntityManager
+
+        // allSnakePositionArrayList = this.getEntities();
+        // // System.out.println("ALL ENTITY POSITION " + allSnakePositionArrayList);
+        // System.out.println("SNAKE " +
+        // allSnakePositionArrayList.get(1).getEntityType());
 
         // get all the entity positions of type APPLE by passing in the entityType
         if (this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString()).isEmpty()) {
@@ -103,9 +119,9 @@ public class EntityManager {
             allApplePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString());
 
             System.out.println(
-                    "All APple1: " + (allApplePositionArrayList.get(0).x) + " , "
+                    "Apple1: " + (allApplePositionArrayList.get(0).x) + " , "
                             + (allApplePositionArrayList.get(0).y));
-            System.out.println("All APple2: " + (allApplePositionArrayList));
+            System.out.println("All Apple: " + (allApplePositionArrayList));
 
             // return the list of all apple positions
             return allApplePositionArrayList;

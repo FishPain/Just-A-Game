@@ -18,8 +18,8 @@ public class GameConfig {
     public static float MUSIC_VOLUME = 0.2f;
     public static int PLAYER_BODY_LENGTH = 0;
     public static int TIME_LIMIT = 5;
-    public static final int NUM_OF_OBSTACLES = 5;
-    public static final int NUM_OF_APPLES = 2;
+    public static final int NUM_OF_OBSTACLES = 20;
+    public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
     public static final int NUM_OF_BURGERS = 6;
@@ -30,7 +30,7 @@ public class GameConfig {
     public static final int PLAYER_SIZE = 25;
     public static final int AI_PLAYER_SIZE = 30;
     public static final int PLAYER_STAMINA = 100;
-    public static int PLAYER_SPEED = 200;
+    public static int PLAYER_SPEED = 300; // ORIGINAL 200
     public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity
