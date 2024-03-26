@@ -62,10 +62,15 @@ public class EntityManager {
 
     public ArrayList<Point> getAllEntityPosition() {
         ArrayList<Point> positions = new ArrayList<Point>();
-        for (Entity entity : entities) {
-            positions.add(new Point((int) entity.x, (int) entity.y));
+        if (entities == null) {
+
+        } else {
+            for (Entity entity : entities) {
+                positions.add(new Point((int) entity.x, (int) entity.y));
+            }
         }
         return positions;
+
     }
 
     // get all entities by type
@@ -92,14 +97,20 @@ public class EntityManager {
         // initialize EntityManager
 
         // get all the entity positions of type APPLE by passing in the entityType
-        allApplePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString());
+        if (this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString()).isEmpty()) {
+            return new ArrayList<Point>();
+        } else {
+            allApplePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString());
 
-        System.out.println(
-                "All APple1: " + (allApplePositionArrayList.get(0).x) + " , " + (allApplePositionArrayList.get(0).y));
-        System.out.println("All APple2: " + (allApplePositionArrayList));
+            System.out.println(
+                    "All APple1: " + (allApplePositionArrayList.get(0).x) + " , "
+                            + (allApplePositionArrayList.get(0).y));
+            System.out.println("All APple2: " + (allApplePositionArrayList));
 
-        // return the list of all apple positions
-        return allApplePositionArrayList;
+            // return the list of all apple positions
+            return allApplePositionArrayList;
+        }
+
     }
 
     public ArrayList<Entity> getAllCollidableEntity() {

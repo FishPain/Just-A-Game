@@ -59,26 +59,31 @@ public class MovementAI extends CollisionManager {
         snakePos = AIManager.getAISnakePosition();
         applePos = entityManager.getAllApplePosition();
 
-        Point apple = applePos.get(0);
+        if (applePos.size() == 0) {
 
-        System.out.println("SNAKE POINT : " + snakePos);
-        System.out.println("APPLE POINT : " + applePos);
-
-        if (snakePos.x > apple.x) { // MOVE RIGHt
-            horizontalMovementDelta = calculateHorizontalMovement(-entity.getSpeed(), deltaTime);
         } else {
-            horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(), deltaTime);
-        }
-        // Use the CollisionManager for collision checks
-        Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
-                allEntities);
+            Point apple = applePos.get(0);
 
-        // Apply horizontal movement if no collision detected
-        if (horizontalCollision == null) {
-            entity.setX(entity.getX() + horizontalMovementDelta.x);
-        } else {
-            GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity);
+            System.out.println("SNAKE POINT : " + snakePos);
+            System.out.println("APPLE POINT : " + applePos);
+
+            if (snakePos.x > apple.x) { // MOVE RIGHt
+                horizontalMovementDelta = calculateHorizontalMovement(-entity.getSpeed(), deltaTime);
+            } else {
+                horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(), deltaTime);
+            }
+            // Use the CollisionManager for collision checks
+            Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
+                    allEntities);
+
+            // Apply horizontal movement if no collision detected
+            if (horizontalCollision == null) {
+                entity.setX(entity.getX() + horizontalMovementDelta.x);
+            } else {
+                GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity);
+            }
         }
+
     }
 
     public Vector2 calculateHorizontalMovement(float speed,
@@ -113,29 +118,33 @@ public class MovementAI extends CollisionManager {
         ArrayList<Point> applePos;
         snakePos = AIManager.getAISnakePosition();
         applePos = entityManager.getAllApplePosition();
+        if (applePos.size() == 0) {
 
-        Point apple = applePos.get(0);
-
-        System.out.println("SNAKE POINT : " + snakePos);
-        System.out.println("APPLE POINT : " + applePos);
-
-        if (snakePos.y > apple.y) { // MOVE RIGHT
-            verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
         } else {
-            verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
+            Point apple = applePos.get(0);
+
+            System.out.println("SNAKE POINT : " + snakePos);
+            System.out.println("APPLE POINT : " + applePos);
+
+            if (snakePos.y > apple.y) { // MOVE RIGHT
+                verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
+            } else {
+                verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
+            }
+
+            boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
+            Entity collidedEntity = CollisionManager.willCollide(entity,
+                    new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
+                    allEntities);
+
+            // Allow upward movement if on a block or if there's no vertical collision
+            if (collidedEntity == null || (isOnBlock)) {
+                entity.setY(entity.getY() + verticalMovementDelta.y);
+            } else {
+                GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity);
+            }
         }
 
-        boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
-        Entity collidedEntity = CollisionManager.willCollide(entity,
-                new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
-                allEntities);
-
-        // Allow upward movement if on a block or if there's no vertical collision
-        if (collidedEntity == null || (isOnBlock)) {
-            entity.setY(entity.getY() + verticalMovementDelta.y);
-        } else {
-            GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity);
-        }
     }
 
     public Vector2 calculateVerticalMovement(float speed,

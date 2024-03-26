@@ -100,11 +100,12 @@ public class GameSceneLvl2 extends Scene {
                 // ArrayList<Point> applePositions =
                 // aiManager.getEntityPositionsByType(GameEntityType.APPLE);
                 positions = entityManager.getAllApplePosition();
-                System.out.println("apple: " + positions.size());
-                System.out.println("All pos: " + positions.get(0).x);
+                // System.out.println("apple: " + positions.size());
+                // System.out.println("All pos: " + positions.get(0).x);
 
-                Point aiSnakepositions = aiManager.getAISnakePosition();
-                System.out.println("snake pos: " + aiSnakepositions.getX() + "," + aiSnakepositions.getY());
+                // Point aiSnakepositions = aiManager.getAISnakePosition();
+                // System.out.println("snake pos: " + aiSnakepositions.getX() + "," +
+                // aiSnakepositions.getY());
 
                 timer.startTimer();
                 if (GameConfig.IS_MUSIC_ENABLED)
