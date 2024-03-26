@@ -4,13 +4,19 @@ import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
+import com.mygdx.game.GameConfig.GameButtonType;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
+import com.mygdx.engine.io.button.Button;
+import com.mygdx.engine.io.button.ButtonClickListener;
+import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
 import java.util.ArrayList;
@@ -20,11 +26,16 @@ public class GameSceneLvl1 extends Scene {
     private SceneManager sceneManager;
     private KeyStrokeManager keyStrokeManager;
     private BlockManager blockManager;
+    private ButtonManager buttonManager;
     private Timer timer;
     private Player player;
     private String nextScene;
     private boolean isPaused;
     private boolean pauseKeyIsPressed;
+    private Texture pauseOverlay;
+    private Button resumeBtn;
+    private Button mainMenuBtn;
+    private Button quitBtn;
 
     public GameSceneLvl1(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
         super(Assets.GAME_SCENE_BG.getFileName(),
@@ -41,8 +52,26 @@ public class GameSceneLvl1 extends Scene {
         this.nextScene = null;
     }
 
+    private ButtonClickListener clickListener = new ButtonClickListener() {
+        @Override
+        public void onClick(Button button) {
+            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
+            if (btnType.equals(GameButtonType.RESUME)) {
+                togglePause();
+            } else if (btnType.equals(GameButtonType.MAIN_MENU)) {
+                sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
+            } else if (btnType.equals(GameButtonType.QUIT)) {
+                Gdx.app.exit();
+            }
+        }
+    };
+
     @Override
     public void show() {
+
+        // Initialize the game scene
+        isPaused = false; // set the game to not paused
+
         this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
                 GameConfig.PLAYER_SIZE,
                 GameConfig.PLAYER_SIZE,
@@ -67,6 +96,44 @@ public class GameSceneLvl1 extends Scene {
         // randomly spawn the burgers
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
+
+        // Initialize pause overlay texture
+        pauseOverlay = new Texture(Gdx.files.internal(Assets.PAUSE_OVERLAY_BG.getFileName()));
+
+        // Define positions and dimensions for buttons
+        float buttonSpacing = 50;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float resumeBtnX = startX;
+        float mainMenuBtnX = startX + buttonWidth + buttonSpacing;
+        float quitBtnX = mainMenuBtnX + buttonWidth + buttonSpacing;
+
+        // Initialize and setup buttons
+        resumeBtn = new Button(resumeBtnX, buttonY, buttonWidth, buttonHeight, GameButtonType.RESUME.getValue(),
+                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.RESUME_BTN.getText(),
+                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
+
+        mainMenuBtn = new Button(mainMenuBtnX, buttonY, buttonWidth, buttonHeight,
+                GameButtonType.MAIN_MENU.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.MAIN_MENU_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+
+        quitBtn = new Button(quitBtnX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.QUIT.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+
+        // Register the buttons
+        buttonManager = new ButtonManager(clickListener);
+        buttonManager.addButton(resumeBtn);
+        buttonManager.addButton(mainMenuBtn);
+        buttonManager.addButton(quitBtn);
+
+        // Set input processor for buttons
+        buttonManager.setButtonsInputProcessor();
 
         timer.startTimer();
         if (GameConfig.IS_MUSIC_ENABLED)
@@ -100,6 +167,28 @@ public class GameSceneLvl1 extends Scene {
             }
         } else {
             pauseKeyIsPressed = false;
+        }
+
+        if (isPaused) {
+            batch.draw(pauseOverlay, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+            buttonManager.drawButtons(batch);
+            // hide all apple and burger
+            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
+                entity.setVisable(false);
+            }
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
+                entity.setVisable(false);
+            }
+        } else {
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
+                entity.setVisable(true);
+            }
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
+                entity.setVisable(true);
+            }
         }
 
         // draw and move the entities
@@ -137,5 +226,10 @@ public class GameSceneLvl1 extends Scene {
             timer.resumeTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), true);
         }
+    }
+
+    @Override
+    public void dispose() {
+        pauseOverlay.dispose();
     }
 }
