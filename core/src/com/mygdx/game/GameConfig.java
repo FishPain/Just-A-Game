@@ -107,7 +107,7 @@ public class GameConfig {
     };
 
     public enum GameEntityType {
-        PLAYER_HEAD("PLAYER_HEAD"),
+        PLAYER("PLAYER"),
         PLAYER_BODY("PLAYER_BODY"),
         BLOCK("BLOCK"),
         APPLE("APPLE"),
@@ -257,8 +257,7 @@ public class GameConfig {
 
         // Entity textures
         BLOCK("block.jpg"),
-        PLAYER_BODY("player_body.jpg"),
-        PLAYER_HEAD("player.png"),
+        PLAYER("player.png"),
         APPLE("apple.png"),
         CARROT("droplet.png"),
         BURGER("burger.png"),

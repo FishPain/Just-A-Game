@@ -36,6 +36,7 @@ public class GameSceneLvl1 extends Scene {
     private Button resumeBtn;
     private Button mainMenuBtn;
     private Button quitBtn;
+    private ButtonClickListener clickListener;
 
     public GameSceneLvl1(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
         super(Assets.GAME_SCENE_BG.getFileName(),
@@ -50,90 +51,15 @@ public class GameSceneLvl1 extends Scene {
         this.isPaused = false;
         this.pauseKeyIsPressed = false;
         this.nextScene = null;
+        this.clickListener = null;
     }
-
-    private ButtonClickListener clickListener = new ButtonClickListener() {
-        @Override
-        public void onClick(Button button) {
-            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
-            if (btnType.equals(GameButtonType.RESUME)) {
-                togglePause();
-            } else if (btnType.equals(GameButtonType.MAIN_MENU)) {
-                sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
-            } else if (btnType.equals(GameButtonType.QUIT)) {
-                Gdx.app.exit();
-            }
-        }
-    };
 
     @Override
     public void show() {
-
-        // Initialize the game scene
-        isPaused = false; // set the game to not paused
-
-        this.player = new Player(GameConfig.PLAYER_START_POSITION.x, GameConfig.PLAYER_START_POSITION.y,
-                GameConfig.PLAYER_SIZE,
-                GameConfig.PLAYER_SIZE,
-                GameConfig.PLAYER_SPEED, Assets.PLAYER_HEAD.getFileName(), Assets.PLAYER_BODY.getFileName(),
-                GameEntityType.PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
-
-        entityManager.addEntity(player);
-        // spawn the block borders
-        entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
-
-        // spawn exit portal
-        entityManager.addEntity(blockManager.createExitPortal(GameConfig.EXIT_PORTAL_POSITION));
-
-        // randomly spawn the blocks obstacles
-        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_OBSTACLES,
-                entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK.getValue()));
-
-        // randomly spawn the apples
-        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
-                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
-
-        // randomly spawn the burgers
-        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
-                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
-
-        // Initialize pause overlay texture
-        pauseOverlay = new Texture(Gdx.files.internal(Assets.PAUSE_OVERLAY_BG.getFileName()));
-
-        // Define positions and dimensions for buttons
-        float buttonSpacing = 50;
-        float buttonWidth = GameConfig.BUTTON_WIDTH;
-        float buttonHeight = GameConfig.BUTTON_HEIGHT;
-        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
-        float resumeBtnX = startX;
-        float mainMenuBtnX = startX + buttonWidth + buttonSpacing;
-        float quitBtnX = mainMenuBtnX + buttonWidth + buttonSpacing;
-
-        // Initialize and setup buttons
-        resumeBtn = new Button(resumeBtnX, buttonY, buttonWidth, buttonHeight, GameButtonType.RESUME.getValue(),
-                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.RESUME_BTN.getText(),
-                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
-
-        mainMenuBtn = new Button(mainMenuBtnX, buttonY, buttonWidth, buttonHeight,
-                GameButtonType.MAIN_MENU.getValue(), Assets.BUTTON_BG.getFileName(),
-                GameConfig.GameButtonText.MAIN_MENU_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
-                GameConfig.BUTTON_FONT_SIZE);
-
-        quitBtn = new Button(quitBtnX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.QUIT.getValue(), Assets.BUTTON_BG.getFileName(),
-                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
-                GameConfig.BUTTON_FONT_SIZE);
-
-        // Register the buttons
-        buttonManager = new ButtonManager(clickListener);
-        buttonManager.addButton(resumeBtn);
-        buttonManager.addButton(mainMenuBtn);
-        buttonManager.addButton(quitBtn);
-
-        // Set input processor for buttons
-        buttonManager.setButtonsInputProcessor();
+        isPaused = false;
+        clickListener = createButtonClickListener();
+        createEntities();
+        createPauseGameOverlay();
 
         timer.startTimer();
         if (GameConfig.IS_MUSIC_ENABLED)
@@ -172,42 +98,9 @@ public class GameSceneLvl1 extends Scene {
         if (isPaused) {
             batch.draw(pauseOverlay, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
             buttonManager.drawButtons(batch);
-            // hide all apple and burger
-            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
-                entity.setVisable(false);
-            }
-
-            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
-                entity.setVisable(false);
-            }
-        } else {
-
-            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
-                entity.setVisable(true);
-            }
-
-            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
-                entity.setVisable(true);
-            }
         }
 
-        // draw and move the entities
-        ArrayList<Entity> entities = entityManager.getEntities();
-        for (Entity entity : entities) {
-            entity.draw(batch);
-            entity.move(entityManager.getAllCollidableEntity(), delta);
-
-            // If the player has eaten all the apples, the game ends
-            if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
-                for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
-                    if (!exitPortal.isVisable()) {
-                        exitPortal.setVisable(true);
-                    } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
-                        nextScene = GameSceneType.GAME_OVER_WIN.getValue();
-                    }
-                }
-            }
-        }
+        drawEntitiesAndCheckWinCondition(delta);
 
         // bulk remove entity to prevent concurrent modification
         entityManager.removeEntities();
@@ -217,19 +110,127 @@ public class GameSceneLvl1 extends Scene {
             sceneManager.setScene(nextScene);
     }
 
+    @Override
+    public void dispose() {
+        pauseOverlay.dispose();
+    }
+
+    private void createEntities() {
+        this.player = new Player(
+                GameConfig.PLAYER_START_POSITION.x,
+                GameConfig.PLAYER_START_POSITION.y,
+                GameConfig.PLAYER_SIZE,
+                GameConfig.PLAYER_SIZE,
+                GameConfig.PLAYER_SPEED,
+                Assets.PLAYER.getFileName(),
+                GameEntityType.PLAYER.getValue(),
+                keyStrokeManager, entityManager);
+
+        entityManager.addEntity(player);
+        // spawn the block borders
+        entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
+
+        // spawn exit portal
+        entityManager.addEntity(blockManager.createExitPortal(GameConfig.EXIT_PORTAL_POSITION));
+
+        // randomly spawn the blocks obstacles
+        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_OBSTACLES,
+                entityManager.getAllEntityPosition(), Assets.BLOCK.getFileName(), GameEntityType.BLOCK.getValue()));
+
+        // randomly spawn the apples
+        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_APPLES,
+                entityManager.getAllEntityPosition(), Assets.APPLE.getFileName(), GameEntityType.APPLE.getValue()));
+
+        // randomly spawn the burgers
+        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
+                entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
+
+    }
+
+    private void createPauseGameOverlay() {
+        // Initialize pause overlay texture
+        pauseOverlay = new Texture(Gdx.files.internal(Assets.PAUSE_OVERLAY_BG.getFileName()));
+
+        // Define positions and dimensions for buttons
+        float buttonSpacing = 50;
+        float buttonWidth = GameConfig.BUTTON_WIDTH;
+        float buttonHeight = GameConfig.BUTTON_HEIGHT;
+        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float resumeBtnX = startX;
+        float mainMenuBtnX = startX + buttonWidth + buttonSpacing;
+        float quitBtnX = mainMenuBtnX + buttonWidth + buttonSpacing;
+
+        // Initialize and setup buttons
+        resumeBtn = new Button(resumeBtnX, buttonY, buttonWidth, buttonHeight, GameButtonType.RESUME.getValue(),
+                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.RESUME_BTN.getText(),
+                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
+
+        mainMenuBtn = new Button(mainMenuBtnX, buttonY, buttonWidth, buttonHeight,
+                GameButtonType.MAIN_MENU.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.MAIN_MENU_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+
+        quitBtn = new Button(quitBtnX, buttonY, buttonWidth,
+                buttonHeight, GameButtonType.QUIT.getValue(), Assets.BUTTON_BG.getFileName(),
+                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
+                GameConfig.BUTTON_FONT_SIZE);
+
+        // Register the buttons
+        buttonManager = new ButtonManager(clickListener);
+        buttonManager.addButton(resumeBtn);
+        buttonManager.addButton(mainMenuBtn);
+        buttonManager.addButton(quitBtn);
+
+        // Set input processor for buttons
+        buttonManager.setButtonsInputProcessor();
+    }
+
     private void togglePause() {
         isPaused = !isPaused;
         if (isPaused) {
             timer.pauseTimer();
-            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), false);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), false);
         } else {
             timer.resumeTimer();
-            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER_HEAD.getValue()), true);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), true);
         }
     }
 
-    @Override
-    public void dispose() {
-        pauseOverlay.dispose();
+    private void drawEntitiesAndCheckWinCondition(float delta) {
+        ArrayList<Entity> entities = entityManager.getEntities();
+        for (Entity entity : entities) {
+            if (!entity.getEntityType().equals(GameEntityType.EXIT_PORTAL.getValue())) {
+                entity.setVisible(!isPaused);
+            }
+            entity.draw(batch);
+            entity.move(entityManager.getAllCollidableEntity(), delta);
+            if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
+                for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
+                    if (!exitPortal.isVisible()) {
+                        exitPortal.setVisible(true);
+                    } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
+                        nextScene = GameSceneType.GAME_OVER_WIN.getValue();
+                    }
+                }
+            }
+        }
+    }
+
+    private ButtonClickListener createButtonClickListener() {
+        return new ButtonClickListener() {
+            @Override
+            public void onClick(Button button) {
+                GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
+                if (btnType.equals(GameButtonType.RESUME)) {
+                    togglePause();
+                } else if (btnType.equals(GameButtonType.MAIN_MENU)) {
+                    sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
+                } else if (btnType.equals(GameButtonType.QUIT)) {
+                    Gdx.app.exit();
+                }
+            }
+        };
     }
 }
