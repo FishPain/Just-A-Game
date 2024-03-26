@@ -196,7 +196,9 @@ public class GameConfig {
         RESTART("RESTART_BTN"),
         BACK("BACK_BTN"),
         NEXT_LEVEL("NEXT_LEVEL"),
-        SOUND_TOGGLE("SOUND_TOGGLE");
+        SOUND_TOGGLE("SOUND_TOGGLE"),
+        RESUME("RESUME_BTN"),
+        MAIN_MENU("MAIN_MENU_BTN");
 
         private final String value;
 
@@ -228,7 +230,9 @@ public class GameConfig {
         NEXT_LEVEL_BTN("NEXT LEVEL"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        QUIT_BTN("QUIT");
+        QUIT_BTN("QUIT"),
+        RESUME_BTN("RESUME"),
+        MAIN_MENU_BTN("MAIN MENU");
 
         private String text;
 
@@ -249,6 +253,7 @@ public class GameConfig {
         MAIN_MENU_BG("main_menu_bg.jpg"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
+        PAUSE_OVERLAY_BG("pause_overlay_bg.png"),
 
         // Entity textures
         BLOCK("block.jpg"),
