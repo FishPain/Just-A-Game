@@ -175,10 +175,25 @@ public class GameSceneLvl2 extends Scene {
 
         if (isPaused) {
             batch.draw(pauseOverlay, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-            
             buttonManager.drawButtons(batch);
-        }
+            // hide all apple and burger
+            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
+                entity.setVisable(false);
+            }
 
+            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
+                entity.setVisable(false);
+            }
+        } else {
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.APPLE.getValue())) {
+                entity.setVisable(true);
+            }
+
+            for (Entity entity : entityManager.getEntities(GameEntityType.BURGER.getValue())) {
+                entity.setVisable(true);
+            }
+        }
 
         // draw and move the entities
         ArrayList<Entity> entities = entityManager.getEntities();
