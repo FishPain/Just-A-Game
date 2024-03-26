@@ -30,9 +30,9 @@ public class Movement extends CollisionManager {
         // Apply horizontal movement if no collision detected
         if (horizontalCollision == null) {
             entity.setX(entity.getX() + horizontalMovementDelta.x);
-        } else {
-            GameCollision.collideEffect(horizontalCollision, (Player) entity);
         }
+        
+        GameCollision.collideEffect(horizontalCollision, (Player) entity);
     }
 
     public Vector2 calculateHorizontalMovement(float speed,
@@ -49,7 +49,7 @@ public class Movement extends CollisionManager {
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
-        boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
+        boolean isOnBlock = GameCollision.isEntityOnBlock(entity, allEntities);
         Entity collidedEntity = CollisionManager.willCollide(entity,
                 new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
                 allEntities);
@@ -57,9 +57,8 @@ public class Movement extends CollisionManager {
         if (collidedEntity == null
                 || (isOnBlock && keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName()))) {
             entity.setY(entity.getY() + verticalMovementDelta.y);
-        } else {
-            GameCollision.collideEffect(collidedEntity, (Player) entity);
         }
+        GameCollision.collideEffect(collidedEntity, (Player) entity);
     }
 
     public Vector2 calculateVerticalMovement(float speed,

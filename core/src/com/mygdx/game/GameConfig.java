@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import com.mygdx.engine.scene.SceneType;
-
 import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -15,10 +13,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My Goopy Foody Game";
     public static final float GRAVITY = -100f;
-    public static float MUSIC_VOLUME = 0.2f;
-    public static int PLAYER_BODY_LENGTH = 0;
-    public static int TIME_LIMIT = 5;
-    public static final int NUM_OF_OBSTACLES = 70;
+    public static final int NUM_OF_OBSTACLES = 80;
     public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
@@ -26,11 +21,15 @@ public class GameConfig {
     public static final int BURGER_EFFECT_TIME = 1;
     public static final float BURGER_SPEED_MULTIPLIER = 2f;
     public static final int NUM_OF_CARROTS = 3;
+    public static final int CARROT_EFFECT_TIME = 10;
     public static final int BLOCK_SIZE = 50;
-    public static final int PLAYER_SIZE = 25;
-    public static final int AI_PLAYER_SIZE = 25;
+    public static final int PLAYER_WIDTH = 25;
+    public static final int PLAYER_HEIGHT = 40;
     public static final int PLAYER_STAMINA = 100;
-    public static int PLAYER_SPEED = 300; // ORIGINAL 200
+    public static float MUSIC_VOLUME = 0.2f;
+    public static int TIME_LIMIT = 7;
+    public static int PLAYER_SPEED = 200;
+    public static final int AI_PLAYER_SIZE = 25;
     public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity
@@ -111,8 +110,7 @@ public class GameConfig {
     };
 
     public enum GameEntityType {
-        PLAYER_HEAD("PLAYER_HEAD"),
-        PLAYER_BODY("PLAYER_BODY"),
+        PLAYER("PLAYER"),
         AI_PLAYER_HEAD("AI_PLAYER_HEAD"),
         BLOCK("BLOCK"),
         APPLE("APPLE"),
@@ -142,14 +140,34 @@ public class GameConfig {
         }
     }
 
-    public static enum GameSceneType implements SceneType {
-        MAIN_MENU,
-        GAME_SCENE_LVL1,
-        GAME_SCENE_LVL2,
-        GAME_OVER_WIN,
-        GAME_OVER_LOSE,
-        SETTINGS,
-        TUTORIAL
+    public static enum GameSceneType {
+        MAIN_MENU("MAIN_MENU"),
+        GAME_SCENE_LVL1("GAME_SCENE_LVL1"),
+        GAME_SCENE_LVL2("GAME_SCENE_LVL2"),
+        GAME_OVER_WIN("GAME_OVER_WIN"),
+        GAME_OVER_LOSE("GAME_OVER_LOSE"),
+        SETTINGS("SETTINGS"),
+        TUTORIAL("TUTORIAL");
+
+        private String value;
+
+        private GameSceneType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameSceneType fromValue(String value) {
+            for (GameSceneType type : GameSceneType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum Keystroke {
@@ -180,7 +198,10 @@ public class GameConfig {
         START("START_BTN"),
         RESTART("RESTART_BTN"),
         BACK("BACK_BTN"),
-        SOUND_TOGGLE("SOUND_TOGGLE");
+        NEXT_LEVEL("NEXT_LEVEL"),
+        SOUND_TOGGLE("SOUND_TOGGLE"),
+        RESUME("RESUME_BTN"),
+        MAIN_MENU("MAIN_MENU_BTN");
 
         private final String value;
 
@@ -209,9 +230,12 @@ public class GameConfig {
         START_BTN("START"),
         RESTART_BTN("RESTART"),
         SETTINGS_BTN("SETTINGS"),
+        NEXT_LEVEL_BTN("NEXT LEVEL"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        QUIT_BTN("QUIT");
+        QUIT_BTN("QUIT"),
+        RESUME_BTN("RESUME"),
+        MAIN_MENU_BTN("MAIN MENU");
 
         private String text;
 
@@ -232,17 +256,15 @@ public class GameConfig {
         MAIN_MENU_BG("main_menu_bg.jpg"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
+        PAUSE_OVERLAY_BG("pause_overlay_bg.png"),
 
         // Entity textures
         BLOCK("block.jpg"),
-        PLAYER_BODY("player_body.jpg"),
-        PLAYER_HEAD("player.png"),
+        PLAYER("player1.png"),
         APPLE("apple.png"),
-        CARROT("droplet.png"),
+        CARROT("carrot.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png"),
-        LOGO("logo.png"),
-        EXIT_PORTAL("droplet.png"),
+        EXIT_PORTAL("exit_portal.png"),
 
         // Buttons
         BACK_BTN("back_btn.png"),
@@ -252,7 +274,7 @@ public class GameConfig {
         SETTINGS_BTN("settings_btn.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        BUTTON_BG("ui_pack/PNG/buttonLong_beige.png"),
+        BUTTON_BG("buttonLong_beige.png"),
 
         // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.ogg"),

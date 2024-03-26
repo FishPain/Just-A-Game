@@ -17,11 +17,11 @@ public abstract class Entity {
     protected boolean isMovable;
     protected boolean isCollidable;
     protected boolean toRemove;
-    protected boolean isVisable;
+    protected boolean isVisible;
     protected boolean isInteractable;
 
     public Entity(float x, float y, float width, float height, String texturePath, float speed, boolean isMovable,
-            String entityType, boolean isVisable, boolean isInteractable) {
+            String entityType, boolean isVisible, boolean isInteractable) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -29,7 +29,7 @@ public abstract class Entity {
         this.speed = speed;
         this.isMovable = isMovable;
         this.entityType = entityType;
-        this.isVisable = isVisable;
+        this.isVisible = isVisible;
         this.isInteractable = false;
         this.toRemove = false;
         this.isCollidable = true;
@@ -42,7 +42,7 @@ public abstract class Entity {
     public abstract boolean isGameEnd();
 
     public void draw(SpriteBatch batch) {
-        if (batch == null || texture == null || !isVisable)
+        if (batch == null || texture == null || !isVisible)
             return;
         batch.draw(texture, x, y, width, height);
     }
@@ -83,12 +83,12 @@ public abstract class Entity {
         this.toRemove = toRemove;
     }
 
-    public boolean isVisable() {
-        return isVisable;
+    public boolean isVisible() {
+        return isVisible;
     }
 
-    public void setVisable(boolean isVisable) {
-        this.isVisable = isVisable;
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
 
     public void dispose() {

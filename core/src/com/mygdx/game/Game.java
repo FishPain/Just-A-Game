@@ -2,8 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.engine.SimulationManager;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
@@ -22,10 +22,10 @@ import com.mygdx.game.GameConfig.Keystroke;
 
 public class Game extends SimulationManager {
 
-    EntityManager EntityManager;
-    SceneManager SceneManager;
-    KeyStrokeManager keyStrokeManager;
-    SpriteBatch batch;
+    private EntityManager EntityManager;
+    private SceneManager SceneManager;
+    private KeyStrokeManager KeyStrokeManager;
+    private SpriteBatch batch;
 
     @Override
     public void create() {
@@ -33,35 +33,35 @@ public class Game extends SimulationManager {
         SceneManager = new SceneManager();
 
         // Load the default key strokes from the file
-        keyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
+        KeyStrokeManager = new KeyStrokeManager(Keystroke.FILE_PATH.getKeystrokeName());
         batch = new SpriteBatch();
 
         // <game entry point> main menu screen
-        SceneManager.addScene(GameSceneType.MAIN_MENU, new MainMenu(SceneManager));
-        SceneManager.setScene(GameSceneType.MAIN_MENU);
+        SceneManager.addScene(new MainMenu(SceneManager));
+        SceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
 
         // settings scene
-        SceneManager.addScene(GameSceneType.SETTINGS, new Settings(SceneManager));
+        SceneManager.addScene(new Settings(SceneManager));
 
         // tutorial scene
-        SceneManager.addScene(GameSceneType.TUTORIAL, new Tutorial(SceneManager));
+        SceneManager.addScene(new Tutorial(SceneManager));
 
         // the game scene level 1
-        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL1,
-                new GameSceneLvl1(SceneManager, EntityManager, keyStrokeManager));
+        SceneManager.addScene(
+                new GameSceneLvl1(SceneManager, EntityManager, KeyStrokeManager));
 
         // the game scene level 2
-        SceneManager.addScene(GameSceneType.GAME_SCENE_LVL2,
-                new GameSceneLvl2(SceneManager, EntityManager, keyStrokeManager));
+        SceneManager.addScene(
+                new GameSceneLvl2(SceneManager, EntityManager, KeyStrokeManager));
 
         // end scene
-        SceneManager.addScene(GameSceneType.GAME_OVER_WIN, new GameOverWin(SceneManager, EntityManager));
-        SceneManager.addScene(GameSceneType.GAME_OVER_LOSE, new GameOverLose(SceneManager, EntityManager));
+        SceneManager.addScene(new GameOverWin(SceneManager));
+        SceneManager.addScene(new GameOverLose(SceneManager));
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0, 0, 1, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         float deltaTime = Gdx.graphics.getDeltaTime();
         batch.begin();
         SceneManager.getCurrentScene().setBatch(batch);
@@ -83,7 +83,9 @@ public class Game extends SimulationManager {
 
     @Override
     public void dispose() {
-        EntityManager.dispose(batch);
+        EntityManager.dispose();
+        SceneManager.dispose();
+        KeyStrokeManager.dispose();
         batch.dispose();
     }
 }

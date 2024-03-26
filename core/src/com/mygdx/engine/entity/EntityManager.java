@@ -159,7 +159,7 @@ public class EntityManager {
         entities.removeAll(entitiesToRemove);
     }
 
-    public void dispose(SpriteBatch batch) {
+    public void dispose() {
         for (Entity entity : entities) {
             entity.dispose();
         }

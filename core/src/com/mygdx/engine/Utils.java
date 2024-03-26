@@ -9,8 +9,6 @@ import org.json.JSONObject;
 
 public class Utils {
     public static class Settings {
-        private static final String DEFAULT_SETTINGS_FILE_PATH = "settings.json";
-
         public static Object loadSettings(String filePath, String key) {
             String jsonContent;
             try {

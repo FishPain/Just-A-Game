@@ -70,4 +70,8 @@ public class KeyStrokeManager extends Settings {
         }
         return temp;
     }
+
+    public void dispose() {
+        keyStrokeMap.clear();
+    }
 }

@@ -39,27 +39,28 @@ public class BlockManager {
         int attempts;
 
         for (int i = 0; i < numOfBlocks; i++) {
-            boolean positionFound;
             Point potentialPosition = null;
-
             for (attempts = 0; attempts < MAX_ATTEMPTS; attempts++) {
-                positionFound = true;
                 int x = rand.nextInt(GameConfig.SCREEN_WIDTH - GameConfig.BLOCK_SIZE);
                 int y = rand.nextInt(GameConfig.SCREEN_HEIGHT - GameConfig.BLOCK_SIZE);
                 potentialPosition = new Point(x, y);
 
                 Rectangle potentialRect = new Rectangle(x, y, GameConfig.BLOCK_SIZE, GameConfig.BLOCK_SIZE);
 
+                boolean tooClose = false; // Flag to check if the block is too close to existing blocks
+
                 for (Point entityPos : allEntityPosition) {
                     Rectangle entityRect = new Rectangle(entityPos.x, entityPos.y, GameConfig.BLOCK_SIZE,
                             GameConfig.BLOCK_SIZE);
+
+                    // Check if the potential block overlaps with any existing block
                     if (potentialRect.overlaps(entityRect)) {
-                        positionFound = false;
+                        tooClose = true;
                         break;
                     }
                 }
 
-                if (positionFound) {
+                if (!tooClose) {
                     allEntityPosition.add(potentialPosition);
                     break;
                 }
@@ -69,8 +70,7 @@ public class BlockManager {
                 boolean isInteractable = entityType.equals(GameEntityType.BLOCK.getValue()) ? false : true;
 
                 Block block = new Block(potentialPosition.x, potentialPosition.y, GameConfig.BLOCK_SIZE,
-                        GameConfig.BLOCK_SIZE,
-                        assetFilePath, entityType, true, isInteractable);
+                        GameConfig.BLOCK_SIZE, assetFilePath, entityType, true, isInteractable);
                 obstacles.add(block);
             }
         }

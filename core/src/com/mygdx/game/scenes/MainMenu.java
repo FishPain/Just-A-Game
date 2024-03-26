@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 
 import com.mygdx.engine.scene.SceneManager;
 import com.mygdx.engine.scene.Scene;
-import com.mygdx.engine.Utils;
 import com.mygdx.engine.io.button.Button;
 import com.mygdx.engine.io.button.ButtonClickListener;
 import com.mygdx.engine.io.button.ButtonManager;
@@ -25,7 +24,10 @@ public class MainMenu extends Scene {
     private ButtonManager buttonManager;
 
     public MainMenu(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(),
+                Assets.MAIN_MENU_SOUND.getFileName(),
+                GameSceneType.MAIN_MENU.getValue());
+
         this.sceneManager = sceneManager;
     }
 
@@ -38,9 +40,9 @@ public class MainMenu extends Scene {
         public void onClick(Button button) {
             GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
             if (btnType.equals(GameButtonType.PLAY)) {
-                sceneManager.setScene(GameSceneType.TUTORIAL);
+                sceneManager.setScene(GameSceneType.TUTORIAL.getValue());
             } else if (btnType.equals(GameButtonType.SETTINGS)) {
-                sceneManager.setScene(GameSceneType.SETTINGS);
+                sceneManager.setScene(GameSceneType.SETTINGS.getValue());
             } else if (btnType.equals(GameButtonType.QUIT)) {
                 Gdx.app.exit();
             }
@@ -49,9 +51,6 @@ public class MainMenu extends Scene {
 
     @Override
     public void show() {
-        background = new Texture(Utils.getInternalFilePath(Assets.MAIN_MENU_BG.getFileName()));
-        logoTexture = new Texture(Utils.getInternalFilePath(Assets.LOGO.getFileName()));
-
         float buttonSpacing = 50;
         float buttonWidth = GameConfig.BUTTON_WIDTH;
         float buttonHeight = GameConfig.BUTTON_HEIGHT;
@@ -107,8 +106,12 @@ public class MainMenu extends Scene {
 
     @Override
     public void dispose() {
-        background.dispose();
-        logoTexture.dispose();
-        buttonManager.dispose();
+        super.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
+        if (background != null)
+            background.dispose();
+        if (logoTexture != null)
+            logoTexture.dispose();
     }
 }

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Block extends Entity {
     public Block(float x, float y, float width, float height, String texturePath, String entityType,
-            boolean isVisable, boolean isInteractable) {
-        super(x, y, width, height, texturePath, 0, false, entityType, isVisable, isInteractable);
+            boolean isVisible, boolean isInteractable) {
+        super(x, y, width, height, texturePath, 0, false, entityType, isVisible, isInteractable);
     }
 
     @Override

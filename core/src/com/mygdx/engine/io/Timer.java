@@ -14,6 +14,7 @@ public class Timer implements Disposable {
     private boolean isPaused;
     private long pauseStartTime;
     private long pausedTime;
+    private int countdownSeconds;
 
     public Timer(float x, float y, int countdownSeconds) {
         this.x = x;
@@ -22,7 +23,7 @@ public class Timer implements Disposable {
         this.pauseStartTime = 0;
         this.pausedTime = 0;
         this.font = new BitmapFont();
-        this.countdownTime = countdownSeconds * 1000; // Convert seconds to milliseconds
+        this.countdownSeconds = countdownSeconds * 1000;
         resetTimer();
     }
 
@@ -70,6 +71,7 @@ public class Timer implements Disposable {
         startTime = TimeUtils.millis();
         isRunning = false;
         isPaused = false;
+        countdownTime = countdownSeconds;
         pausedTime = 0;
     }
 
@@ -120,9 +122,19 @@ public class Timer implements Disposable {
     }
 
     public boolean isTimerEnded() {
+        if (isPaused)
+            return false;
         long currentTime = TimeUtils.millis();
         long elapsedTime = currentTime - startTime - pausedTime; // Subtract paused time from elapsed time
         return elapsedTime >= countdownTime;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     @Override

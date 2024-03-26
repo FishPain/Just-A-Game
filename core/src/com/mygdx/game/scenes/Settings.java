@@ -19,7 +19,9 @@ public class Settings extends Scene {
     private Button backBtn;
 
     public Settings(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName(), Assets.MAIN_MENU_SOUND.getFileName());
+        super(Assets.MAIN_MENU_BG.getFileName(),
+                Assets.MAIN_MENU_SOUND.getFileName(),
+                GameSceneType.SETTINGS.getValue());
         this.sceneManager = sceneManager;
 
         float buttonSpacing = 50;
@@ -49,7 +51,7 @@ public class Settings extends Scene {
                 }
                 soundBtn.toggleTexture();
             } else if (btnType.equals(GameButtonType.BACK)) {
-                sceneManager.setScene(GameSceneType.MAIN_MENU);
+                sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
             }
         }
     };
@@ -86,7 +88,8 @@ public class Settings extends Scene {
     @Override
     public void dispose() {
         super.dispose();
-        buttonManager.dispose();
+        if (buttonManager != null)
+            buttonManager.dispose();
     }
 
     private ToggleButton createSoundButton(float X, float Y) {

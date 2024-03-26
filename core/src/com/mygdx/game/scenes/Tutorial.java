@@ -17,7 +17,9 @@ public class Tutorial extends Scene {
     private ButtonManager buttonManager;
 
     public Tutorial(SceneManager sceneManager) {
-        super(Assets.TUTORIAL_BG.getFileName(), Assets.TUTORIAL_SOUND.getFileName());
+        super(Assets.TUTORIAL_BG.getFileName(),
+                Assets.TUTORIAL_SOUND.getFileName(),
+                GameSceneType.TUTORIAL.getValue());
         this.sceneManager = sceneManager;
     }
 
@@ -26,9 +28,9 @@ public class Tutorial extends Scene {
         public void onClick(Button button) {
             GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
             if (btnType.equals(GameButtonType.START)) {
-                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1);
+                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1.getValue());
             } else if (btnType.equals(GameButtonType.BACK)) {
-                sceneManager.setScene(GameSceneType.MAIN_MENU);
+                sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
             }
         }
     };
@@ -46,7 +48,7 @@ public class Tutorial extends Scene {
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
 
         // Calculate the starting position for the buttons to center them vertically
-        float startY = (GameConfig.SCREEN_HEIGHT - buttonHeight) / 2;
+        float startY = 150;
 
         // Create the start game button
         Button startGameBtn = new Button(startX, startY, buttonWidth, buttonHeight,
@@ -91,10 +93,6 @@ public class Tutorial extends Scene {
 
         // Draw the buttons
         buttonManager.drawButtons(batch);
-
-        // drawAndPrint(burger, "Burger", 0);
-        // drawAndPrint(rain, "Rain", 100);
-        // drawAndPrint(block, "Block", 100 + rain.getHeight());
     }
 
     @Override

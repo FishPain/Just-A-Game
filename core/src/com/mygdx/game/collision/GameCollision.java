@@ -1,6 +1,9 @@
 package com.mygdx.game.collision;
 
 import com.mygdx.engine.ai.MovementAI;
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
@@ -17,11 +20,14 @@ public class GameCollision extends CollisionManager {
             GameConfig.APPLE_EFFECT_TIME);
     static private Timer timerBurger = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50,
             GameConfig.BURGER_EFFECT_TIME);
+    static private String entityType;
 
     public static void collideEffect(Entity collidedEntity, Player player) {
-        String entityType = collidedEntity.getEntityType();
+        if (collidedEntity != null) {
+            entityType = collidedEntity.getEntityType();
+        }
 
-        // Update timers
+        // reset the speed if the effect is over
         if (player.isAppleEffectActive()) {
             timerApple.updateEffect();
             if (timerApple.isTimerEnded()) {
@@ -30,7 +36,8 @@ public class GameCollision extends CollisionManager {
                 timerApple.resetTimer();
             }
         }
-        // Update timers
+
+        // reset the speed if the effect is over
         if (player.isBurgerEffectActive()) {
             timerBurger.updateEffect();
             if (timerBurger.isTimerEnded()) {
@@ -40,8 +47,11 @@ public class GameCollision extends CollisionManager {
             }
         }
 
+        if (collidedEntity == null) {
+            return;
+        }
         // Apple increase speed by 1.5 times
-        if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
+        else if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
             collidedEntity.setToRemove(true);
             player.setSpeed(player.getSpeed() * GameConfig.APPLE_SPEED_MULTIPLIER);
             player.setAppleEffectActive(true);
@@ -83,10 +93,22 @@ public class GameCollision extends CollisionManager {
             // e.printStackTrace();
             // }
 
-        }
-        if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
-            collidedEntity.setToRemove(true);
-        }
+        }if(GameEntityType.fromValue(entityType)==GameEntityType.APPLE)
+
+    {
+        collidedEntity.setToRemove(true);
+    }
     }
 
+    public static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
+        Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
+        slightlyBelow.y -= 1; // Check just below the entity
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK.getValue()
+                    && slightlyBelow.overlaps(block.getRectangle())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
