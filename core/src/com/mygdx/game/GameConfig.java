@@ -1,9 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
-import com.mygdx.engine.scene.SceneType;
-import com.mygdx.engine.io.ButtonType;
-
 import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -32,22 +28,26 @@ public class GameConfig {
     public static final int PLAYER_SIZE = 25;
     public static final int PLAYER_STAMINA = 100;
     public static int PLAYER_SPEED = 200;
+    public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity
     public static final float SPEED_REDUCTION_FACTOR = 1.5f;
-    public static boolean IS_MUSIC_ENABLED = false;
     public static final int BUTTON_FONT_SIZE = 20;
+    public static final String SETTINGS_FILE_PATH = "settings.json";
+    public static final String SETTINGS_SOUND_KEY = "SoundEffects";
+    public static final String SETTINGS_KEYSTROKES_KEY = "KeyStrokes";
 
     static {
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Operating System Name: " + osName);
+
         if (osName.contains("windows")) {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             int width = screenSize.width;
             int height = screenSize.height;
 
-            if (Math.abs(width - 1920) < Math.abs(width - 800) && // Resolution set based on screen size
-                    Math.abs(height - 800) < Math.abs(height - 600)) {
+            if (Math.abs(width - 1920) < Math.abs(width - 800) &&
+                    Math.abs(height - 1080) < Math.abs(height - 600)) { // Adjusted resolution check
                 SCREEN_WIDTH = 1920;
                 SCREEN_HEIGHT = 1080;
             } else {
@@ -57,6 +57,8 @@ public class GameConfig {
 
             System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
             System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
+
+            // Adjust TIME_LIMIT based on screen size
             float widthScaleFactor = (float) SCREEN_WIDTH / 800;
             float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
             TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
@@ -67,11 +69,11 @@ public class GameConfig {
             SCREEN_HEIGHT = 600;
         }
     }
+
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
     public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;
-
     public static final ArrayList<Point> BLOCK_BORDER_POSITIONS = new ArrayList<Point>() {
         {
             // Bottom edge
@@ -135,14 +137,34 @@ public class GameConfig {
         }
     }
 
-    public static enum GameSceneType implements SceneType {
-        MAIN_MENU,
-        GAME_SCENE_LVL1,
-        GAME_SCENE_LVL2,
-        GAME_OVER_WIN,
-        GAME_OVER_LOSE,
-        SETTINGS,
-        TUTORIAL
+    public static enum GameSceneType {
+        MAIN_MENU("MAIN_MENU"),
+        GAME_SCENE_LVL1("GAME_SCENE_LVL1"),
+        GAME_SCENE_LVL2("GAME_SCENE_LVL2"),
+        GAME_OVER_WIN("GAME_OVER_WIN"),
+        GAME_OVER_LOSE("GAME_OVER_LOSE"),
+        SETTINGS("SETTINGS"),
+        TUTORIAL("TUTORIAL");
+
+        private String value;
+
+        private GameSceneType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameSceneType fromValue(String value) {
+            for (GameSceneType type : GameSceneType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum Keystroke {
@@ -153,7 +175,7 @@ public class GameConfig {
         JUMP("JUMP"),
         SHOOT("SHOOT"),
         PAUSE_RESUME("PAUSE_RESUME"),
-        FILE_PATH("Settings.json");
+        FILE_PATH(SETTINGS_FILE_PATH);
 
         private String keyStrokeName;
 
@@ -166,8 +188,37 @@ public class GameConfig {
         }
     }
 
-    public static enum GameButtonType implements ButtonType {
-        PLAY, SETTINGS, QUIT, START, RESTART, BACK, SOUND_ON, SOUND_OFF
+    public enum GameButtonType {
+        PLAY("PLAY_BTN"),
+        SETTINGS("SETTINGS_BTN"),
+        QUIT("QUIT_BTN"),
+        START("START_BTN"),
+        RESTART("RESTART_BTN"),
+        BACK("BACK_BTN"),
+        NEXT_LEVEL("NEXT_LEVEL"),
+        SOUND_TOGGLE("SOUND_TOGGLE"),
+        RESUME("RESUME_BTN"),
+        MAIN_MENU("MAIN_MENU_BTN");
+
+        private final String value;
+
+        GameButtonType(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        // Method to get enum based on string value
+        public static GameButtonType fromValue(String value) {
+            for (GameButtonType type : GameButtonType.values()) {
+                if (type.value.equals(value)) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("No enum constant with value: " + value);
+        }
     }
 
     public static enum GameButtonText {
@@ -176,9 +227,12 @@ public class GameConfig {
         START_BTN("START"),
         RESTART_BTN("RESTART"),
         SETTINGS_BTN("SETTINGS"),
+        NEXT_LEVEL_BTN("NEXT LEVEL"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        QUIT_BTN("QUIT");
+        QUIT_BTN("QUIT"),
+        RESUME_BTN("RESUME"),
+        MAIN_MENU_BTN("MAIN MENU");
 
         private String text;
 
@@ -199,6 +253,7 @@ public class GameConfig {
         MAIN_MENU_BG("main_menu_bg.jpg"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
+        PAUSE_OVERLAY_BG("pause_overlay_bg.png"),
 
         // Entity textures
         BLOCK("block.jpg"),
@@ -207,9 +262,7 @@ public class GameConfig {
         APPLE("apple.png"),
         CARROT("droplet.png"),
         BURGER("burger.png"),
-        RAIN("droplet.png"),
-        LOGO("logo.png"),
-        EXIT_PORTAL("droplet.png"),
+        EXIT_PORTAL("exit_portal.png"),
 
         // Buttons
         BACK_BTN("back_btn.png"),
@@ -219,7 +272,7 @@ public class GameConfig {
         SETTINGS_BTN("settings_btn.png"),
         SOUND_OFF_BTN("sound_off_btn.png"),
         SOUND_ON_BTN("sound_on_btn.png"),
-        BUTTON_BG("ui_pack/PNG/buttonLong_beige.png"),
+        BUTTON_BG("buttonLong_beige.png"),
 
         // Sounds
         MAIN_MENU_SOUND("sounds/mainMenuSound.ogg"),
@@ -243,16 +296,4 @@ public class GameConfig {
         }
     }
 
-    public static int Xscale() {
-        return Gdx.graphics.getWidth() / 16;
-    }
-
-    public static int Yscale() {
-        return Gdx.graphics.getHeight() / 9;
-    }
-
-    public static float PLAYER_SPEED() {
-        PLAYER_SPEED = 200;
-        throw new UnsupportedOperationException("Unimplemented method 'PLAYER_SPEED'");
-    }
 }

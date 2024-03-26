@@ -1,7 +1,6 @@
 package com.mygdx.engine;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.HashMap;
@@ -12,36 +11,49 @@ public class Utils {
     public static class Settings {
         public static Object loadSettings(String filePath, String key) {
             String jsonContent;
-
-            // if local file is available, load it, else load the default file
-            if (Gdx.files.local(filePath).exists()) {
-                jsonContent = Gdx.files.local(filePath).readString();
-            } else {
-                jsonContent = Gdx.files.internal(filePath).readString();
-            }
-
             try {
-                System.out.println("Settings loaded successfully.");
-                return new JSONObject(jsonContent).get(key);
+                jsonContent = Gdx.files.local(filePath).readString();
 
+                // Add logging to check the JSON content
+                System.out.println("JSON content: " + jsonContent);
+
+                JSONObject jsonObject = new JSONObject(jsonContent);
+                if (jsonObject.has(key)) {
+                    return jsonObject.get(key);
+                } else {
+                    System.out.println("Key not found in settings: " + key);
+                    return null;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Error reading or writing the settings file.");
+                System.out.println("Error reading or parsing the settings file.");
                 return null;
             }
         }
 
         public static void saveSettings(String filePath, String key, HashMap<String, String> settings) {
-            JSONObject json = new JSONObject();
-            json.put(key, settings);
             try {
+                // Load existing JSON content
+                JSONObject json;
+                if (Gdx.files.local(filePath).exists()) {
+                    String jsonContent = Gdx.files.local(filePath).readString();
+                    json = new JSONObject(jsonContent);
+                } else {
+                    json = new JSONObject();
+                }
+
+                // Update specific part with the given key
+                json.put(key, settings);
+
+                // Save modified JSON content back to the file
                 Gdx.files.local(filePath).writeString(json.toString(), false);
-                System.out.println("KeyStrokes saved successfully.");
+                System.out.println("Settings saved successfully.");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error reading or writing the settings file.");
             }
         }
+
     }
 
     // This method is used to get the internal file path defined in the assets

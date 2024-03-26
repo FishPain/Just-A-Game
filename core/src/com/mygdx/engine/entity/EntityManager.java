@@ -1,7 +1,5 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import java.util.ArrayList;
 import java.awt.Point;
 
@@ -57,6 +55,15 @@ public class EntityManager {
     }
 
     // get all entities by type
+    public ArrayList<Point> getAllEntityPosition(String entityType) {
+        ArrayList<Point> positions = new ArrayList<Point>();
+        for (Entity entity : getEntities(entityType)) {
+            positions.add(new Point((int) entity.x, (int) entity.y));
+        }
+        return positions;
+    }
+
+    // get all entities by type
     public ArrayList<Entity> getEntities(String entityType) {
         ArrayList<Entity> entitiesByType = new ArrayList<Entity>();
         for (Entity entity : entities) {
@@ -97,7 +104,7 @@ public class EntityManager {
         entities.removeAll(entitiesToRemove);
     }
 
-    public void dispose(SpriteBatch batch) {
+    public void dispose() {
         for (Entity entity : entities) {
             entity.dispose();
         }

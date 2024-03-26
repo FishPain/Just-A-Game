@@ -1,98 +1,67 @@
 package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.mygdx.engine.scene.SceneManager;
+import com.mygdx.engine.io.button.Button;
+import com.mygdx.engine.io.button.ButtonClickListener;
+import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.engine.scene.Scene;
-import com.mygdx.engine.Utils;
-import com.mygdx.engine.io.Button;
-import com.mygdx.engine.io.ButtonClickListener;
-import com.mygdx.engine.io.ButtonManager;
-import com.mygdx.engine.io.ButtonType;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
 import com.mygdx.game.GameConfig.GameButtonType;
 import com.mygdx.game.GameConfig.GameSceneType;
 
 public class Tutorial extends Scene {
-    private Texture burger;
-    private Texture rain;
-    private Texture block;
-    private Stage stage;
     private SceneManager sceneManager;
-    boolean sceneActive = true;
     private ButtonManager buttonManager;
 
     public Tutorial(SceneManager sceneManager) {
-        super(Assets.TUTORIAL_BG.getFileName(), Assets.TUTORIAL_SOUND.getFileName());
+        super(Assets.TUTORIAL_BG.getFileName(),
+                Assets.TUTORIAL_SOUND.getFileName(),
+                GameSceneType.TUTORIAL.getValue());
         this.sceneManager = sceneManager;
     }
 
     private ButtonClickListener clickListener = new ButtonClickListener() {
         @Override
-        public void onClick(ButtonType btnType) {
+        public void onClick(Button button) {
+            GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
             if (btnType.equals(GameButtonType.START)) {
-                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1);
+                sceneManager.setScene(GameSceneType.GAME_SCENE_LVL1.getValue());
             } else if (btnType.equals(GameButtonType.BACK)) {
-                sceneManager.setScene(GameSceneType.MAIN_MENU);
+                sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
             }
         }
     };
 
-    private void setPositionCentered(Label label, float additionalYOffset) {
-        float x = Gdx.graphics.getWidth() / 2 - GameConfig.Xscale();
-        float y = Gdx.graphics.getHeight() / 2 - label.getHeight() / 2 - 20 - additionalYOffset;
-        label.setPosition(x, y);
-    }
-
     @Override
     public void show() {
-        burger = new Texture(Utils.getInternalFilePath(Assets.BURGER.getFileName()));
-        rain = new Texture(Utils.getInternalFilePath(Assets.RAIN.getFileName()));
-        block = new Texture(Utils.getInternalFilePath(Assets.BLOCK.getFileName()));
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-
-        // Create labels for texture descriptions
-        Label burgerLabel = new Label("Burger: Delicious burger with lettuce, tomato, and cheese", labelStyle);
-        Label rainLabel = new Label("rain: Crispy golden rain with a touch of salt", labelStyle);
-        Label blockLabel = new Label("block: Refreshing soda with ice cubes", labelStyle);
-
-        // Position labels below their respective textures
-
-        setPositionCentered(burgerLabel, 0);
-        setPositionCentered(rainLabel, rain.getHeight());
-        setPositionCentered(blockLabel, block.getHeight() * 2 + 20);
-
-        // Add labels to the stage
-        stage.addActor(burgerLabel);
-        stage.addActor(rainLabel);
-        stage.addActor(blockLabel);
-
-        float buttonSpacing = 50;
         float buttonWidth = GameConfig.BUTTON_WIDTH;
         float buttonHeight = GameConfig.BUTTON_HEIGHT;
-        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float buttonY = GameConfig.SCREEN_HEIGHT / 3 - buttonHeight / 2;
-        float playButtonX = startX;
-        float settingButtonX = startX + buttonWidth + buttonSpacing;
+        float buttonSpacing = 50;
 
-        // Create buttons
-        Button startGameBtn = new Button(playButtonX, buttonY, buttonWidth, buttonHeight, GameButtonType.START,
+        // Calculate the total width occupied by the buttons
+        float totalButtonWidth = 2 * buttonWidth + buttonSpacing;
+
+        // Calculate the starting position for the buttons to center them horizontally
+        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
+
+        // Calculate the starting position for the buttons to center them vertically
+        float startY = 150;
+
+        // Create the start game button
+        Button startGameBtn = new Button(startX, startY, buttonWidth, buttonHeight,
+                GameButtonType.START.getValue(),
                 Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.START_BTN.getText(),
                 GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
 
-        Button backBtn = new Button(settingButtonX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.BACK, Assets.BUTTON_BG.getFileName(),
+        // Calculate the starting position for the back button
+        float backButtonX = startX + buttonWidth + buttonSpacing;
+
+        // Create the back button
+        Button backBtn = new Button(backButtonX, startY, buttonWidth, buttonHeight,
+                GameButtonType.BACK.getValue(), Assets.BUTTON_BG.getFileName(),
                 GameConfig.GameButtonText.BACK_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
                 GameConfig.BUTTON_FONT_SIZE);
 
@@ -119,22 +88,11 @@ public class Tutorial extends Scene {
 
     @Override
     public void render(float delta) {
-        sceneActive = true;
+
         renderBackground(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage.act(delta);
 
         // Draw the buttons
         buttonManager.drawButtons(batch);
-
-        // drawAndPrint(burger, "Burger", 0);
-        // drawAndPrint(rain, "Rain", 100);
-        // drawAndPrint(block, "Block", 100 + rain.getHeight());
-    }
-
-    private void drawAndPrint(Texture texture, String name, float yOffset) {
-        float x = Gdx.graphics.getWidth() / 2 - GameConfig.Xscale();
-        float y = Gdx.graphics.getHeight() / 2 - burger.getHeight() / 2 - yOffset;
-        batch.draw(texture, x, y, GameConfig.Xscale(), GameConfig.Yscale());
     }
 
     @Override
