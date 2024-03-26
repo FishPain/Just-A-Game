@@ -48,7 +48,7 @@ public class Tutorial extends Scene {
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
 
         // Calculate the starting position for the buttons to center them vertically
-        float startY = (GameConfig.SCREEN_HEIGHT - buttonHeight) / 2;
+        float startY = 150;
 
         // Create the start game button
         Button startGameBtn = new Button(startX, startY, buttonWidth, buttonHeight,
