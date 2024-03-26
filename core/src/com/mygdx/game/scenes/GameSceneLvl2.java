@@ -2,120 +2,31 @@ package com.mygdx.game.scenes;
 
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.scene.Scene;
 import com.mygdx.engine.scene.SceneManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.io.Timer;
 import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.Assets;
-import com.mygdx.game.GameConfig.GameButtonType;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.GameConfig.GameSceneType;
-import com.mygdx.engine.io.button.Button;
-import com.mygdx.engine.io.button.ButtonClickListener;
-import com.mygdx.engine.io.button.ButtonManager;
 import com.mygdx.game.entity.BlockManager;
 import com.mygdx.game.entity.Player;
-import java.util.ArrayList;
 
-public class GameSceneLvl2 extends Scene {
+public class GameSceneLvl2 extends GameScene {
     private EntityManager entityManager;
-    private SceneManager sceneManager;
     private KeyStrokeManager keyStrokeManager;
     private BlockManager blockManager;
-    private ButtonManager buttonManager;
-    private Timer timer;
     private Player player;
-    private String nextScene;
-    private boolean isPaused;
-    private boolean pauseKeyIsPressed;
-    private Texture pauseOverlay;
-    private Button resumeBtn;
-    private Button mainMenuBtn;
-    private Button quitBtn;
-    private ButtonClickListener clickListener;
 
     public GameSceneLvl2(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-        super(Assets.GAME_SCENE_BG.getFileName(),
-                Assets.GAME_SCENE_SOUND.getFileName(),
-                GameSceneType.GAME_SCENE_LVL2.getValue());
-        this.sceneManager = sceneManager;
+        super(sceneManager, entityManager, keyStrokeManager, GameSceneType.GAME_SCENE_LVL2.getValue());
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
         this.blockManager = new BlockManager();
-        this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
-                GameConfig.TIME_LIMIT);
-        this.isPaused = false;
-        this.pauseKeyIsPressed = false;
-        this.nextScene = null;
-        this.clickListener = null;
     }
 
     @Override
-    public void show() {
-        isPaused = false;
-        clickListener = createButtonClickListener();
-        createEntities();
-        createPauseGameOverlay();
-
-        timer.startTimer();
-        if (GameConfig.IS_MUSIC_ENABLED)
-            playBackgroundMusic(GameConfig.MUSIC_VOLUME);
-    }
-
-    @Override
-    public void hide() {
-        this.nextScene = null;
-        timer.resetTimer();
-        entityManager.dispose();
-        if (GameConfig.IS_MUSIC_ENABLED) {
-            stopBackgroundMusic();
-        }
-    }
-
-    @Override
-    public void render(float delta) {
-        renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-        // update timer
-        timer.updateAndRender(batch);
-        if (timer.isTimerEnded()) {
-            nextScene = GameSceneType.GAME_OVER_LOSE.getValue();
-        }
-
-        // press esc key to pause the game and resume the game
-        if (keyStrokeManager.isKeyPressed(GameConfig.Keystroke.PAUSE_RESUME.getKeystrokeName())) {
-            if (!pauseKeyIsPressed) {
-                togglePause();
-                pauseKeyIsPressed = true;
-            }
-        } else {
-            pauseKeyIsPressed = false;
-        }
-
-        if (isPaused) {
-            batch.draw(pauseOverlay, 0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
-            buttonManager.drawButtons(batch);
-        }
-
-        drawEntitiesAndCheckWinCondition(delta);
-
-        // bulk remove entity to prevent concurrent modification
-        entityManager.removeEntities();
-
-        // set the next scene
-        if (nextScene != null)
-            sceneManager.setScene(nextScene);
-    }
-
-    @Override
-    public void dispose() {
-        pauseOverlay.dispose();
-    }
-
-    private void createEntities() {
+    protected void createEntities() {
         this.player = new Player(
                 GameConfig.PLAYER_START_POSITION.x,
                 GameConfig.PLAYER_START_POSITION.y,
@@ -150,92 +61,18 @@ public class GameSceneLvl2 extends Scene {
                 entityManager.getAllEntityPosition(), Assets.CARROT.getFileName(), GameEntityType.CARROT.getValue()));
     }
 
-    private void createPauseGameOverlay() {
-        // Initialize pause overlay texture
-        pauseOverlay = new Texture(Gdx.files.internal(Assets.PAUSE_OVERLAY_BG.getFileName()));
-
-        // Define positions and dimensions for buttons
-        float buttonSpacing = 50;
-        float buttonWidth = GameConfig.BUTTON_WIDTH;
-        float buttonHeight = GameConfig.BUTTON_HEIGHT;
-        float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
-        float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
-        float resumeBtnX = startX;
-        float mainMenuBtnX = startX + buttonWidth + buttonSpacing;
-        float quitBtnX = mainMenuBtnX + buttonWidth + buttonSpacing;
-
-        // Initialize and setup buttons
-        resumeBtn = new Button(resumeBtnX, buttonY, buttonWidth, buttonHeight, GameButtonType.RESUME.getValue(),
-                Assets.BUTTON_BG.getFileName(), GameConfig.GameButtonText.RESUME_BTN.getText(),
-                GameConfig.Assets.FONT_PATH.getFileName(), GameConfig.BUTTON_FONT_SIZE);
-
-        mainMenuBtn = new Button(mainMenuBtnX, buttonY, buttonWidth, buttonHeight,
-                GameButtonType.MAIN_MENU.getValue(), Assets.BUTTON_BG.getFileName(),
-                GameConfig.GameButtonText.MAIN_MENU_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
-                GameConfig.BUTTON_FONT_SIZE);
-
-        quitBtn = new Button(quitBtnX, buttonY, buttonWidth,
-                buttonHeight, GameButtonType.QUIT.getValue(), Assets.BUTTON_BG.getFileName(),
-                GameConfig.GameButtonText.QUIT_BTN.getText(), GameConfig.Assets.FONT_PATH.getFileName(),
-                GameConfig.BUTTON_FONT_SIZE);
-
-        // Register the buttons
-        buttonManager = new ButtonManager(clickListener);
-        buttonManager.addButton(resumeBtn);
-        buttonManager.addButton(mainMenuBtn);
-        buttonManager.addButton(quitBtn);
-
-        // Set input processor for buttons
-        buttonManager.setButtonsInputProcessor();
-    }
-
-    private void togglePause() {
-
-        isPaused = !isPaused;
-        if (isPaused) {
-            timer.pauseTimer();
-            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), false);
-        } else {
-            timer.resumeTimer();
-            entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), true);
-        }
-    }
-
-    private void drawEntitiesAndCheckWinCondition(float delta) {
-        ArrayList<Entity> entities = entityManager.getEntities();
-        for (Entity entity : entities) {
-            if (!entity.getEntityType().equals(GameEntityType.EXIT_PORTAL.getValue())) {
-                entity.setVisible(!isPaused);
-            }
-            entity.draw(batch);
-            entity.move(entityManager.getAllCollidableEntity(), delta);
-            if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0 ||
-                    entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
-                for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
-                    if (!exitPortal.isVisible()) {
-                        exitPortal.setVisible(true);
-                    } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
-                        nextScene = GameSceneType.GAME_OVER_WIN.getValue();
-                    }
+    @Override
+    protected void checkWinCondition(Entity entity) {
+        if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0 ||
+                entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
+            for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
+                if (!exitPortal.isVisible()) {
+                    exitPortal.setVisible(true);
+                } else if (CollisionManager.isCollidingWith(entity, exitPortal)) {
+                    setNextScene(GameSceneType.GAME_OVER_WIN.getValue());
                 }
             }
         }
     }
 
-    private ButtonClickListener createButtonClickListener() {
-        return new ButtonClickListener() {
-            @Override
-            public void onClick(Button button) {
-                GameButtonType btnType = GameButtonType.fromValue(button.getButtonType());
-                if (btnType.equals(GameButtonType.RESUME)) {
-                    togglePause();
-                } else if (btnType.equals(GameButtonType.MAIN_MENU)) {
-                    sceneManager.setScene(GameSceneType.MAIN_MENU.getValue());
-                } else if (btnType.equals(GameButtonType.QUIT)) {
-                    Gdx.app.exit();
-                }
-            }
-        };
-    }
 }
