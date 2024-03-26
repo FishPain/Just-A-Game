@@ -22,10 +22,10 @@ import com.mygdx.game.GameConfig.Keystroke;
 
 public class Game extends SimulationManager {
 
-    EntityManager EntityManager;
-    SceneManager SceneManager;
-    KeyStrokeManager KeyStrokeManager;
-    SpriteBatch batch;
+    private EntityManager EntityManager;
+    private SceneManager SceneManager;
+    private KeyStrokeManager KeyStrokeManager;
+    private SpriteBatch batch;
 
     @Override
     public void create() {

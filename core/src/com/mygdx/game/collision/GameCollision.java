@@ -1,5 +1,8 @@
 package com.mygdx.game.collision;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
@@ -70,4 +73,16 @@ public class GameCollision extends CollisionManager {
         }
     }
 
+
+    public static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
+        Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
+        slightlyBelow.y -= 1; // Check just below the entity
+        for (Entity block : blocks) {
+            if (block.getEntityType() == GameEntityType.BLOCK.getValue()
+                    && slightlyBelow.overlaps(block.getRectangle())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

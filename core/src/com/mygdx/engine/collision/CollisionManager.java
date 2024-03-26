@@ -2,7 +2,6 @@ package com.mygdx.engine.collision;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
-import com.mygdx.game.GameConfig.GameEntityType;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -24,18 +23,6 @@ public class CollisionManager {
             return true; // Collision detected
         }
         return false; // No collision detected
-    }
-
-    public static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
-        Rectangle slightlyBelow = new Rectangle(entity.getRectangle());
-        slightlyBelow.y -= 1; // Check just below the entity
-        for (Entity block : blocks) {
-            if (block.getEntityType() == GameEntityType.BLOCK.getValue()
-                    && slightlyBelow.overlaps(block.getRectangle())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static Entity checkHorizontalCollision(Entity entity, Vector2 horizontalMovementDelta,

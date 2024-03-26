@@ -49,7 +49,7 @@ public class Movement extends CollisionManager {
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
-        boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
+        boolean isOnBlock = GameCollision.isEntityOnBlock(entity, allEntities);
         Entity collidedEntity = CollisionManager.willCollide(entity,
                 new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
                 allEntities);
