@@ -11,6 +11,8 @@ import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.Player;
 
 public class GameCollision extends CollisionManager {
+    static MovementAI movementAI;
+
     static private Timer timerApple = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50,
             GameConfig.APPLE_EFFECT_TIME);
     static private Timer timerBurger = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50,
@@ -72,6 +74,14 @@ public class GameCollision extends CollisionManager {
             // aiPlayer.setSpeed(aiPlayer.getSpeed() / 1.5f);
             // aiPlayer.moveRight();
             // aiPlayer.moveDown();
+
+            // try {
+            // // Sleep for 2 seconds
+            // Thread.sleep(2000);
+            // } catch (InterruptedException e) {
+            // // Handle interruption
+            // e.printStackTrace();
+            // }
 
         }
         if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {

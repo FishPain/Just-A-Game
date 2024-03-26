@@ -87,7 +87,9 @@ public class MovementAI extends CollisionManager {
             // Apply horizontal movement if no collision detected
             if (horizontalCollision == null) {
                 entity.setX(entity.getX() + horizontalMovementDelta.x);
-            } else {
+            }
+
+            else {
                 GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity);
             }
         }
