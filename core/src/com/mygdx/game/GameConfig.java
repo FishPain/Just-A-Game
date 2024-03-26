@@ -13,10 +13,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My Goopy Foody Game";
     public static final float GRAVITY = -100f;
-    public static float MUSIC_VOLUME = 0.2f;
-    public static int PLAYER_BODY_LENGTH = 0;
-    public static int TIME_LIMIT = 5;
-    public static final int NUM_OF_OBSTACLES = 100;
+    public static final int NUM_OF_OBSTACLES = 80;
     public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
@@ -25,8 +22,11 @@ public class GameConfig {
     public static final float BURGER_SPEED_MULTIPLIER = 2f;
     public static final int NUM_OF_CARROTS = 3;
     public static final int BLOCK_SIZE = 50;
-    public static final int PLAYER_SIZE = 25;
+    public static final int PLAYER_WIDTH = 25;
+    public static final int PLAYER_HEIGHT = 40;
     public static final int PLAYER_STAMINA = 100;
+    public static float MUSIC_VOLUME = 0.2f;
+    public static int TIME_LIMIT = 7;
     public static int PLAYER_SPEED = 200;
     public static boolean IS_MUSIC_ENABLED = true;
 
@@ -108,7 +108,6 @@ public class GameConfig {
 
     public enum GameEntityType {
         PLAYER("PLAYER"),
-        PLAYER_BODY("PLAYER_BODY"),
         BLOCK("BLOCK"),
         APPLE("APPLE"),
         BURGER("BURGER"),
@@ -257,9 +256,9 @@ public class GameConfig {
 
         // Entity textures
         BLOCK("block.jpg"),
-        PLAYER("player.png"),
+        PLAYER("player1.png"),
         APPLE("apple.png"),
-        CARROT("droplet.png"),
+        CARROT("carrot.png"),
         BURGER("burger.png"),
         EXIT_PORTAL("exit_portal.png"),
 

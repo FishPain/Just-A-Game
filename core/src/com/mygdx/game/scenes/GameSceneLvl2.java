@@ -30,8 +30,8 @@ public class GameSceneLvl2 extends GameScene {
         this.player = new Player(
                 GameConfig.PLAYER_START_POSITION.x,
                 GameConfig.PLAYER_START_POSITION.y,
-                GameConfig.PLAYER_SIZE,
-                GameConfig.PLAYER_SIZE,
+                GameConfig.PLAYER_WIDTH,
+                GameConfig.PLAYER_HEIGHT,
                 GameConfig.PLAYER_SPEED,
                 Assets.PLAYER.getFileName(),
                 GameEntityType.PLAYER.getValue(),

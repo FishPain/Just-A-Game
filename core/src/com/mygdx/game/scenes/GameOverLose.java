@@ -67,6 +67,7 @@ public class GameOverLose extends Scene {
     @Override
     public void render(float delta) {
         renderBackground(0, 0, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+        buttonManager.drawButtons(batch);
     }
 
     @Override
