@@ -86,14 +86,13 @@ public class AIPlayer extends Entity {
 
     @Override
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
-        ArrayList<Point> applePos;
-        applePos = entityManager.getAllApplePosition();
-        if (!applePos.isEmpty()) { // Keep moving as long as there are apples
+        aiMovement.retrieveAppleAndCarrotPos();
+        ArrayList<Point> appleAndCarrotPos = aiMovement.getAppleAndCarrotPos();
+        if (!appleAndCarrotPos.isEmpty()) { // Keep moving as long as there are apples
             if (this.isMovable) {
                 // Apply movements
                 aiMovement.applyVerticalMovement(this, allEntities, deltaTime);
                 aiMovement.applyHorizontalMovement(this, allEntities, deltaTime);
-
             }
             updatePosition();
         }

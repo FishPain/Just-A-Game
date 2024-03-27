@@ -1,13 +1,10 @@
 package com.mygdx.engine.entity;
 
-import com.mygdx.game.GameConfig;
-
 import java.util.ArrayList;
 import java.awt.Point;
 
 public class EntityManager {
     private ArrayList<Entity> entities;
-    private ArrayList<Point> allApplePositionArrayList;
 
     public EntityManager() {
         entities = new ArrayList<Entity>();
@@ -80,28 +77,6 @@ public class EntityManager {
             }
         }
         return entitiesByType;
-    }
-
-    public ArrayList<Point> getAllAISnakePosition() {
-        return this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
-    }
-
-    public ArrayList<Point> getAllApplePosition() {
-        // get all the entity positions of type APPLE by passing in the entityType
-        if (this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString()).isEmpty()) {
-            return new ArrayList<Point>();
-        } else {
-            allApplePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString());
-
-            System.out.println(
-                    "Apple1: " + (allApplePositionArrayList.get(0).x) + " , "
-                            + (allApplePositionArrayList.get(0).y));
-            System.out.println("All Apple: " + (allApplePositionArrayList));
-
-            // return the list of all apple positions
-            return allApplePositionArrayList;
-        }
-
     }
 
     public ArrayList<Entity> getAllCollidableEntity() {

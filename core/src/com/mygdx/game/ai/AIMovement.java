@@ -9,34 +9,43 @@ import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.game.entity.AIPlayer;
+import com.mygdx.game.GameConfig;
 import com.mygdx.game.collision.GameCollision;
 
 public class AIMovement extends MovementAI {
     private EntityManager entityManager;
     private Vector2 horizontalMovementDelta;
+    ArrayList<Point> appleAndCarrotPos;
 
     public AIMovement(EntityManager entityManager, AIPlayer aiPlayer) {
         this.entityManager = entityManager;
     }
 
+    public void retrieveAppleAndCarrotPos() {
+        this.appleAndCarrotPos = entityManager
+                .getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString());
+        appleAndCarrotPos.addAll(entityManager.getAllEntityPosition(GameConfig.GameEntityType.CARROT.toString()));
+    }
+
+    public ArrayList<Point> getAppleAndCarrotPos() {
+        return this.appleAndCarrotPos;
+    }
+
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
             float deltaTime) {
 
-        ArrayList<Point> snakePos = entityManager.getAllAISnakePosition();
-        ArrayList<Point> applePos = entityManager.getAllApplePosition();
+        ArrayList<Point> aiPos = entityManager.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
+        retrieveAppleAndCarrotPos();
 
-        if (applePos.size() != 0) {
-            Point apple = applePos.get(0);
-            Point snake = snakePos.get(0);
-
-            System.out.println("SNAKE POINT : " + snakePos);
-            System.out.println("APPLE POINT : " + applePos);
+        if (appleAndCarrotPos.size() != 0) {
+            Point appleAndCarrot = appleAndCarrotPos.get(0);
+            Point snake = aiPos.get(0);
 
             // Move left if snake is to the right of the apple
-            if (snake.x > apple.x) {
+            if (snake.x > appleAndCarrot.x) {
                 horizontalMovementDelta = calculateAIHorizontalMovement(-entity.getSpeed(),
                         deltaTime);
-            } else if (snake.x == apple.x) {
+            } else if (snake.x == appleAndCarrot.x) {
                 horizontalMovementDelta = calculateAIHorizontalMovement(0, deltaTime);
             } else {
                 horizontalMovementDelta = calculateAIHorizontalMovement(entity.getSpeed(),
@@ -46,18 +55,12 @@ public class AIMovement extends MovementAI {
             Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
                     allEntities);
 
-            System.out.println("ENTITY TYPE 1: " + entity.getEntityType());
-
             // Apply horizontal movement if no collision detected
             if (horizontalCollision == null) {
                 entity.setX(entity.getX() + horizontalMovementDelta.x);
             }
 
             else {
-                System.out.println("ENTITY TYPE 2: " + entity.getEntityType());
-                if (entity.getEntityType() == "AI_PLAYER") {
-                    System.out.println("ENTITY TYPE == AI_PLAYER");
-                }
                 GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity, "horizontal");
             }
         }
@@ -65,22 +68,18 @@ public class AIMovement extends MovementAI {
 
     public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 verticalMovementDelta;
-        ArrayList<Point> snakePos;
-        ArrayList<Point> applePos;
-        snakePos = entityManager.getAllAISnakePosition();
-        applePos = entityManager.getAllApplePosition();
-        if (applePos.size() == 0) {
+        ArrayList<Point> aiPos = entityManager.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
+        retrieveAppleAndCarrotPos();
+
+        if (appleAndCarrotPos.size() == 0) {
 
         } else {
-            Point apple = applePos.get(0);
-            Point snake = snakePos.get(0);
+            Point appleAndCarrot = appleAndCarrotPos.get(0);
+            Point snake = aiPos.get(0);
 
-            System.out.println("SNAKE POINT : " + snakePos);
-            System.out.println("APPLE POINT : " + applePos);
-
-            if (snake.y > apple.y) { // MOVE RIGHT
+            if (snake.y > appleAndCarrot.y) { // MOVE RIGHT
                 verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
-            } else if (snake.y == apple.y) {
+            } else if (snake.y == appleAndCarrot.y) {
                 verticalMovementDelta = calculateAIHorizontalMovement(0, deltaTime);
             }
 

@@ -27,12 +27,11 @@ public class GameConfig {
     public static final int PLAYER_HEIGHT = 40;
     public static final int PLAYER_STAMINA = 100;
     public static final int PLAYER_POINTS_TO_WIN = NUM_OF_APPLES;
-    public static final int AI_PLAYER_POINTS_TO_WIN = NUM_OF_APPLES;
+    public static final int AI_PLAYER_POINTS_TO_WIN = NUM_OF_APPLES + 1;
     public static final int TIME_LIMIT_LEVEL_1 = 15;
     public static final int TIME_LIMIT_LEVEL_2 = 25;
-    public static final int AI_PLAYER_SIZE = 30;
     public static final int PLAYER_SPEED = 200;
-    public static final int AI_SPEED = 150;
+    public static final int AI_SPEED = 120;
     public static float MUSIC_VOLUME = 0.2f;
     public static boolean IS_MUSIC_ENABLED = true;
 
