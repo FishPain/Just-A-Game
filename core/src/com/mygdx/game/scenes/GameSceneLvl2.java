@@ -3,7 +3,6 @@ package com.mygdx.game.scenes;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.engine.io.KeyStrokeManager;
 import com.mygdx.engine.scene.SceneManager;
-import com.mygdx.engine.ai.AIManager;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.game.GameConfig;
@@ -18,7 +17,6 @@ public class GameSceneLvl2 extends GameScene {
         private EntityManager entityManager;
         private KeyStrokeManager keyStrokeManager;
         private BlockManager blockManager;
-        private AIManager aiManager;
         private Player player;
         private AIPlayer aiPlayer;
 
