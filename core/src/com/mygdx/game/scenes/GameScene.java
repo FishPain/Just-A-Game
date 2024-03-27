@@ -175,9 +175,11 @@ public abstract class GameScene extends Scene {
         if (isPaused) {
             timer.pauseTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), false);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.AI_PLAYER.getValue()), false);
         } else {
             timer.resumeTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), true);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.AI_PLAYER.getValue()), true);
         }
     }
 

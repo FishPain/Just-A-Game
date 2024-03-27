@@ -31,9 +31,9 @@ public class GameConfig {
     public static final int TIME_LIMIT_LEVEL_1 = 15;
     public static final int TIME_LIMIT_LEVEL_2 = 25;
     public static final int AI_PLAYER_SIZE = 30;
+    public static final int PLAYER_SPEED = 200;
+    public static final int AI_SPEED = 150;
     public static float MUSIC_VOLUME = 0.2f;
-    public static int PLAYER_SPEED = 200;
-    public static int AI_SPEED = 150;
     public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity

@@ -20,7 +20,7 @@ public class AIMovement extends MovementAI {
     }
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
-            ArrayList<Vector2> bodyPositions, float deltaTime) {
+            float deltaTime) {
 
         ArrayList<Point> snakePos = entityManager.getAllAISnakePosition();
         ArrayList<Point> applePos = entityManager.getAllApplePosition();
@@ -63,8 +63,7 @@ public class AIMovement extends MovementAI {
         }
     }
 
-    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions,
-            float deltaTime) {
+    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, float deltaTime) {
         Vector2 verticalMovementDelta;
         ArrayList<Point> snakePos;
         ArrayList<Point> applePos;

@@ -13,16 +13,6 @@ public class EntityManager {
         entities = new ArrayList<Entity>();
     }
 
-    public void addPlayer(Entity player) {
-        System.out.println("Entity entity: " + (player));
-        entities.add(player);
-    }
-
-    public void addAiPlayer(Entity aiPlayer) {
-        System.out.println("Entity entity: " + (aiPlayer));
-        entities.add(aiPlayer);
-    }
-
     public void addEntity(Entity entity) {
         entities.add(entity);
     }

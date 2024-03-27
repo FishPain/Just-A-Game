@@ -43,15 +43,17 @@ public class GameSceneLvl2 extends GameScene {
 
         this.aiPlayer = new AIPlayer(GameConfig.AI_PLAYER_START_POSITION.x,
                 GameConfig.AI_PLAYER_START_POSITION.y,
-                GameConfig.AI_PLAYER_SIZE,
-                GameConfig.AI_PLAYER_SIZE,
-                Assets.PLAYER.getFileName(), GameConfig.AI_SPEED,
+                GameConfig.PLAYER_WIDTH,
+                GameConfig.PLAYER_HEIGHT,
                 Assets.PLAYER.getFileName(),
-                GameEntityType.AI_PLAYER.getValue(), keyStrokeManager, entityManager);
+                GameConfig.AI_SPEED,
+                GameEntityType.AI_PLAYER.getValue(),
+                keyStrokeManager, entityManager);
 
         entityManager.addEntity(player);
 
-        entityManager.addAiPlayer(aiPlayer);
+        entityManager.addEntity(aiPlayer);
+
         // spawn the block borders
         entityManager.addEntities(blockManager.createBlocks(GameConfig.BLOCK_BORDER_POSITIONS));
 
