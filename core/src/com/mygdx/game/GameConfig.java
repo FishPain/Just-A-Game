@@ -13,7 +13,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My Goopy Foody Game";
     public static final float GRAVITY = -100f;
-    public static final int NUM_OF_OBSTACLES = 70;
+    public static final int NUM_OF_OBSTACLES = 40;
     public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
