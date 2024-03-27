@@ -58,6 +58,7 @@ public class GameCollision extends CollisionManager {
             player.setSpeed(player.getSpeed() * GameConfig.APPLE_SPEED_MULTIPLIER);
             player.setAppleEffectActive(true);
             timerApple.startTimer();
+            player.setPoints(player.getPoints() + 1);
         }
         // burger slow down the player by 1.5 times
         else if (GameEntityType.fromValue(entityType) == GameEntityType.BURGER) {
@@ -70,12 +71,7 @@ public class GameCollision extends CollisionManager {
         else if (GameEntityType.fromValue(entityType) == GameEntityType.CARROT) {
             collidedEntity.setToRemove(true);
             player.setCarrotEffectActive(true);
-        }
-
-        // burger slow down the player by 1.5 times
-        else if (GameEntityType.fromValue(entityType) == GameEntityType.BURGER) {
-            collidedEntity.setToRemove(true);
-            player.setSpeed(player.getSpeed() / 1.5f);
+            player.setPoints(player.getPoints() + 1);
         }
     }
 
@@ -140,9 +136,10 @@ public class GameCollision extends CollisionManager {
                 || entity == GameEntityType.BURGER) {
             collidedEntity.setToRemove(true);
             if (entity == GameEntityType.BURGER) {
-                // Adjust speed by a configurable factor
                 float speedFactor = GameConfig.BURGER_SPEED_MULTIPLIER;
                 aiPlayer.setSpeed(aiPlayer.getSpeed() / speedFactor);
+            } else {
+                aiPlayer.setPoints(aiPlayer.getPoints() + 1);
             }
         }
     }

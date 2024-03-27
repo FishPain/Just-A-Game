@@ -25,6 +25,7 @@ public class AIPlayer extends Entity {
     private EntityManager entityManager;
     private AIPlayer aiPlayer;
     private Direction currentDirection;
+    private int points;
 
     public AIPlayer(float x, float y, float width, float height, String headTexturePath, float speed,
             String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
@@ -37,6 +38,15 @@ public class AIPlayer extends Entity {
         this.entityManager = entityManager;
         this.bodyPositions = new ArrayList<Vector2>();
         this.currentDirection = Movement.Direction.RIGHT;
+        this.points = 0;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return this.points;
     }
 
     public void moveLeft() {
