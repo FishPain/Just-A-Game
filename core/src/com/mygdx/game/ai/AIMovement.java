@@ -1,26 +1,22 @@
 package com.mygdx.game.ai;
 
-import com.mygdx.game.scenes.GameSceneLvl2;
-
 import java.awt.Point;
-
-import com.mygdx.game.collision.GameCollision;
-
 import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector2;
+
 import com.mygdx.engine.ai.MovementAI;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
 import com.mygdx.game.entity.AIPlayer;
+import com.mygdx.game.collision.GameCollision;
 
 public class AIMovement extends MovementAI {
     private EntityManager entityManager;
     private Vector2 horizontalMovementDelta;
 
-    public AIMovement(GameSceneLvl2 gameSceneLvl2, AIPlayer aiPlayer) {
-        this.entityManager = gameSceneLvl2.getEntityManager();
+    public AIMovement(EntityManager entityManager, AIPlayer aiPlayer) {
+        this.entityManager = entityManager;
     }
 
     public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
@@ -37,20 +33,14 @@ public class AIMovement extends MovementAI {
             System.out.println("APPLE POINT : " + applePos);
 
             // Move left if snake is to the right of the apple
-            // if (snake.x > apple.x) {
-            // horizontalMovementDelta = calculateAIHorizontalMovement(-entity.getSpeed(),
-            // deltaTime);
-            // } else if (snake.x == apple.x) {
-            // horizontalMovementDelta = calculateAIHorizontalMovement(0, deltaTime);
-            // } else {
-            // horizontalMovementDelta = calculateAIHorizontalMovement(entity.getSpeed(),
-            // deltaTime);
-            // }
-
             if (snake.x > apple.x) {
-                horizontalMovementDelta = calculateAIHorizontalMovement(-entity.getSpeed(), deltaTime);
+                horizontalMovementDelta = calculateAIHorizontalMovement(-entity.getSpeed(),
+                        deltaTime);
+            } else if (snake.x == apple.x) {
+                horizontalMovementDelta = calculateAIHorizontalMovement(0, deltaTime);
             } else {
-                horizontalMovementDelta = calculateAIHorizontalMovement(entity.getSpeed(), deltaTime);
+                horizontalMovementDelta = calculateAIHorizontalMovement(entity.getSpeed(),
+                        deltaTime);
             }
 
             Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
