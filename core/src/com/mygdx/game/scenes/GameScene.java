@@ -37,14 +37,14 @@ public abstract class GameScene extends Scene {
             SceneManager sceneManager,
             EntityManager entityManager,
             KeyStrokeManager keyStrokeManager,
-            String gameSceneType) {
+            String gameSceneType, int timeLimit) {
         super(Assets.GAME_SCENE_BG.getFileName(),
                 Assets.GAME_SCENE_SOUND.getFileName(), gameSceneType);
         this.sceneManager = sceneManager;
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
         this.timer = new Timer(GameConfig.SCREEN_WIDTH / 2 - 50, GameConfig.SCREEN_HEIGHT - 50,
-                GameConfig.TIME_LIMIT);
+                timeLimit);
         this.isPaused = false;
         this.pauseKeyIsPressed = false;
         this.nextScene = null;
@@ -79,7 +79,7 @@ public abstract class GameScene extends Scene {
 
         timer.updateAndRender(batch);
         if (timer.isTimerEnded()) {
-            nextScene = GameSceneType.GAME_OVER_LOSE.getValue();
+            this.nextScene = GameSceneType.GAME_OVER_LOSE.getValue();
         }
 
         // press esc key to pause the game and resume the game
@@ -99,7 +99,7 @@ public abstract class GameScene extends Scene {
 
         applyEffects();
 
-        drawEntitiesAndCheckWinCondition(delta);
+        drawEntitiesAndCheckWinLoseCondition(delta);
 
         // bulk remove entity to prevent concurrent modification
         entityManager.removeEntities();
@@ -120,9 +120,11 @@ public abstract class GameScene extends Scene {
 
     protected abstract void createEntities();
 
+    protected abstract void applyEffects();
+
     protected abstract void checkWinCondition(Entity entity);
 
-    protected abstract void applyEffects();
+    protected abstract void checkLoseCondition();
 
     protected Timer getTimer() {
         return timer;
@@ -173,13 +175,15 @@ public abstract class GameScene extends Scene {
         if (isPaused) {
             timer.pauseTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), false);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.AI_PLAYER.getValue()), false);
         } else {
             timer.resumeTimer();
             entityManager.setMovability(entityManager.getEntities(GameEntityType.PLAYER.getValue()), true);
+            entityManager.setMovability(entityManager.getEntities(GameEntityType.AI_PLAYER.getValue()), true);
         }
     }
 
-    private void drawEntitiesAndCheckWinCondition(float delta) {
+    private void drawEntitiesAndCheckWinLoseCondition(float delta) {
         ArrayList<Entity> entities = entityManager.getEntities();
         for (Entity entity : entities) {
             if (!entity.getEntityType().equals(GameEntityType.EXIT_PORTAL.getValue())) {
@@ -188,6 +192,7 @@ public abstract class GameScene extends Scene {
             entity.draw(batch);
             entity.move(entityManager.getAllCollidableEntity(), delta);
             checkWinCondition(entity);
+            checkLoseCondition();
         }
     }
 
@@ -210,4 +215,21 @@ public abstract class GameScene extends Scene {
     protected void setNextScene(String nextScene) {
         this.nextScene = nextScene;
     }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    public KeyStrokeManager getKeyStrokeManager() {
+        return keyStrokeManager;
+    }
+
+    public ButtonManager getButtonManager() {
+        return buttonManager;
+    }
+
 }

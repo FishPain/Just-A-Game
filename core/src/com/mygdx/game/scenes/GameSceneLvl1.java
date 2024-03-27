@@ -19,7 +19,7 @@ public class GameSceneLvl1 extends GameScene {
     private Player player;
 
     public GameSceneLvl1(SceneManager sceneManager, EntityManager entityManager, KeyStrokeManager keyStrokeManager) {
-        super(sceneManager, entityManager, keyStrokeManager, GameSceneType.GAME_SCENE_LVL1.getValue());
+        super(sceneManager, entityManager, keyStrokeManager, GameSceneType.GAME_SCENE_LVL1.getValue(), GameConfig.TIME_LIMIT_LEVEL_1);
         this.entityManager = entityManager;
         this.keyStrokeManager = keyStrokeManager;
         this.blockManager = new BlockManager();
@@ -56,11 +56,14 @@ public class GameSceneLvl1 extends GameScene {
         entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_BURGERS,
                 entityManager.getAllEntityPosition(), Assets.BURGER.getFileName(), GameEntityType.BURGER.getValue()));
 
+        // randomly spawn the carrots
+        entityManager.addEntities(blockManager.createRandomBlocks(GameConfig.NUM_OF_CARROTS,
+                entityManager.getAllEntityPosition(), Assets.CARROT.getFileName(), GameEntityType.CARROT.getValue()));
     }
 
     @Override
     protected void checkWinCondition(Entity entity) {
-        if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0) {
+        if (this.player.getPoints() >= GameConfig.PLAYER_POINTS_TO_WIN) {
             for (Entity exitPortal : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
                 if (!exitPortal.isVisible()) {
                     exitPortal.setVisible(true);
@@ -72,8 +75,15 @@ public class GameSceneLvl1 extends GameScene {
     }
 
     @Override
+    protected void checkLoseCondition() {
+        // implemented in game scene
+    }
+
+    @Override
     protected void applyEffects() {
-        // no extra effects at level 1.
-        // speed effect handled in GameCollision.java
+        if (player.isCarrotEffectActive()) {
+            getTimer().addTime(GameConfig.CARROT_EFFECT_TIME);
+            player.setCarrotEffectActive(false);
+        }
     }
 }

@@ -5,158 +5,96 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.engine.ai.AIManager;
 
 import com.mygdx.engine.io.KeyStrokeManager;
-import com.mygdx.engine.ai.MovementAI;
 import com.mygdx.engine.collision.CollisionManager;
 
 import com.mygdx.game.movements.Movement;
-import com.mygdx.game.GameConfig;
+import com.mygdx.game.movements.Movement.Direction;
 import com.mygdx.game.GameConfig.GameEntityType;
+import com.mygdx.game.ai.AIMovement;
 
 public class AIPlayer extends Entity {
-    private ArrayList<Vector2> bodyPositions;
-    private Texture headTexture, bodyTexture;
-    private MovementAI movementAI;
-    private Movement movement;
+    private Texture texture;
+    private AIMovement aiMovement;
     private EntityManager entityManager;
-    private CollisionManager collisionManager;
-    private AIManager aiManager;
-    private boolean isAppleEffectActive;
-    private boolean isCarrotEffectActive;
-    private final float segmentSpacing = GameConfig.BLOCK_SIZE;
     private AIPlayer aiPlayer;
+    private Direction currentDirection;
+    private int points;
 
-    public AIPlayer(float x, float y, float width, float height, String headTexturePath, float speed,
-            String bodyTexturePath, String entityType, KeyStrokeManager keyStrokeManager,
+    public AIPlayer(float x, float y, float width, float height, String texturePath, float speed, String entityType,
+            KeyStrokeManager keyStrokeManager,
             EntityManager entityManager) {
-        super(x, y, width, height, headTexturePath, speed, true, entityType, true, false);
+        super(x, y, width, height, texturePath, speed, true, entityType, true, false);
 
-        this.headTexture = new Texture(Gdx.files.internal(headTexturePath));
-        this.bodyTexture = new Texture(Gdx.files.internal(bodyTexturePath));
-        this.movementAI = new MovementAI(entityManager, aiPlayer);
+        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.aiMovement = new AIMovement(entityManager, aiPlayer);
         this.entityManager = entityManager;
-        // this.movement = new Movement(keyStrokeManager, x, speed, false, 0,
-        // GameConfig.GRAVITY);
-        this.bodyPositions = new ArrayList<Vector2>();
-        //
-        //
-        this.isAppleEffectActive = false;
-        this.isCarrotEffectActive = false;
+        this.currentDirection = Movement.Direction.RIGHT;
+        this.points = 0;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return this.points;
     }
 
     public void moveLeft() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDeltaX = -speed * deltaTime;
+        currentDirection = Movement.Direction.LEFT;
         moveHorizontally(-15);
     }
 
     public void moveRight() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDeltaX = speed * deltaTime;
+        currentDirection = Movement.Direction.RIGHT;
         moveHorizontally(15);
     }
 
     public void moveUp() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDeltaY = speed * deltaTime;
+        currentDirection = Movement.Direction.UP;
         moveVertically(15);
     }
 
     public void moveDown() {
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        float movementDeltaY = -speed * deltaTime;
+        currentDirection = Movement.Direction.DOWN;
         moveVertically(-15);
     }
 
+    public Direction getCurrentDirection() {
+        return this.currentDirection;
+    }
+
     private void moveHorizontally(float deltaX) {
-        // System.out.println("Move Horizontally works!");
         Vector2 newHorizontalPosition = new Vector2(this.x + deltaX, this.y);
-        // System.out.println("newHorizontalPosition = " + newHorizontalPosition);
-        // Check collision
         // Apply movement if no collision
         this.x = newHorizontalPosition.x;
-        // System.out.println("Snake Coords = " + this.x + "," + this.y);
         // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN
         updatePosition();
     }
 
     private void moveVertically(float deltaY) {
-        // System.out.println("Move Vertically works!");
         Vector2 newVerticalPosition = new Vector2(this.x, this.y + deltaY);
-        // System.out.println("newVerticalPosition = " + newVerticalPosition);
-        // Check collision
         // Apply movement if no collision
         this.y = newVerticalPosition.y;
-        // System.out.println("Snake Coords = " + this.x + "," + this.y);
-        // REQUIRES GRAPHICS TO UPDATE THE SNAKE POSITION ON SCREEN
         updatePosition();
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        batch.draw(headTexture, x, y, width, height);
-        for (Vector2 pos : bodyPositions) {
-            batch.draw(bodyTexture, pos.x, pos.y, width, height);
-        }
-    }
-
-    @Override
     public void move(ArrayList<Entity> allEntities, float deltaTime) {
-        ArrayList<Point> applePos;
-        applePos = entityManager.getAllApplePosition();
-
-        // long lastLoopTime = System.currentTimeMillis();
-        // long loopInterval = 5000; // 5 seconds
-
-        // while (!applePos.isEmpty()) {
-        // if (this.isMovable) {
-        // movementAI.applyHorizontalMovement(this, allEntities, bodyPositions,
-        // deltaTime);
-        // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
-        // deltaTime);
-
-        // updatePosition();
-        // long currentTime = System.currentTimeMillis();
-        // if (currentTime - lastRouteChangeTime >= routeChangeInterval) {
-        // movementAI.applyHorizontalMovement(this, allEntities, bodyPositions,
-        // deltaTime);
-        // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
-        // deltaTime);
-        // lastRouteChangeTime = currentTime;
-        // }
-
-        // } else {
-        // break;
-        // }
-        long lastLoopTime = System.currentTimeMillis();
-        long loopInterval = 5000; // 5 seconds
-
-        System.out.println("Apple pos: " + (applePos));
-
-        if (!applePos.isEmpty()) { // Keep moving as long as there are apples
-            System.out.println("Apple pos not empty");
-
+        aiMovement.retrieveAppleAndCarrotPos();
+        ArrayList<Point> appleAndCarrotPos = aiMovement.getAppleAndCarrotPos();
+        if (!appleAndCarrotPos.isEmpty()) { // Keep moving as long as there are apples
             if (this.isMovable) {
                 // Apply movements
-                System.out.println("this.isMovable");
-                movementAI.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
-                movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
-                // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
-                // deltaTime);
-
-                // Update position
-
-            } else {
-
+                aiMovement.applyVerticalMovement(this, allEntities, deltaTime);
+                aiMovement.applyHorizontalMovement(this, allEntities, deltaTime);
             }
             updatePosition();
-
         }
 
     }
@@ -179,7 +117,6 @@ public class AIPlayer extends Entity {
 
     @Override
     public void dispose() {
-        headTexture.dispose();
-        bodyTexture.dispose();
+        texture.dispose();
     }
 }

@@ -1,218 +1,22 @@
 package com.mygdx.engine.ai;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
-import com.mygdx.game.collision.GameCollision;
 import com.mygdx.engine.controls.ControlManager;
-import com.mygdx.engine.entity.Entity;
-import com.mygdx.engine.entity.EntityManager;
-import com.mygdx.game.scenes.GameSceneLvl2;
-
-import com.mygdx.game.GameConfig;
-import com.mygdx.game.GameConfig.GameEntityType;
-import com.mygdx.game.GameConfig.Keystroke;
-import com.mygdx.game.collision.GameCollision;
-import com.mygdx.game.entity.AIPlayer;
-import com.mygdx.game.entity.Player;
 
 public class MovementAI extends CollisionManager {
-    private CollisionManager collisionManager;
-    private GameCollision gameCollision;
-    private EntityManager entityManager;
-    private GameSceneLvl2 gameSceneLvl2;
-    private AIPlayer aiPlayer;
 
-    // private AIManager aiManager = new AIManager();
-    // Call getEntityPositionsByType with the desired entityType
-
-    // get all the apple position
-    // ArrayList<Point> applePositions =
-    // aiManager.getEntityPositionsByType(GameConfig.GameEntityType.APPLE);
-    // public ArrayList<Point> Apples() {
-    // ArrayList<Point> applePositions =
-    // aiManager.getEntityPositionsByType(GameConfig.GameEntityType.APPLE);
-    // // System.out.println("Number of apple positions: " + applePositions.size());
-    // for (Point position : applePositions) {
-    // System.out.println("Apple position: (" + position.getX() + ", " +
-    // position.getY() + ")");
-    // }
-    // return applePositions;
-    // }
-
-    // public void AIMovement(float x, float speed, boolean isJumping, float
-    // jumpSpeed,
-    // float gravity) {
-
-    // }
-    public MovementAI(EntityManager entityManager, AIPlayer aiPlayer) {
-        this.entityManager = entityManager;
-        this.aiPlayer = aiPlayer;
-
-    }
-
-    public void applyHorizontalMovement(Entity entity, ArrayList<Entity> allEntities,
-            ArrayList<Vector2> bodyPositions, float deltaTime) {
-
-        Vector2 horizontalMovementDelta;
-
-        ArrayList<Point> snakePos;
-        ArrayList<Point> applePos;
-
-        snakePos = entityManager.getAllAISnakePosition();
-        applePos = entityManager.getAllApplePosition();
-        // System.out.println("AI SNAKE POINT : " + aiPlayer.getX() + "," +
-        // aiPlayer.getY());
-
-        if (applePos.size() == 0) {
-
-        } else {
-            Point apple = applePos.get(0);
-            Point snake = snakePos.get(0);
-
-            System.out.println("SNAKE POINT : " + snakePos);
-            System.out.println("APPLE POINT : " + applePos);
-
-            if (snake.x > apple.x) { // MOVE RIGHt
-
-                horizontalMovementDelta = calculateHorizontalMovement(-entity.getSpeed(), deltaTime);
-            } else if (snake.x == apple.x) {
-                horizontalMovementDelta = calculateHorizontalMovement(0, deltaTime);
-                // System.out.println("SNAKE POINT X = APPLE POINT X");
-                // try {
-                // Thread.sleep(3000); // Pause for 2 seconds
-                // } catch (InterruptedException e) {
-                // e.printStackTrace();
-                // }
-
-                // // After 2 seconds, check if snake.x is still the same as apple.x
-                // if (snake.x == apple.x) {
-                // //applyHorizontalMovement(entity, allEntities, bodyPositions, deltaTime);
-                // }
-            }
-
-            else {
-                horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(), deltaTime);
-            }
-            // Use the CollisionManager for collision checks
-            Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
-                    allEntities);
-
-            System.out.println("ENTITY TYPE 1: " + entity.getEntityType());
-
-            // Apply horizontal movement if no collision detected
-            if (horizontalCollision == null) {
-                entity.setX(entity.getX() + horizontalMovementDelta.x);
-            }
-
-            else {
-                System.out.println("ENTITY TYPE 2: " + entity.getEntityType());
-                if (entity.getEntityType() == "AI_PLAYER") {
-                    System.out.println("ENTITY TYPE == AI_PLAYER");
-                }
-                GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity, "horizontal");
-                // applyVerticalMovement(entity, allEntities, bodyPositions, deltaTime);
-            }
-        }
-
-    }
-
-    public Vector2 calculateHorizontalMovement(float speed,
+    public Vector2 calculateAIHorizontalMovement(float speed,
             float deltaTime) {
-        // Vector2 movementDelta = new Vector2();
-        // if (keyStrokeManager.isKeyPressed(Keystroke.LEFT.getKeystrokeName())) {
-        // movementDelta = ControlManager.calculateMovement(movementDelta, -speed *
-        // deltaTime, 0);
-        // }
-        // if (keyStrokeManager.isKeyPressed(Keystroke.RIGHT.getKeystrokeName())) {
-        // movementDelta = ControlManager.calculateMovement(movementDelta, speed *
-        // deltaTime, 0);
-        // }
-        // return movementDelta;
         Vector2 movementDelta = new Vector2();
-
         movementDelta = ControlManager.calculateMovement(movementDelta, speed * deltaTime, 0);
-
-        // Move to the right by default
-        // movementDelta = ControlManager.calculateMovement(movementDelta, speed *
-        // deltaTime, 0);
-
         return movementDelta;
-    }
-
-    public void applyVerticalMovement(Entity entity, ArrayList<Entity> allEntities, ArrayList<Vector2> bodyPositions,
-            float deltaTime) {
-
-        Vector2 verticalMovementDelta;
-
-        ArrayList<Point> snakePos;
-        ArrayList<Point> applePos;
-        snakePos = entityManager.getAllAISnakePosition();
-        applePos = entityManager.getAllApplePosition();
-        if (applePos.size() == 0) {
-
-        } else {
-            Point apple = applePos.get(0);
-            Point snake = snakePos.get(0);
-
-            System.out.println("SNAKE POINT : " + snakePos);
-            System.out.println("APPLE POINT : " + applePos);
-
-            if (snake.y > apple.y) { // MOVE RIGHT
-                verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
-            } else if (snake.y == apple.y) {
-                verticalMovementDelta = calculateHorizontalMovement(0, deltaTime);
-                // System.out.println("SNAKE POINT Y = APPLE POINT Y");
-                // try {
-                // Thread.sleep(3000); // Pause for 2 seconds
-                // } catch (InterruptedException e) {
-                // e.printStackTrace();
-                // }
-
-                // // After 2 seconds, check if snake.y is still the same as apple.y
-                // if (snake.y == apple.y) {
-                // applyHorizontalMovement(entity, allEntities, bodyPositions, deltaTime);
-                // }
-            }
-
-            else {
-                verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
-            }
-
-            boolean isOnBlock = gameCollision.isEntityOnBlock(entity, allEntities);
-            Entity collidedEntity = CollisionManager.willCollide(entity,
-                    new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
-                    allEntities);
-
-            // Allow upward movement if on a block or if there's no vertical collision
-            if (collidedEntity == null || (isOnBlock)) {
-                entity.setY(entity.getY() + verticalMovementDelta.y);
-            } else {
-                GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity, "vertical");
-                // applyHorizontalMovement(collidedEntity, allEntities, bodyPositions,
-                // deltaTime);
-            }
-        }
     }
 
     public Vector2 calculateVerticalMovement(float speed,
             float deltaTime) {
         Vector2 movementDelta = new Vector2();
-        // if (keyStrokeManager.isKeyPressed(Keystroke.UP.getKeystrokeName())) {
-        // movementDelta = ControlManager.calculateMovement(movementDelta, 0, speed *
-        // deltaTime);
-        // }
-        // if (keyStrokeManager.isKeyPressed(Keystroke.DOWN.getKeystrokeName())) {
-        // movementDelta = ControlManager.calculateMovement(movementDelta, 0, -speed *
-        // deltaTime);
-        // }
-
         movementDelta = ControlManager.calculateMovement(movementDelta, 0, speed * deltaTime);
-
-        // movementDelta = ControlManager.calculateMovement(movementDelta, 0, speed *
-        // deltaTime);
         return movementDelta;
     }
 

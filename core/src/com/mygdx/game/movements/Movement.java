@@ -14,6 +14,10 @@ import com.mygdx.game.entity.Player;
 public class Movement extends CollisionManager {
     private KeyStrokeManager keyStrokeManager;
 
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
+
     public Movement(KeyStrokeManager keyStrokeManager, float x, float speed, boolean isJumping, float jumpSpeed,
             float gravity) {
         this.keyStrokeManager = keyStrokeManager;
@@ -31,7 +35,7 @@ public class Movement extends CollisionManager {
         if (horizontalCollision == null) {
             entity.setX(entity.getX() + horizontalMovementDelta.x);
         }
-        
+
         GameCollision.collideEffect(horizontalCollision, (Player) entity);
     }
 

@@ -3,11 +3,8 @@ package com.mygdx.game.collision;
 import com.mygdx.engine.ai.MovementAI;
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.*;
-import java.util.*;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.io.Timer;
@@ -16,10 +13,10 @@ import com.mygdx.game.GameConfig;
 import com.mygdx.game.GameConfig.GameEntityType;
 import com.mygdx.game.entity.AIPlayer;
 import com.mygdx.game.entity.Player;
+import com.mygdx.game.movements.Movement.Direction;
 
 public class GameCollision extends CollisionManager {
     static MovementAI movementAI;
-    private AIPlayer aiPlayer;
 
     static private Timer timerApple = new Timer(GameConfig.SCREEN_WIDTH / 2 - 100, GameConfig.SCREEN_HEIGHT - 50,
             GameConfig.APPLE_EFFECT_TIME);
@@ -61,6 +58,7 @@ public class GameCollision extends CollisionManager {
             player.setSpeed(player.getSpeed() * GameConfig.APPLE_SPEED_MULTIPLIER);
             player.setAppleEffectActive(true);
             timerApple.startTimer();
+            player.setPoints(player.getPoints() + 1);
         }
         // burger slow down the player by 1.5 times
         else if (GameEntityType.fromValue(entityType) == GameEntityType.BURGER) {
@@ -73,85 +71,77 @@ public class GameCollision extends CollisionManager {
         else if (GameEntityType.fromValue(entityType) == GameEntityType.CARROT) {
             collidedEntity.setToRemove(true);
             player.setCarrotEffectActive(true);
-        }
-
-        // burger slow down the player by 1.5 times
-        else if (GameEntityType.fromValue(entityType) == GameEntityType.BURGER) {
-            collidedEntity.setToRemove(true);
-            player.setSpeed(player.getSpeed() / 1.5f);
+            player.setPoints(player.getPoints() + 1);
         }
     }
 
-    // collision for AI
     public static void collideEffectAI(Entity collidedEntity, AIPlayer aiPlayer, String typeOfCollision) {
         String entityType = collidedEntity.getEntityType();
-        ArrayList<Entity> allEntities;
-        Entity entity;
-        Vector2 newPosition;
-        if (GameEntityType.fromValue(entityType) == GameEntityType.BLOCK) {
-            if (typeOfCollision == "horizontal") {
-                if (1 + (int) (Math.random() * ((2 - 1) + 1)) == 1) {
-                    aiPlayer.moveUp();
-                } else {
-                    aiPlayer.moveDown();
-                }
+        GameEntityType entity = GameEntityType.fromValue(entityType);
 
-            } else if (typeOfCollision == "vertical") {
-                if (1 + (int) (Math.random() * ((2 - 1) + 1)) == 1) {
-                    aiPlayer.moveRight();
-                } else {
-                    aiPlayer.moveLeft();
-                }
+        // Keep track of the current movement direction
+        Direction currentDirection = aiPlayer.getCurrentDirection();
+
+        if (entity == GameEntityType.BLOCK) {
+            // Handle collisions based on the current movement direction
+            switch (currentDirection) {
+                case UP:
+                    if ("horizontal".equals(typeOfCollision)) {
+                        aiPlayer.moveUp(); // Continue moving up
+                    } else if ("vertical".equals(typeOfCollision)) {
+                        if (new Random().nextBoolean()) {
+                            aiPlayer.moveRight();
+                        } else {
+                            aiPlayer.moveLeft();
+                        }
+                    }
+                    break;
+                case DOWN:
+                    if ("horizontal".equals(typeOfCollision)) {
+                        aiPlayer.moveDown(); // Continue moving down
+                    } else if ("vertical".equals(typeOfCollision)) {
+                        if (new Random().nextBoolean()) {
+                            aiPlayer.moveRight();
+                        } else {
+                            aiPlayer.moveLeft();
+                        }
+                    }
+                    break;
+                case LEFT:
+                    if ("vertical".equals(typeOfCollision)) {
+                        aiPlayer.moveLeft(); // Continue moving left
+                    } else if ("horizontal".equals(typeOfCollision)) {
+                        if (new Random().nextBoolean()) {
+                            aiPlayer.moveUp();
+                        } else {
+                            aiPlayer.moveDown();
+                        }
+                    }
+                    break;
+                case RIGHT:
+                    if ("vertical".equals(typeOfCollision)) {
+                        aiPlayer.moveRight(); // Continue moving right
+                    } else if ("horizontal".equals(typeOfCollision)) {
+                        if (new Random().nextBoolean()) {
+                            aiPlayer.moveUp();
+                        } else {
+                            aiPlayer.moveDown();
+                        }
+                    }
+                    break;
+                default:
+                    break;
             }
-
-            // willCollide(entity, newPosition, allEntities);
-
-            // aiPlayer.setSpeed(aiPlayer.getSpeed() / 1.5f);
-            // aiPlayer.moveRight();
-            // aiPlayer.moveDown();
-
-            // try {
-            // // Sleep for 2 seconds
-            // Thread.sleep(2000);
-            // }
-
-            int randNumber = 1 + (int) (Math.random() * ((4 - 1) + 1));
-
-            // switch (randNumber) {
-            // case 1:
-            // System.out.println("CASE 1");
-            // aiPlayer.moveLeft();
-            // break;
-            // case 2:
-            // System.out.println("CASE 2");
-            // aiPlayer.moveRight();
-            // break;
-            // case 3:
-            // System.out.println("CASE 3");
-            // aiPlayer.moveUp();
-
-            // break;
-            // case 4:
-            // System.out.println("CASE 4");
-            // aiPlayer.moveDown();
-
-            // break;
-            // default:
-            // }
-
-        }
-        if (GameEntityType.fromValue(entityType) == GameEntityType.APPLE) {
+        } else if (entity == GameEntityType.APPLE || entity == GameEntityType.CARROT
+                || entity == GameEntityType.BURGER) {
             collidedEntity.setToRemove(true);
-        } else if (GameEntityType.fromValue(entityType) == GameEntityType.CARROT) {
-            collidedEntity.setToRemove(true);
-
+            if (entity == GameEntityType.BURGER) {
+                float speedFactor = GameConfig.BURGER_SPEED_MULTIPLIER;
+                aiPlayer.setSpeed(aiPlayer.getSpeed() / speedFactor);
+            } else {
+                aiPlayer.setPoints(aiPlayer.getPoints() + 1);
+            }
         }
-
-        else if (GameEntityType.fromValue(entityType) == GameEntityType.BURGER) {
-            collidedEntity.setToRemove(true);
-            aiPlayer.setSpeed(aiPlayer.getSpeed() / 1.5f);
-        }
-
     }
 
     public static boolean isEntityOnBlock(Entity entity, ArrayList<Entity> blocks) {
