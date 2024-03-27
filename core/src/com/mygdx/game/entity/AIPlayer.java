@@ -48,31 +48,30 @@ public class AIPlayer extends Entity {
         //
         this.isAppleEffectActive = false;
         this.isCarrotEffectActive = false;
-        initializeBodyPositions(x, y);
     }
 
     public void moveLeft() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         float movementDeltaX = -speed * deltaTime;
-        moveHorizontally(movementDeltaX);
+        moveHorizontally(-15);
     }
 
     public void moveRight() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         float movementDeltaX = speed * deltaTime;
-        moveHorizontally(movementDeltaX);
+        moveHorizontally(15);
     }
 
     public void moveUp() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         float movementDeltaY = speed * deltaTime;
-        moveVertically(movementDeltaY);
+        moveVertically(15);
     }
 
     public void moveDown() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         float movementDeltaY = -speed * deltaTime;
-        moveVertically(movementDeltaY);
+        moveVertically(-15);
     }
 
     private void moveHorizontally(float deltaX) {
@@ -146,9 +145,10 @@ public class AIPlayer extends Entity {
             if (this.isMovable) {
                 // Apply movements
                 System.out.println("this.isMovable");
-
-                movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
                 movementAI.applyVerticalMovement(this, allEntities, bodyPositions, deltaTime);
+                movementAI.applyHorizontalMovement(this, allEntities, bodyPositions, deltaTime);
+                // movementAI.applyVerticalMovement(this, allEntities, bodyPositions,
+                // deltaTime);
 
                 // Update position
 
@@ -167,8 +167,8 @@ public class AIPlayer extends Entity {
         if (entityManager.getEntities(GameEntityType.APPLE.getValue()).size() == 0
                 || entityManager.getEntities(GameEntityType.CARROT.getValue()).size() == 0) {
             for (Entity entity : entityManager.getEntities(GameEntityType.EXIT_PORTAL.getValue())) {
-                if (!entity.isVisable()) {
-                    entity.setVisable(true);
+                if (!entity.isVisible()) {
+                    entity.setVisible(true);
                 } else if (CollisionManager.isCollidingWith(this, entity)) {
                     return true;
                 }
@@ -181,11 +181,5 @@ public class AIPlayer extends Entity {
     public void dispose() {
         headTexture.dispose();
         bodyTexture.dispose();
-    }
-
-    private void initializeBodyPositions(float x, float y) {
-        for (int i = 1; i <= GameConfig.PLAYER_BODY_LENGTH; i++) {
-            bodyPositions.add(new Vector2(x - (i * segmentSpacing), y));
-        }
     }
 }

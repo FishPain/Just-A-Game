@@ -96,7 +96,7 @@ public class EntityManager {
     }
 
     public ArrayList<Point> getAllAISnakePosition() {
-        allSnakePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER_HEAD.toString());
+        allSnakePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
 
         // System.out.println("AI Snake: " + (allSnakePositionArrayList.get(0).x) + " ,
         // "

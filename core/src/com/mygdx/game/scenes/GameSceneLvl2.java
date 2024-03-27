@@ -48,7 +48,7 @@ public class GameSceneLvl2 extends GameScene {
                                 GameConfig.AI_PLAYER_SIZE,
                                 Assets.PLAYER.getFileName(), GameConfig.PLAYER_SPEED,
                                 Assets.PLAYER.getFileName(),
-                                GameEntityType.AI_PLAYER_HEAD.getValue(), keyStrokeManager, entityManager);
+                                GameEntityType.AI_PLAYER.getValue(), keyStrokeManager, entityManager);
 
                 entityManager.addEntity(player);
 

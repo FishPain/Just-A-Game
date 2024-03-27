@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.engine.collision.CollisionManager;
+import com.mygdx.game.collision.GameCollision;
 import com.mygdx.engine.controls.ControlManager;
 import com.mygdx.engine.entity.Entity;
 import com.mygdx.engine.entity.EntityManager;
@@ -19,6 +20,7 @@ import com.mygdx.game.entity.Player;
 
 public class MovementAI extends CollisionManager {
     private CollisionManager collisionManager;
+    private GameCollision gameCollision;
     private EntityManager entityManager;
     private GameSceneLvl2 gameSceneLvl2;
     private AIPlayer aiPlayer;
@@ -58,6 +60,7 @@ public class MovementAI extends CollisionManager {
 
         ArrayList<Point> snakePos;
         ArrayList<Point> applePos;
+
         snakePos = entityManager.getAllAISnakePosition();
         applePos = entityManager.getAllApplePosition();
         // System.out.println("AI SNAKE POINT : " + aiPlayer.getX() + "," +
@@ -73,16 +76,31 @@ public class MovementAI extends CollisionManager {
             System.out.println("APPLE POINT : " + applePos);
 
             if (snake.x > apple.x) { // MOVE RIGHt
+
                 horizontalMovementDelta = calculateHorizontalMovement(-entity.getSpeed(), deltaTime);
             } else if (snake.x == apple.x) {
                 horizontalMovementDelta = calculateHorizontalMovement(0, deltaTime);
-                System.out.println("SNAKE POINT X = APPLE POINT X");
-            } else {
+                // System.out.println("SNAKE POINT X = APPLE POINT X");
+                // try {
+                // Thread.sleep(3000); // Pause for 2 seconds
+                // } catch (InterruptedException e) {
+                // e.printStackTrace();
+                // }
+
+                // // After 2 seconds, check if snake.x is still the same as apple.x
+                // if (snake.x == apple.x) {
+                // //applyHorizontalMovement(entity, allEntities, bodyPositions, deltaTime);
+                // }
+            }
+
+            else {
                 horizontalMovementDelta = calculateHorizontalMovement(entity.getSpeed(), deltaTime);
             }
             // Use the CollisionManager for collision checks
             Entity horizontalCollision = CollisionManager.checkHorizontalCollision(entity, horizontalMovementDelta,
                     allEntities);
+
+            System.out.println("ENTITY TYPE 1: " + entity.getEntityType());
 
             // Apply horizontal movement if no collision detected
             if (horizontalCollision == null) {
@@ -90,7 +108,12 @@ public class MovementAI extends CollisionManager {
             }
 
             else {
-                GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity);
+                System.out.println("ENTITY TYPE 2: " + entity.getEntityType());
+                if (entity.getEntityType() == "AI_PLAYER") {
+                    System.out.println("ENTITY TYPE == AI_PLAYER");
+                }
+                GameCollision.collideEffectAI(horizontalCollision, (AIPlayer) entity, "horizontal");
+                // applyVerticalMovement(entity, allEntities, bodyPositions, deltaTime);
             }
         }
 
@@ -141,12 +164,24 @@ public class MovementAI extends CollisionManager {
                 verticalMovementDelta = calculateVerticalMovement(-entity.getSpeed(), deltaTime);
             } else if (snake.y == apple.y) {
                 verticalMovementDelta = calculateHorizontalMovement(0, deltaTime);
-                System.out.println("SNAKE POINT Y = APPLE POINT Y");
-            } else {
+                // System.out.println("SNAKE POINT Y = APPLE POINT Y");
+                // try {
+                // Thread.sleep(3000); // Pause for 2 seconds
+                // } catch (InterruptedException e) {
+                // e.printStackTrace();
+                // }
+
+                // // After 2 seconds, check if snake.y is still the same as apple.y
+                // if (snake.y == apple.y) {
+                // applyHorizontalMovement(entity, allEntities, bodyPositions, deltaTime);
+                // }
+            }
+
+            else {
                 verticalMovementDelta = calculateVerticalMovement(entity.getSpeed(), deltaTime);
             }
 
-            boolean isOnBlock = CollisionManager.isEntityOnBlock(entity, allEntities);
+            boolean isOnBlock = gameCollision.isEntityOnBlock(entity, allEntities);
             Entity collidedEntity = CollisionManager.willCollide(entity,
                     new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y),
                     allEntities);
@@ -155,10 +190,11 @@ public class MovementAI extends CollisionManager {
             if (collidedEntity == null || (isOnBlock)) {
                 entity.setY(entity.getY() + verticalMovementDelta.y);
             } else {
-                GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity);
+                GameCollision.collideEffectAI(collidedEntity, (AIPlayer) entity, "vertical");
+                // applyHorizontalMovement(collidedEntity, allEntities, bodyPositions,
+                // deltaTime);
             }
         }
-
     }
 
     public Vector2 calculateVerticalMovement(float speed,
