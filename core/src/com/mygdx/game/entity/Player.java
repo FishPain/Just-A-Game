@@ -20,6 +20,7 @@ public class Player extends Entity {
     private boolean isAppleEffectActive;
     private boolean isCarrotEffectActive;
     private boolean isBurgerEffectActive;
+    private int points;
 
     public Player(float x, float y, float width, float height, float speed, String texturePath, String entityType,
             KeyStrokeManager keyStrokeManager,
@@ -30,6 +31,16 @@ public class Player extends Entity {
         this.movement = new Movement(keyStrokeManager, x, speed, false, 0, GameConfig.GRAVITY);
         this.isAppleEffectActive = false;
         this.isCarrotEffectActive = false;
+        this.isBurgerEffectActive = false;
+        this.points = 0;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return this.points;
     }
 
     // EFFECT FLAGS

@@ -48,10 +48,15 @@ public class EntityManager {
 
     public ArrayList<Point> getAllEntityPosition() {
         ArrayList<Point> positions = new ArrayList<Point>();
-        for (Entity entity : entities) {
-            positions.add(new Point((int) entity.x, (int) entity.y));
+        if (entities == null) {
+
+        } else {
+            for (Entity entity : entities) {
+                positions.add(new Point((int) entity.x, (int) entity.y));
+            }
         }
         return positions;
+
     }
 
     // get all entities by type

@@ -30,4 +30,10 @@ public class CollisionManager {
         return willCollide(entity, new Vector2(entity.getX() + horizontalMovementDelta.x, entity.getY()),
                 allEntities);
     }
+
+    public static Entity checkVerticalCollision(Entity entity, Vector2 verticalMovementDelta,
+            ArrayList<Entity> allEntities) {
+        return willCollide(entity, new Vector2(entity.getX(), entity.getY() + verticalMovementDelta.y), allEntities);
+    }
+
 }

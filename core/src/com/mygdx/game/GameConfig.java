@@ -13,7 +13,7 @@ public class GameConfig {
     public static final int FPS = 60;
     public static final String TITLE = "My Goopy Foody Game";
     public static final float GRAVITY = -100f;
-    public static final int NUM_OF_OBSTACLES = 80;
+    public static final int NUM_OF_OBSTACLES = 70;
     public static final int NUM_OF_APPLES = 3;
     public static final int APPLE_EFFECT_TIME = 2;
     public static final float APPLE_SPEED_MULTIPLIER = 1.5f;
@@ -26,9 +26,13 @@ public class GameConfig {
     public static final int PLAYER_WIDTH = 25;
     public static final int PLAYER_HEIGHT = 40;
     public static final int PLAYER_STAMINA = 100;
+    public static final int PLAYER_POINTS_TO_WIN = NUM_OF_APPLES;
+    public static final int AI_PLAYER_POINTS_TO_WIN = NUM_OF_APPLES + 1;
+    public static final int TIME_LIMIT_LEVEL_1 = 15;
+    public static final int TIME_LIMIT_LEVEL_2 = 25;
+    public static final int PLAYER_SPEED = 200;
+    public static final int AI_SPEED = 120;
     public static float MUSIC_VOLUME = 0.2f;
-    public static int TIME_LIMIT = 7;
-    public static int PLAYER_SPEED = 200;
     public static boolean IS_MUSIC_ENABLED = true;
 
     // increase to slow down the entity
@@ -59,12 +63,6 @@ public class GameConfig {
             System.out.println("SCREEN_WIDTH: " + SCREEN_WIDTH);
             System.out.println("SCREEN_HEIGHT: " + SCREEN_HEIGHT);
 
-            // Adjust TIME_LIMIT based on screen size
-            float widthScaleFactor = (float) SCREEN_WIDTH / 800;
-            float heightScaleFactor = (float) SCREEN_HEIGHT / 600;
-            TIME_LIMIT = Math.round(TIME_LIMIT * widthScaleFactor * heightScaleFactor);
-            System.out.println("TIME_LIMIT: " + TIME_LIMIT);
-
         } else {
             SCREEN_WIDTH = 800;
             SCREEN_HEIGHT = 600;
@@ -72,6 +70,7 @@ public class GameConfig {
     }
 
     public static final Point PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
+    public static final Point AI_PLAYER_START_POSITION = new Point(SCREEN_WIDTH / 3, BLOCK_SIZE);
     public static final Point EXIT_PORTAL_POSITION = new Point(SCREEN_WIDTH / 2, BLOCK_SIZE);
     public static final float BUTTON_WIDTH = SCREEN_WIDTH / 16 + 60;
     public static final float BUTTON_HEIGHT = SCREEN_HEIGHT / 9 - 60;
@@ -109,6 +108,7 @@ public class GameConfig {
 
     public enum GameEntityType {
         PLAYER("PLAYER"),
+        AI_PLAYER("AI_PLAYER"),
         BLOCK("BLOCK"),
         APPLE("APPLE"),
         BURGER("BURGER"),
