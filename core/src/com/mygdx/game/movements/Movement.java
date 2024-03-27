@@ -31,7 +31,7 @@ public class Movement extends CollisionManager {
         if (horizontalCollision == null) {
             entity.setX(entity.getX() + horizontalMovementDelta.x);
         }
-        
+
         GameCollision.collideEffect(horizontalCollision, (Player) entity);
     }
 

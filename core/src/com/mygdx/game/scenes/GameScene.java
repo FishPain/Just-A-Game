@@ -210,4 +210,21 @@ public abstract class GameScene extends Scene {
     protected void setNextScene(String nextScene) {
         this.nextScene = nextScene;
     }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    public KeyStrokeManager getKeyStrokeManager() {
+        return keyStrokeManager;
+    }
+
+    public ButtonManager getButtonManager() {
+        return buttonManager;
+    }
+
 }

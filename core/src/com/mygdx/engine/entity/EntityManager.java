@@ -1,6 +1,5 @@
 package com.mygdx.engine.entity;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GameConfig;
 
 import java.util.ArrayList;
@@ -9,8 +8,6 @@ import java.awt.Point;
 public class EntityManager {
     private ArrayList<Entity> entities;
     private ArrayList<Point> allApplePositionArrayList;
-    private ArrayList<Point> allSnakePositionArrayList;
-    // private ArrayList<Entity> allSnakePositionArrayList;
 
     public EntityManager() {
         entities = new ArrayList<Entity>();
@@ -96,22 +93,10 @@ public class EntityManager {
     }
 
     public ArrayList<Point> getAllAISnakePosition() {
-        allSnakePositionArrayList = this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
-
-        // System.out.println("AI Snake: " + (allSnakePositionArrayList.get(0).x) + " ,
-        // "
-        // + (allSnakePositionArrayList.get(0).y));
-        return allSnakePositionArrayList;
+        return this.getAllEntityPosition(GameConfig.GameEntityType.AI_PLAYER.toString());
     }
 
     public ArrayList<Point> getAllApplePosition() {
-        // initialize EntityManager
-
-        // allSnakePositionArrayList = this.getEntities();
-        // // System.out.println("ALL ENTITY POSITION " + allSnakePositionArrayList);
-        // System.out.println("SNAKE " +
-        // allSnakePositionArrayList.get(1).getEntityType());
-
         // get all the entity positions of type APPLE by passing in the entityType
         if (this.getAllEntityPosition(GameConfig.GameEntityType.APPLE.toString()).isEmpty()) {
             return new ArrayList<Point>();
