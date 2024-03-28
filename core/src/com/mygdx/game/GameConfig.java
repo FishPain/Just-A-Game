@@ -250,10 +250,12 @@ public class GameConfig {
         GAME_OVER_LOSE("game_over_lose.png"),
         GAME_OVER_WIN("game_over_win.png"),
         GAME_SCENE_BG("game_scene_bg.png"),
-        MAIN_MENU_BG("main_menu_bg.jpg"),
+        MAIN_MENU_BG("main_menu_bg.png"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
         PAUSE_OVERLAY_BG("pause_overlay_bg.png"),
+        SETTINGS_BG("settings_bg.png"),
+
 
         // Entity textures
         BLOCK("block.jpg"),

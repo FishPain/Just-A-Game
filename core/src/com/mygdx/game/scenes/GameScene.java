@@ -140,7 +140,8 @@ public abstract class GameScene extends Scene {
         float buttonHeight = GameConfig.BUTTON_HEIGHT;
         float totalButtonWidth = 3 * buttonWidth + 2 * buttonSpacing;
         float startX = (GameConfig.SCREEN_WIDTH - totalButtonWidth) / 2;
-        float buttonY = GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2;
+        float offsetBelowCenter = GameConfig.SCREEN_HEIGHT * 0.2f;
+        float buttonY = (GameConfig.SCREEN_HEIGHT / 2 - buttonHeight / 2) - offsetBelowCenter;        
         float resumeBtnX = startX;
         float mainMenuBtnX = startX + buttonWidth + buttonSpacing;
         float quitBtnX = mainMenuBtnX + buttonWidth + buttonSpacing;
