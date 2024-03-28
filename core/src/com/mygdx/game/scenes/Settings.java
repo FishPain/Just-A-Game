@@ -19,8 +19,8 @@ public class Settings extends Scene {
     private Button backBtn;
 
     public Settings(SceneManager sceneManager) {
-        super(Assets.MAIN_MENU_BG.getFileName(),
-                Assets.MAIN_MENU_SOUND.getFileName(),
+        super(Assets.SETTINGS_BG.getFileName(),
+                Assets.SETTINGS_SOUND.getFileName(),
                 GameSceneType.SETTINGS.getValue());
         this.sceneManager = sceneManager;
 
