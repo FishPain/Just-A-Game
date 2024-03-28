@@ -253,9 +253,8 @@ public class GameConfig {
         MAIN_MENU_BG("main_menu_bg.png"),
         TUTORIAL_BG("tutorial.png"),
         TIMER_BG("timer_bg.png"),
-        PAUSE_OVERLAY_BG("pause_overlay_bg.png"),
+        PAUSE_OVERLAY_BG("pause_game.jpg"),
         SETTINGS_BG("settings_bg.png"),
-
 
         // Entity textures
         BLOCK("block.jpg"),
