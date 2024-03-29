@@ -31,7 +31,7 @@ public class GameConfig {
     public static final int TIME_LIMIT_LEVEL_1 = 15;
     public static final int TIME_LIMIT_LEVEL_2 = 25;
     public static final int PLAYER_SPEED = 200;
-    public static final int AI_SPEED = 120;
+    public static final int AI_SPEED = 80;
     public static float MUSIC_VOLUME = 0.2f;
     public static boolean IS_MUSIC_ENABLED = true;
 
